@@ -1,4 +1,4 @@
-from .helpers import process_data, unflatten_data
+from .utils import process_data, unflatten_data
 
 class Tensor:
   def __init__(self, data, requires_grad=False):
@@ -32,52 +32,53 @@ class Tensor:
     else:
       grad = upper_grad
     grad = unflatten_data(grad, self.shape, self.broadcasted_shape)
+    grad = grad.reshape(self.shape)
     self.grad+=grad
     return grad
   
   @property
   def T(self):
-    from .operations import transpose
+    from .ops import transpose
     return transpose(self)
 
   def __add__(self, other):
-    from .operations import add as _add
-    return _add(self, other)
+    from .ops import add
+    return add(self, other)
   
   def __radd__(self, other):
-    from .operations import add as _add
-    return _add(other, self)
+    from .ops import add
+    return add(other, self)
   
   def __sub__(self, other):
-    from .operations import sub as _sub
-    return _sub(self, other)
+    from .ops import sub
+    return sub(self, other)
   
   def __rsub__(self, other):
-    from .operations import sub as _sub
-    return _sub(other, self)
+    from .ops import sub
+    return sub(other, self)
   
   def __mul__(self, other):
-    from .operations import mul as _mul
-    return _mul(self, other)
+    from .ops import mul
+    return mul(self, other)
   
   def __rmul__(self, other):
-    from .operations import mul as _mul
-    return _mul(other, self)
+    from .ops import mul
+    return mul(other, self)
   
   def __truediv__(self, other):
-    from .operations import div as _div
-    return _div(self, other)
+    from .ops import div
+    return div(self, other)
   
   def __rtruediv__(self, other):
-    from .operations import div as _div
-    return _div(other, self)
+    from .ops import div
+    return div(other, self)
   
   def __pow__(self, other):
-    from .operations import pow as _pow
+    from .ops import pow as _pow
     return _pow(self, other)
   
   def __rpow__(self, other):
-    from .operations import pow as _pow
+    from .ops import pow as _pow
     return _pow(other, self)
   
   def __pos__(self):

@@ -1,5 +1,5 @@
 import sys
-sys.path.append('..')
+sys.path.append('../neograd')
 from autograd import tensor
 
 a = tensor([1,2,3], requires_grad=True)
