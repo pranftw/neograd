@@ -1,1 +1,1 @@
-from autograd import Tensor as tensor
+from autograd import tensor

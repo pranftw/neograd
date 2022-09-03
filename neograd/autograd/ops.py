@@ -1,6 +1,5 @@
 import numpy as np
 from .node import Node
-from .tensor import Tensor
 from .utils import mul_shape_dims
 
 
@@ -15,6 +14,7 @@ class Operation:
     self.add_broadcast_shape()
   
   def process_operands(self, operands):
+    from .tensor import Tensor
     operands = list(operands)
     for i,operand in enumerate(operands):
       if not isinstance(operand, Tensor):
@@ -63,6 +63,7 @@ class Operation:
     return requires_grad
   
   def get_result_tensor(self, result_data):
+    from .tensor import Tensor
     result_data = result_data.astype(np.ndarray)
     self.result_tensor = Tensor(result_data, self.check_result_requires_grad())
     self.result_tensor.node = self.node

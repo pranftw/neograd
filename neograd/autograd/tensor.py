@@ -1,4 +1,6 @@
 from .utils import process_data, unflatten_data
+from .ops import add, sub, mul, div, pow as _pow, transpose
+
 
 class Tensor:
   def __init__(self, data, requires_grad=False):
@@ -38,47 +40,36 @@ class Tensor:
   
   @property
   def T(self):
-    from .ops import transpose
     return transpose(self)
 
   def __add__(self, other):
-    from .ops import add
     return add(self, other)
   
   def __radd__(self, other):
-    from .ops import add
     return add(other, self)
   
   def __sub__(self, other):
-    from .ops import sub
     return sub(self, other)
   
   def __rsub__(self, other):
-    from .ops import sub
     return sub(other, self)
   
   def __mul__(self, other):
-    from .ops import mul
     return mul(self, other)
   
   def __rmul__(self, other):
-    from .ops import mul
     return mul(other, self)
   
   def __truediv__(self, other):
-    from .ops import div
     return div(self, other)
   
   def __rtruediv__(self, other):
-    from .ops import div
     return div(other, self)
   
   def __pow__(self, other):
-    from .ops import pow as _pow
     return _pow(self, other)
   
   def __rpow__(self, other):
-    from .ops import pow as _pow
     return _pow(other, self)
   
   def __pos__(self):

@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def process_data(data):
     supported_types = [int, float, list, np.ndarray]
     if type(data) in supported_types:
