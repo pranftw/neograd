@@ -88,7 +88,7 @@ class Tensor:
     return transpose(self)
   
   def __repr__(self):
-    return f'{self.data}'
+    return f'Tensor({self.data}, requires_grad={self.requires_grad})'
   
   def __str__(self):
-    return f'Tensor({self.data})'
+    return f'Tensor( {self.data},\n requires_grad={self.requires_grad},\n grad_fn={self.grad_fn} )'

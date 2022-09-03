@@ -17,3 +17,9 @@ class Node:
     for tens in tensors:
       if tens.node is not None and tens.requires_grad:
         tens.node.backward(parent_upper_grads[tens.node])
+  
+  def __str__(self):
+    return f'Node(\ninputs:{', '.join(self.operation.tensors)}\noutputs:{self.operation.result_tensor}\n)'
+  
+  def __repr__(self):
+    return f'Node({self.operation})'
