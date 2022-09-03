@@ -1,10 +1,10 @@
 from .utils import process_data, unflatten_data
-from .ops import add, sub, mul, div, pow as _pow, transpose
+from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, dot
 
 
 class Tensor:
   def __init__(self, data, requires_grad=False):
-    object.__setattr__(self, 'data', process_data(data))
+    self.data = process_data(data)
     self.requires_grad = requires_grad
     self.broadcasted_shape = None
     self.node = None
@@ -37,10 +37,6 @@ class Tensor:
     grad = grad.reshape(self.shape)
     self.grad+=grad
     return grad
-  
-  @property
-  def T(self):
-    return transpose(self)
 
   def __add__(self, other):
     return add(self, other)
@@ -78,11 +74,18 @@ class Tensor:
   def __neg__(self):
     return (-1*self)
   
-  def __setattr__(self, attr, val):
-    if attr=='data':
-      raise AttributeError("Tensors are immutable")
-    else:
-      object.__setattr__(self, attr, val)
+  def dot(self, other):
+    return dot(self, other)
+  
+  def sum(self, axis=None):
+    return _sum(self, axis)
+  
+  def exp(self):
+    return exp(self)
+  
+  @property
+  def T(self):
+    return transpose(self)
   
   def __repr__(self):
     return f'{self.data}'
