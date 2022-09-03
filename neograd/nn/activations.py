@@ -1,0 +1,17 @@
+from .layers import Layer
+from .ops import relu, sigmoid, tanh
+
+
+class ReLU(Layer):
+  def forward(self, inputs):
+    return relu(inputs)
+
+
+class Sigmoid(Layer):
+  def forward(self, inputs):
+    return sigmoid(inputs)
+
+
+class Tanh(Layer):
+  def forward(self, inputs):
+    return tanh(inputs)

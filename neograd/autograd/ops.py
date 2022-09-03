@@ -240,7 +240,9 @@ class Sum(Operation):
         tens_shape[self.axis] = 1
       except IndexError:
         pass
-    self.tens.local_grad = np.eye(mul_shape_dims(tuple(tens_shape)))
+      self.tens.local_grad = np.eye(mul_shape_dims(tuple(tens_shape)))
+    else:
+      self.tens.local_grad = np.ones(self.tens.shape)
     return self.get_result_tensor(np.sum(self.tens.data, axis=self.axis))
   
   def backward(self, local_grad, upper_grad):
@@ -253,10 +255,10 @@ class Sum(Operation):
       grads = grads[np.newaxis]
       grads = np.concatenate([grads]*num_repeat)
     else:
-      grads = np.dot(local_grad, upper_grad*np.ones(mul_shape_dims(self.tens.shape)))
+      grads = local_grad*upper_grad
     return grads
 
-def sum(tens, axis=0):
+def sum(tens, axis=None):
   return Sum(tens, axis).forward()
 
 
@@ -276,3 +278,56 @@ class Transpose(Operation):
 
 def transpose(tens):
   return Transpose(tens).forward()
+
+
+# <------------RELU------------>
+
+class ReLU(Operation):
+  def __init__(self, tens):
+    self.tens = self.tensors[0]
+  
+  def forward(self):
+    self.tens.local_grad = np.where(self.tens>=0, 1, 0)
+    return self.get_result_tensor(np.max(0, self.tens.data))
+  
+  def backward(self, local_grad, upper_grad):
+    return local_grad*upper_grad    
+
+def relu(tens):
+  return ReLU(tens).forward()
+
+
+# <------------SIGMOID------------>
+
+class Sigmoid(Operation):
+  def __init__(self, tens):
+    self.tens = self.tensors[0]
+  
+  def forward(self):
+    result = 1/(1+np.exp(-self.tens.data))
+    self.tens.local_grad = result*(1-result)
+    return self.get_result_tensor(result)
+  
+  def backward(self, local_grad, upper_grad):
+    return local_grad*upper_grad
+
+def sigmoid(tens):
+  return Sigmoid(tens).forward()
+
+
+# <------------TANH------------>
+
+class Tanh(Operation):
+  def __init__(self, tens):
+    self.tens = self.tensors[0]
+  
+  def forward(self):
+    result = np.tanh(self.tens.data)
+    self.tens.local_grad = 1-(np.power(result, 2))
+    return self.get_result_tensor(result)
+  
+  def backward(self, local_grad, upper_grad):
+    return local_grad*upper_grad
+
+def tanh(tens):
+  return Tanh(tens).forward()
