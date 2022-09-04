@@ -21,10 +21,10 @@ class NN(ng.nn.Model):
   def __init__(self):
     super().__init__(self)
     self.stack = ng.nn.Sequential(
-      ng.nn.Linear(2,100),
+      ng.nn.Linear(2,10),
       ng.nn.ReLU(),
-      ng.nn.Linear(100,1),
-      ng.nn.Sigmoid(),
+      ng.nn.Linear(10,1),
+      ng.nn.Sigmoid()
     )
   
   def forward(self, inputs):
@@ -32,9 +32,14 @@ class NN(ng.nn.Model):
 
 model = NN()
 loss_fn = BinaryCrossEntropy()
-optim = GD(model.get_params(), 0.05)
+optim = GD(model.get_params, 0.05)
 
 # train_data_gen = get_batches(X_train, y_train, num_train, 50) TODO: ISSUE WRT DIMS
+
+def print_params(model):
+  params = model.get_params()
+  for param in params:
+    print(param)
 
 for iter in range(num_iter):
   optim.zero_grad()
@@ -42,6 +47,4 @@ for iter in range(num_iter):
   loss = loss_fn(outputs, y_train)
   loss.backward()
   optim.step()
-  print(f"iter {iter}/{num_iter}\nloss: {loss}")
-
-
+  print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")

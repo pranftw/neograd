@@ -35,8 +35,8 @@ class Layer:
     params = []
     for attr in dir(self):
       attr_val = self.__getattribute__(attr)
-      if isinstance(attr_val.__class__, Param):
-        params.append(attr_val.tens)
+      if isinstance(attr_val, Param):
+        params.append(attr_val)
     return params
 
 
@@ -45,10 +45,10 @@ class Param(tensor):
     super().__init__(data, requires_grad)
   
   def __str__(self):
-    return f'Param({self.tens.__str__()})'
+    return f'Param({super().__str__()})'
   
   def __repr__(self):
-    return f'Param({self.tens.__repr__()})'
+    return f'Param({super().__repr__()})'
 
 
 class Sequential(Container):
