@@ -1,5 +1,5 @@
 from .layers import Layer
-from .ops import relu, sigmoid, tanh
+from ..autograd.ops import relu, sigmoid, tanh
 
 
 class ReLU(Layer):

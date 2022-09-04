@@ -7,7 +7,7 @@ class Model:
     self.layer_types = (Container, Layer)
   
   def __call__(self, inputs):
-    return self.forward(input)
+    return self.forward(inputs)
 
   def get_layers(self):
     layers = []

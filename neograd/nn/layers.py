@@ -1,4 +1,5 @@
-from ..autograd import tensor
+from ..autograd import tensor, dot
+import numpy as np
 
 
 class Container:
@@ -39,9 +40,9 @@ class Layer:
     return params
 
 
-class Param:
-  def __init__(self, tens):
-    self.tens = tens
+class Param(tensor):
+  def __init__(self, data, requires_grad=False):
+    super().__init__(data, requires_grad)
   
   def __str__(self):
     return f'Param({self.tens.__str__()})'
@@ -56,8 +57,8 @@ class Sequential(Container):
   
   def forward(self, inputs):
     for layer in self.layers:
-      output = layer.forward(inputs)
-      input = output
+      output = layer(inputs)
+      inputs = output
     return output
   
   def __str__(self):
@@ -71,11 +72,11 @@ class Linear(Layer):
   def __init__(self, num_in, num_out):
     self.num_in = num_in
     self.num_out = num_out
-    self.weights = Param(tensor(np.random.randn(num_in, num_out), requires_grad=True))
-    self.bias = Param(tensor(np.zeros((num_out, 1)), requires_grad=True))
+    self.weights = Param(np.random.randn(num_in, num_out), requires_grad=True)
+    self.bias = Param(np.zeros((num_out, 1)), requires_grad=True)
   
   def forward(self, inputs):
-    output = Dot(self.weights.T, inputs).forward() + self.bias
+    output = dot(self.weights.T, inputs) + self.bias
     return output
   
   def __repr__(self):

@@ -284,11 +284,12 @@ def transpose(tens):
 
 class ReLU(Operation):
   def __init__(self, tens):
+    super().__init__(self, False, tens)
     self.tens = self.tensors[0]
   
   def forward(self):
-    self.tens.local_grad = np.where(self.tens>=0, 1, 0)
-    return self.get_result_tensor(np.max(0, self.tens.data))
+    self.tens.local_grad = np.where(self.tens.data>=0, 1, 0)
+    return self.get_result_tensor(np.maximum(0, self.tens.data))
   
   def backward(self, local_grad, upper_grad):
     return local_grad*upper_grad    
@@ -301,6 +302,7 @@ def relu(tens):
 
 class Sigmoid(Operation):
   def __init__(self, tens):
+    super().__init__(self, False, tens)
     self.tens = self.tensors[0]
   
   def forward(self):
@@ -319,6 +321,7 @@ def sigmoid(tens):
 
 class Tanh(Operation):
   def __init__(self, tens):
+    super().__init__(self, False, tens)
     self.tens = self.tensors[0]
   
   def forward(self):

@@ -19,7 +19,7 @@ class Tensor:
   def shape(self):
     return self.data.shape
   
-  def backward(self, upper_grad):
+  def backward(self, upper_grad=1.0):
     if isinstance(upper_grad, Tensor):
       upper_grad = upper_grad.data
     else:
@@ -86,6 +86,12 @@ class Tensor:
   @property
   def T(self):
     return transpose(self)
+  
+  def __getitem__(self, index):
+    supported_types = [int, slice]
+    if type(index) not in supported_types:
+      raise TypeError(f"Expected index of {supported_types} instead got {type(index)}")
+    return Tensor(self.data[index], requires_grad=self.requires_grad)
   
   def __repr__(self):
     return f'Tensor({self.data}, requires_grad={self.requires_grad})'

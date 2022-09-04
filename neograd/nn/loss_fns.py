@@ -1,4 +1,4 @@
-from autograd import sum, log
+from ..autograd import sum, log
 
 
 class Loss:
@@ -15,7 +15,8 @@ class MSE(Loss):
 
 class BinaryCrossEntropy(Loss):
   def forward(self, outputs, targets):
+    epsilon = 1e-15
     num_examples = outputs.shape[-1]
-    entropy = ((outputs*log(targets)) + ((1-outputs)*(log(1-targets))))
+    entropy = ((outputs*log(targets+epsilon)) + ((1-outputs)*(log(1-targets+epsilon))))
     cost = (-1/num_examples)*(sum(entropy))
     return cost
