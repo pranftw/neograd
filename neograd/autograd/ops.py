@@ -25,7 +25,10 @@ class Operation:
     return self.tensors
   
   def get_broadcast_shape(self):
-    return np.broadcast_shapes(*(tens.data.shape for tens in self.tensors))
+    try:
+      return np.broadcast_shapes(*(tens.data.shape for tens in self.tensors))
+    except ValueError:
+      return None
   
   def check_result_requires_grad(self):
     for tens in self.tensors:
@@ -94,8 +97,8 @@ class Mul(Operation):
     return self.get_result_tensor(self.tens1.data*self.tens2.data)
   
   def backward(self):
-    self.tens1.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(self.tens2.data, self.tens2.broadcasted_shape))), ug))
-    self.tens2.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(self.tens1.data, self.tens1.broadcasted_shape))), ug))
+    self.tens1.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(self.tens2.data, self.operation.broadcast_shape))), ug))
+    self.tens2.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(self.tens1.data, self.operation.broadcast_shape))), ug))
 
 def mul(tens1, tens2):
   return Mul(tens1, tens2).forward()
@@ -112,8 +115,8 @@ class Div(Operation):
     return self.get_result_tensor(self.tens1.data/self.tens2.data)
   
   def backward(self):
-    self.tens1.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(1/self.tens2.data, self.tens2.broadcasted_shape))), ug))
-    self.tens2.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to((-1*self.tens1.data)/np.power(self.tens2.data, 2), self.tens1.broadcasted_shape))), ug))
+    self.tens1.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(1/self.tens2.data, self.operation.broadcast_shape))), ug))
+    self.tens2.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to((-1*self.tens1.data)/np.power(self.tens2.data, 2), self.operation.broadcast_shape))), ug))
 
 def div(tens1, tens2):
   return Div(tens1, tens2).forward()

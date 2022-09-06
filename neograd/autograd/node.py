@@ -20,7 +20,8 @@ class Node:
           sorted_nodes+=tens.node.top_sort()
     else: # First resolve the children, then add current node
       for child in self.children:
-        sorted_nodes+=child.top_sort()
+        if not(child.is_visited):
+          sorted_nodes+=child.top_sort()
       self.is_visited = True
       sorted_nodes.append(self)
     return sorted_nodes
@@ -39,11 +40,12 @@ class Node:
   
   def backward(self):
     self.reset_is_visited()
-    sorted_nodes = self.top_sort()
+    sorted_nodes = self.top_sort(True)
     self.reset_is_visited()
-    sorted_nodes.pop(0)._backward(True)
-    for node in sorted_nodes:
-      node._backward()
+    for i,node in enumerate(sorted_nodes):
+      is_start = True if i==0 else False
+      if node.operation.result_tensor.requires_grad:
+        node._backward(is_start)
   
   def _backward(self, is_start=False):
     if is_start or self.check_if_all_children_visited():
@@ -55,7 +57,10 @@ class Node:
       for tens in self.operation.tensors:
         if tens.requires_grad:
           grad = tens.grad_fn(upper_grad)
-          grad = unflatten_data(grad, tens.shape, broadcast_shape)
+          if broadcast_shape is None:
+            grad = unflatten_data(grad, tens.shape, tens.shape)
+          else:
+            grad = unflatten_data(grad, tens.shape, broadcast_shape)
           grad = grad.reshape(tens.shape)
           tens.grad+=grad
       self.is_visited = True
