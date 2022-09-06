@@ -1,4 +1,4 @@
-from .utils import process_data, unflatten_data
+from .utils import process_data
 from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, dot
 
 
@@ -6,38 +6,25 @@ class Tensor:
   def __init__(self, data, requires_grad=False):
     self.data = process_data(data)
     self.requires_grad = requires_grad
-    self.broadcasted_shape = None
     self.node = None
     self.grad_fn = None
-    self.local_grad = None
-    self.grad = 0.0
+    self.grad = 0.0 if requires_grad else None
   
   def zero_grad(self):
     self.grad = 0.0
+  
+  def backward(self, upper_grad=1.0):
+    self.grad = process_data(upper_grad)
+    self.node.backward()
+  
+  def set_grad_fn(self, grad_fn):
+    if self.requires_grad:
+      self.grad_fn = grad_fn
   
   @property
   def shape(self):
     return self.data.shape
   
-  def backward(self, upper_grad=1.0):
-    if isinstance(upper_grad, Tensor):
-      upper_grad = upper_grad.data
-    else:
-      upper_grad = process_data(upper_grad)
-    self.grad+=upper_grad
-    if self.node is not None:
-      self.node.backward(upper_grad)
-  
-  def _backward(self, operation, upper_grad):
-    if self.grad_fn is not None:
-      grad = self.grad_fn(operation, self.local_grad, upper_grad)
-    else:
-      grad = upper_grad
-    grad = unflatten_data(grad, self.shape, self.broadcasted_shape)
-    grad = grad.reshape(self.shape)
-    self.grad+=grad
-    return grad
-
   def __add__(self, other):
     return add(self, other)
   
