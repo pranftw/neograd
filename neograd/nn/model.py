@@ -18,10 +18,9 @@ class Model:
     return layers
   
   def get_params(self):
-    return self.gather_params()
-  
-  def gather_params(self):
+    params = []
     layers = self.get_layers()
     for layer in layers:
       for param in layer.get_params():
-        yield param
+        params.append(param)
+    return params

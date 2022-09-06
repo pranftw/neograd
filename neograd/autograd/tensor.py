@@ -1,4 +1,4 @@
-from .utils import process_data
+from .utils import process_data, unflatten_data
 from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, dot
 
 
@@ -16,6 +16,12 @@ class Tensor:
   def backward(self, upper_grad=1.0):
     self.grad = process_data(upper_grad)
     self.node.backward()
+  
+  def _backward(self, upper_grad, broadcast_shape):
+    grad = self.grad_fn(upper_grad)
+    grad = unflatten_data(grad, self.shape, broadcast_shape)
+    grad = grad.reshape(self.shape)
+    self.grad+=grad
   
   def set_grad_fn(self, grad_fn):
     if self.requires_grad:

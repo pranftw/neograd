@@ -45,24 +45,18 @@ class Node:
     for i,node in enumerate(sorted_nodes):
       is_start = True if i==0 else False
       if node.operation.result_tensor.requires_grad:
-        node._backward(is_start)
+        node._backward(is_start) # This is where the damn issue is..... WTF
   
   def _backward(self, is_start=False):
     if is_start or self.check_if_all_children_visited():
-      self.operation.backward() # do the gradient addition in backward pass
+      self.operation.backward()
       upper_grad = self.operation.result_tensor.grad
       if self.operation.needs_broadcasting:
         upper_grad = upper_grad.flatten()
       broadcast_shape = self.operation.broadcast_shape
       for tens in self.operation.tensors:
         if tens.requires_grad:
-          grad = tens.grad_fn(upper_grad)
-          if broadcast_shape is None:
-            grad = unflatten_data(grad, tens.shape, tens.shape)
-          else:
-            grad = unflatten_data(grad, tens.shape, broadcast_shape)
-          grad = grad.reshape(tens.shape)
-          tens.grad+=grad
+          tens._backward(upper_grad, broadcast_shape)
       self.is_visited = True
   
   def __str__(self):

@@ -15,15 +15,15 @@ y_train, y_test = ng.tensor(y_train.T.reshape(1,750)), ng.tensor(y_test.T.reshap
 
 num_train = 750
 num_test = 250
-num_iter = 100
+num_iter = 1
 
 class NN(ng.nn.Model):
   def __init__(self):
     super().__init__(self)
     self.stack = ng.nn.Sequential(
-      ng.nn.Linear(2,10),
+      ng.nn.Linear(2,100),
       ng.nn.ReLU(),
-      ng.nn.Linear(10,1),
+      ng.nn.Linear(100,1),
       ng.nn.Sigmoid()
     )
   
@@ -32,7 +32,7 @@ class NN(ng.nn.Model):
 
 model = NN()
 loss_fn = BinaryCrossEntropy()
-optim = GD(model.get_params, 0.05)
+optim = GD(model.get_params(), 0.05)
 
 # train_data_gen = get_batches(X_train, y_train, num_train, 50) TODO: ISSUE WRT DIMS
 

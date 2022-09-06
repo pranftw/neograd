@@ -76,8 +76,7 @@ class Linear(Layer):
     self.bias = Param(np.zeros((num_out, 1)), requires_grad=True)
   
   def forward(self, inputs):
-    output = dot(self.weights.T, inputs) + self.bias
-    return output
+    return dot(self.weights.T, inputs) + self.bias
   
   def __repr__(self):
     return f'Linear({self.num_in}, {self.num_out})'
