@@ -126,21 +126,26 @@ class Node:
   
   def backward(self):
     self.reset_is_visited()
-    for node in self.top_sort():
+    sorted_nodes = self.top_sort()
+    self.reset_is_visited()
+    sorted_nodes.pop(0)._backward(True)
+    for node in sorted_nodes:
       node._backward()
   
-  def _backward(self):
-    self.operation.backward() # do the gradient addition in backward pass
-    upper_grad = self.operation.result_tensor.grad
-    if self.operation.needs_broadcasting:
-      upper_grad = upper_grad.flatten()
-    broadcast_shape = self.operation.broadcast_shape
-    for tens in self.operation.tensors:
-      if tens.requires_grad:
-        grad = tens.grad_fn(upper_grad)
-        grad = unflatten_data(grad, tens.shape, broadcast_shape)
-        grad = grad.reshape(tens.shape)
-        tens.grad+=grad
+  def _backward(self, is_start=False):
+    if is_start or self.check_if_all_children_visited():
+      self.operation.backward() # do the gradient addition in backward pass
+      upper_grad = self.operation.result_tensor.grad
+      if self.operation.needs_broadcasting:
+        upper_grad = upper_grad.flatten()
+      broadcast_shape = self.operation.broadcast_shape
+      for tens in self.operation.tensors:
+        if tens.requires_grad:
+          grad = tens.grad_fn(upper_grad)
+          grad = unflatten_data(grad, tens.shape, broadcast_shape)
+          grad = grad.reshape(tens.shape)
+          tens.grad+=grad
+      self.is_visited = True
 
 class Tensor:
   def __init__(self, data, requires_grad=False):
@@ -188,6 +193,5 @@ b = Tensor([1,2,3], requires_grad=True)
 c = a+b
 d = c+b
 d.backward([1,1,1])
-print(a.grad_fn)
 print(a.grad)
 print(b.grad)
