@@ -23,7 +23,7 @@ class Tensor(Node):
     self.node_backward()
   
   def zero_grad(self):
-    if self.grad:
+    if self.grad is not None:
       self.grad = 0.
   
   def set_grad_fn(self, grad_fn):

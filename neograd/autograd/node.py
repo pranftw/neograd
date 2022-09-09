@@ -36,26 +36,20 @@ class Node:
     self.reset_visited()
     self.visit_all_children()
     sorted_tensors = self.top_sort()
-    self.reset_visited()
-    self.visit_all_children()
     for tens in sorted_tensors:
-      tens.visited = True
       if tens.requires_grad:
-        upper_grad = tens.grad
-        tens._backward(upper_grad)
+        tens._backward()
   
-  def _backward(self, upper_grad):
-    if len(self.operands)!=0:
-      if self.needs_broadcasting:
+  def _backward(self):
+    for child in self.children: # Since tens requires_grad all its children also requires_grad
+      upper_grad = child.grad
+      if child.needs_broadcasting:
         upper_grad = upper_grad.flatten()
-      self.backward_fn(*self.operands)
-      for operand in self.operands:
-        if operand.requires_grad and operand.are_children_visited():
-          operand.visited = True
-          grad = operand.grad_fn(upper_grad)
-          grad = unflatten_data(grad, operand.shape, self.operand_broadcast_shape)
-          grad = grad.reshape(operand.shape)
-          operand.grad+=grad
+      child.backward_fn(*child.operands)
+      grad = self.grad_fn(upper_grad)  
+      grad = unflatten_data(grad, self.shape, child.operand_broadcast_shape)
+      grad = grad.reshape(self.shape)
+      self.grad+=grad
   
   def visit_all_children(self):
     for child in self.children:

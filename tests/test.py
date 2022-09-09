@@ -16,15 +16,15 @@ y_train, y_test = ng.tensor(y_train.T.reshape(1,750)), ng.tensor(y_test.T.reshap
 
 num_train = 750
 num_test = 250
-num_iter = 1
+num_iter = 10
 
 class NN(ng.nn.Model):
   def __init__(self):
     super().__init__(self)
     self.stack = ng.nn.Sequential(
-      ng.nn.Linear(2,100),
+      ng.nn.Linear(2,10),
       ng.nn.ReLU(),
-      ng.nn.Linear(100,1),
+      ng.nn.Linear(10,1),
       ng.nn.Sigmoid()
     )
   
@@ -41,8 +41,6 @@ for iter in range(num_iter):
   optim.zero_grad()
   outputs = model(X_train)
   loss = loss_fn(outputs, y_train)
-  start = time.time()
   loss.backward()
-  print(time.time()-start)
   optim.step()
   print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
