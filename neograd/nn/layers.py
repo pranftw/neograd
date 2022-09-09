@@ -3,6 +3,8 @@ import numpy as np
 
 
 class Container:
+  __slots__ = ['layers']
+
   def __call__(self, inputs):
     return self.forward(inputs)
 
@@ -28,6 +30,8 @@ class Container:
 
 
 class Layer:
+  __slots__ = []
+
   def __call__(self, inputs):
     return self.forward(inputs)
 
@@ -41,6 +45,8 @@ class Layer:
 
 
 class Param(tensor):
+  __slots__ = []
+
   def __init__(self, data, requires_grad=False):
     super().__init__(data, requires_grad)
   
@@ -69,6 +75,8 @@ class Sequential(Container):
 
 
 class Linear(Layer):
+  __slots__ = ['num_in', 'num_out', 'weights', 'bias']
+
   def __init__(self, num_in, num_out):
     self.num_in = num_in
     self.num_out = num_out

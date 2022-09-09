@@ -2,6 +2,8 @@ from .layers import Container, Layer
 
 
 class Model:
+  __slots__ = ['model', 'layer_types']
+
   def __init__(self, model):
     self.model = model
     self.layer_types = (Container, Layer)

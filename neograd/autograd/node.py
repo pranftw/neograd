@@ -2,6 +2,8 @@ from .utils import unflatten_data
 
 
 class Node:
+  __slots__ = ['operands', 'children', 'needs_broadcasting', 'visited']
+
   def __init__(self):
     self.operands = [] # can this be weakref
     self.children = []

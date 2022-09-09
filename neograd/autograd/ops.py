@@ -5,6 +5,8 @@ import weakref
 
 
 class Operation:
+  __slots__ = ['tensors', 'operation', 'needs_broadcasting']
+  
   def __init__(self, operation, needs_broadcasting, *operands):
     self.tensors = self.process_operands(operands)
     self.operation = weakref.proxy(operation)

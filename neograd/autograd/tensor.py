@@ -4,6 +4,8 @@ from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, d
 
 
 class Tensor(Node):
+  __slots__ = ['requires_grad', 'grad', 'grad_fn', 'backward_fn', 'operand_broadcast_shape', '_data', '__weakref__']
+
   def __init__(self, data, requires_grad=False):
     super().__init__()
     self.data = data
