@@ -48,7 +48,7 @@ class Node:
     if len(self.operands)!=0:
       if self.needs_broadcasting:
         upper_grad = upper_grad.flatten()
-      self.backward_fn()
+      self.backward_fn(*self.operands)
       for operand in self.operands:
         if operand.requires_grad and operand.are_children_visited():
           operand.visited = True

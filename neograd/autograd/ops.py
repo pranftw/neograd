@@ -7,8 +7,8 @@ import weakref
 class Operation:
   __slots__ = ['tensors', 'operation', 'needs_broadcasting']
   
-  def __init__(self, operation, needs_broadcasting, *operands):
-    self.tensors = self.process_operands(operands)
+  def __init__(self, operation, needs_broadcasting):
+    #self.tensors = self.process_operands(operands) # This is the issue, tensors arent getting flushed out and are taking up memory
     self.operation = weakref.proxy(operation)
     self.needs_broadcasting = needs_broadcasting
 
@@ -20,213 +20,215 @@ class Operation:
         operands[i] = Tensor(operand)
     return tuple(operands)
   
-  def get_tensors(self):
-    if len(self.tensors)==0:
+  def get_tensors(self, *operands):
+    tensors = self.process_operands(operands)
+    if len(tensors)==0:
       return None
-    elif len(self.tensors)==1:
-      return self.tensors[0]
+    elif len(tensors)==1:
+      return tensors[0]
     else:
-      return self.tensors
+      return tensors
   
-  def get_broadcast_shape(self):
+  def get_broadcast_shape(self, *tensors):
     if self.needs_broadcasting:
       try:
-        return np.broadcast_shapes(*(tens.data.shape for tens in self.tensors))
+        return np.broadcast_shapes(*(tens.data.shape for tens in tensors))
       except ValueError:
         return None
     else:
       return None
   
-  def check_result_requires_grad(self):
-    for tens in self.tensors:
+  def check_result_requires_grad(self, tensors):
+    for tens in tensors:
       if tens.requires_grad:
         return True
     return False
   
-  def add_edges(self, result):
-    for operand in self.tensors:
-      operand.add_child(weakref.proxy(result))
+  def add_edges(self, result, tensors):
+    for operand in tensors:
+      operand.add_child(result)
       result.add_operand(operand)
   
-  def get_result_tensor(self, result):
+  def get_result_tensor(self, result, *tensors):
     from .tensor import Tensor
     result = result.astype(np.ndarray)
-    result = Tensor(result, requires_grad=self.check_result_requires_grad())
+    result = Tensor(result, requires_grad=self.check_result_requires_grad(tensors))
     result.needs_broadcasting = self.needs_broadcasting
     result.backward_fn = self.operation.backward
-    result.operand_broadcast_shape = self.get_broadcast_shape()
-    self.add_edges(result)
+    result.operand_broadcast_shape = self.get_broadcast_shape(*tensors)
+    self.add_edges(result, tensors)
     return result
 
 
 # <------------ADD------------>
 
 class Add(Operation):
-  def __init__(self, tens1, tens2):
-    super().__init__(self, True, tens1, tens2)
+  def __init__(self):
+    super().__init__(self, True)
 
-  def forward(self):
-    tens1, tens2 = self.get_tensors()
-    return self.get_result_tensor(tens1.data+tens2.data)
+  def forward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
+    return self.get_result_tensor(tens1.data+tens2.data, tens1, tens2)
 
-  def backward(self):
-    broadcast_shape = self.get_broadcast_shape()
-    tens1, tens2 = self.get_tensors()
+  def backward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
+    broadcast_shape = self.get_broadcast_shape(tens1, tens2)
     tens1.set_grad_fn(lambda ug:np.dot(np.eye(mul_shape_dims(broadcast_shape)), ug))
     tens2.set_grad_fn(lambda ug:np.dot(np.eye(mul_shape_dims(broadcast_shape)), ug))
 
 def add(tens1, tens2):
-  return Add(tens1, tens2).forward()
+  return Add().forward(tens1, tens2)
 
 
 # <------------SUB------------>
 
 class Sub(Operation):
-  def __init__(self, tens1, tens2):
-    super().__init__(self, True, tens1, tens2)
+  def __init__(self):
+    super().__init__(self, True)
   
-  def forward(self):
-    tens1, tens2 = self.get_tensors()
-    return self.get_result_tensor(tens1.data-tens2.data)
+  def forward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
+    return self.get_result_tensor(tens1.data-tens2.data, tens1, tens2)
   
-  def backward(self):
-    broadcast_shape = self.get_broadcast_shape()
-    tens1, tens2 = self.get_tensors()
+  def backward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
+    broadcast_shape = self.get_broadcast_shape(tens1, tens2)
     tens1.set_grad_fn(lambda ug:np.dot(np.eye(mul_shape_dims(broadcast_shape)), ug))
     tens2.set_grad_fn(lambda ug:np.dot(-np.eye(mul_shape_dims(broadcast_shape)), ug))
 
 def sub(tens1, tens2):
-  return Sub(tens1, tens2).forward()
+  return Sub().forward(tens1, tens2)
 
 
 # <------------MUL------------>
 
 class Mul(Operation):
-  def __init__(self, tens1, tens2):
-    super().__init__(self, True, tens1, tens2)
+  def __init__(self):
+    super().__init__(self, True)
   
-  def forward(self):
-    tens1, tens2 = self.get_tensors()
-    return self.get_result_tensor(tens1.data*tens2.data)
+  def forward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
+    return self.get_result_tensor(tens1.data*tens2.data, tens1, tens2)
   
-  def backward(self):
-    broadcast_shape = self.get_broadcast_shape()
-    tens1, tens2 = self.get_tensors()
+  def backward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
+    broadcast_shape = self.get_broadcast_shape(tens1, tens2)
     tens1.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(tens2.data, broadcast_shape))), ug))
     tens2.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(tens1.data, broadcast_shape))), ug))
 
 def mul(tens1, tens2):
-  return Mul(tens1, tens2).forward()
+  return Mul().forward(tens1, tens2)
 
 
 # <------------DIV------------>
 
 class Div(Operation):
-  def __init__(self, tens1, tens2):
-    super().__init__(self, True, tens1, tens2)
+  def __init__(self):
+    super().__init__(self, True)
   
-  def forward(self):
-    tens1, tens2 = self.get_tensors()
-    return self.get_result_tensor(tens1.data/tens2.data)
+  def forward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
+    return self.get_result_tensor(tens1.data/tens2.data, tens1, tens2)
   
-  def backward(self):
-    broadcast_shape = self.get_broadcast_shape()
-    tens1, tens2 = self.get_tensors()
+  def backward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
+    broadcast_shape = self.get_broadcast_shape(tens1, tens2)
     tens1.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(1/tens2.data, broadcast_shape))), ug))
     tens2.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to((-1*tens1.data)/np.power(tens2.data, 2), broadcast_shape))), ug))
 
 def div(tens1, tens2):
-  return Div(tens1, tens2).forward()
+  return Div().forward(tens1, tens2)
 
 
 # <------------DOT------------>
 
 class Dot(Operation):
-  def __init__(self, tens1, tens2):
-    super().__init__(self, False, tens1, tens2)
+  def __init__(self):
+    super().__init__(self, False)
   
-  def forward(self):
-    tens1, tens2 = self.get_tensors()
-    return self.get_result_tensor(np.dot(tens1.data, tens2.data))
+  def forward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
+    return self.get_result_tensor(np.dot(tens1.data, tens2.data), tens1, tens2)
   
-  def backward(self):
-    tens1, tens2 = self.get_tensors()
+  def backward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
     tens1.set_grad_fn(lambda ug:np.dot(ug, tens2.data.T))
     tens2.set_grad_fn(lambda ug:np.dot(tens1.data.T, ug))
 
 def dot(tens1, tens2):
-  return Dot(tens1, tens2).forward()
+  return Dot().forward(tens1, tens2)
 
 
 # <------------EXP------------>
 
 class Exp(Operation):
-  def __init__(self, tens):
-    super().__init__(self, False, tens)
+  def __init__(self):
+    super().__init__(self, False)
   
-  def forward(self):
-    tens = self.get_tensors()
-    return self.get_result_tensor(tens.local_grad)
+  def forward(self, tens):
+    tens = self.get_tensors(tens)
+    return self.get_result_tensor(tens.local_grad, tens)
   
-  def backward(self):
-    tens = self.get_tensors()
+  def backward(self, tens):
+    tens = self.get_tensors(tens)
     tens.set_grad_fn(lambda ug:np.exp(tens.data)*ug)
 
 def exp(tens):
-  return Exp(tens).forward()
+  return Exp().forward(tens)
 
 
 # <------------LOG------------>
 
 class Log(Operation):
-  def __init__(self, tens):
-    super().__init__(self, False, tens)
+  def __init__(self):
+    super().__init__(self, False)
   
-  def forward(self):
-    tens = self.get_tensors()
-    return self.get_result_tensor(np.log(tens.data))
+  def forward(self, tens):
+    tens = self.get_tensors(tens)
+    return self.get_result_tensor(np.log(tens.data), tens)
   
-  def backward(self):
-    tens = self.get_tensors()
+  def backward(self, tens):
+    tens = self.get_tensors(tens)
     tens.set_grad_fn(lambda ug:(1/tens.data)*ug)
 
 def log(tens):
-  return Log(tens).forward()
+  return Log().forward(tens)
 
 
 # <------------POW------------>
 
 class Pow(Operation):
-  def __init__(self, tens1, tens2):
-    super().__init__(self, True, tens1, tens2)
+  def __init__(self):
+    super().__init__(self, True)
   
-  def forward(self):
-    tens1, tens2 = self.get_tensors()
-    return self.get_result_tensor(np.power(tens1.data, tens2.data))
+  def forward(self, tens1, tens2):
+    tens1, tens2 = self.get_tensors(tens1, tens2)
+    return self.get_result_tensor(np.power(tens1.data, tens2.data), tens1, tens2)
   
-  def backward(self):
+  def backward(self, tens1, tens2):
     result = np.power(tens1.data, tens2.data)
-    tens1, tens2 = self.get_tensors()
+    tens1, tens2 = self.get_tensors(tens1, tens2)
     tens1.set_grad_fn(lambda ug:(np.power(tens1.data, tens2.data-1) * tens2.data).flatten()*ug)
     tens2.set_grad_fn(lambda ug:(result*np.log(tens1.data)).flatten()*ug)
 
 def pow(tens1, tens2):
-  return Pow(tens1, tens2).forward()
+  return Pow().forward(tens1, tens2)
 
 
 # <------------SUM------------>
 
 class Sum(Operation):
-  def __init__(self, tens, axis=None):
-    super().__init__(self, True, tens)
+  def __init__(self, axis=None):
+    super().__init__(self, True)
     self.axis = axis
   
-  def forward(self):
-    tens = self.get_tensors()
-    return self.get_result_tensor(np.sum(tens.data, axis=self.axis))
+  def forward(self, tens):
+    tens = self.get_tensors(tens)
+    return self.get_result_tensor(np.sum(tens.data, axis=self.axis), tens)
   
-  def backward(self):
-    tens = self.get_tensors()
+  def backward(self, tens):
+    tens = self.get_tensors(tens)
+    
     def grad_backward(ug):
       tens_shape = list(tens.shape)
       if self.axis is not None:
@@ -252,78 +254,78 @@ class Sum(Operation):
     tens.set_grad_fn(grad_backward)
 
 def sum(tens, axis=None):
-  return Sum(tens, axis).forward()
+  return Sum(axis).forward(tens)
 
 
 # <------------TRANSPOSE------------>
 
 class Transpose(Operation):
-  def __init__(self, tens):
-    super().__init__(self, False, tens)
+  def __init__(self):
+    super().__init__(self, False)
   
-  def forward(self):
-    tens = self.get_tensors()
-    return self.get_result_tensor(tens.data.T)
+  def forward(self, tens):
+    tens = self.get_tensors(tens)
+    return self.get_result_tensor(tens.data.T, tens)
 
-  def backward(self):
-    tens = self.get_tensors()
+  def backward(self, tens):
+    tens = self.get_tensors(tens)
     tens.set_grad_fn(lambda ug:ug.T)
 
 def transpose(tens):
-  return Transpose(tens).forward()
+  return Transpose().forward(tens)
 
 
 # <------------RELU------------>
 
 class ReLU(Operation):
-  def __init__(self, tens):
-    super().__init__(self, False, tens)
+  def __init__(self):
+    super().__init__(self, False)
   
-  def forward(self):
-    tens = self.get_tensors()
-    return self.get_result_tensor(np.maximum(0, tens.data))
+  def forward(self, tens):
+    tens = self.get_tensors(tens)
+    return self.get_result_tensor(np.maximum(0, tens.data), tens)
   
-  def backward(self):
-    tens = self.get_tensors()
+  def backward(self, tens):
+    tens = self.get_tensors(tens)
     tens.set_grad_fn(lambda ug:np.where(tens.data>=0, 1, 0)*ug)
 
 def relu(tens):
-  return ReLU(tens).forward()
+  return ReLU().forward(tens)
 
 
 # <------------SIGMOID------------>
 
 class Sigmoid(Operation):
-  def __init__(self, tens):
-    super().__init__(self, False, tens)
+  def __init__(self):
+    super().__init__(self, False)
   
-  def forward(self):
-    tens = self.get_tensors()
-    return self.get_result_tensor(1/(1+np.exp(-tens.data)))
+  def forward(self, tens):
+    tens = self.get_tensors(tens)
+    return self.get_result_tensor(1/(1+np.exp(-tens.data)), tens)
   
-  def backward(self):
-    tens = self.get_tensors()
+  def backward(self, tens):
+    tens = self.get_tensors(tens)
     result = 1/(1+np.exp(-tens.data))
     tens.set_grad_fn(lambda ug:(result*(1-result))*ug)
 
 def sigmoid(tens):
-  return Sigmoid(tens).forward()
+  return Sigmoid().forward(tens)
 
 
 # <------------TANH------------>
 
 class Tanh(Operation):
-  def __init__(self, tens):
-    super().__init__(self, False, tens)
+  def __init__(self):
+    super().__init__(self, False)
   
-  def forward(self):
-    tens = self.get_tensors()
-    return self.get_result_tensor(np.tanh(tens.data))
+  def forward(self, tens):
+    tens = self.get_tensors(tens)
+    return self.get_result_tensor(np.tanh(tens.data), tens)
   
-  def backward(self):
-    tens = self.get_tensors()
+  def backward(self, tens):
+    tens = self.get_tensors(tens)
     result = np.tanh(tens.data)
     self.tens.set_grad_fn(lambda ug:(1-np.power(result,2))*ug)
 
 def tanh(tens):
-  return Tanh(tens).forward()
+  return Tanh().forward(tens)

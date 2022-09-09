@@ -17,6 +17,8 @@ class Tensor(Node):
   
   def backward(self, upper_grad=1.0):
     upper_grad = process_data(upper_grad)
+    if self.shape!=upper_grad.shape:
+      raise ValueError("Shape of grad and tensor must be the same")
     self.grad+=upper_grad
     self.node_backward()
   
