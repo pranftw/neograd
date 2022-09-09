@@ -2,62 +2,73 @@ from .utils import unflatten_data
 
 
 class Node:
-  def __init__(self, operation):
-    self.operation = operation
+  def __init__(self):
+    self.operands = [] # can this be weakref
     self.children = []
-    self.is_visited = False
+    self.needs_broadcasting = True
+    self.visited = False
+  
+  def top_sort(self):
+    sorted_tensors = []
+    if self.are_children_visited(): # All children are resolved
+      self.visited = True
+      sorted_tensors.append(self)
+      for operand in self.operands:
+        if not(operand.visited):
+          sorted_tensors+=operand.top_sort()
+    else:
+      for child in self.children: # Resolve children first
+        if not(child.visited):
+          sorted_tensors+=child.top_sort()
+      self.visited = False
+      sorted_tensors.append(self)
+    return sorted_tensors
   
   def add_child(self, child):
     self.children.append(child)
   
-  def top_sort(self, is_start=False):
-    sorted_nodes = []
-    if len(self.children)==0 or self.check_if_all_children_visited() or is_start: # children are all resolved, add the current node and go to its operands or this is the starting node
-      self.is_visited = True        
-      sorted_nodes.append(self)
-      for tens in self.operation.tensors:
-        if tens.node is not None:
-          sorted_nodes+=tens.node.top_sort()
-    else: # First resolve the children, then add current node
-      for child in self.children:
-        if not(child.is_visited):
-          sorted_nodes+=child.top_sort()
-      self.is_visited = True
-      sorted_nodes.append(self)
-    return sorted_nodes
+  def add_operand(self, operand):
+    self.operands.append(operand)
   
-  def reset_is_visited(self):
-    self.is_visited = False
-    for tens in self.operation.tensors:
-      if tens.node is not None:
-        tens.node.reset_is_visited()
+  def node_backward(self):
+    self.reset_visited()
+    self.visit_all_children()
+    sorted_tensors = self.top_sort()
+    self.reset_visited()
+    self.visit_all_children()
+    for tens in sorted_tensors:
+      tens.visited = True
+      if tens.requires_grad:
+        upper_grad = tens.grad
+        tens._backward(upper_grad)
   
-  def check_if_all_children_visited(self):
+  def _backward(self, upper_grad):
+    if len(self.operands)!=0:
+      if self.needs_broadcasting:
+        upper_grad = upper_grad.flatten()
+      self.backward_fn()
+      for operand in self.operands:
+        if operand.requires_grad and operand.are_children_visited():
+          operand.visited = True
+          grad = operand.grad_fn(upper_grad)
+          grad = unflatten_data(grad, operand.shape, self.operand_broadcast_shape)
+          grad = grad.reshape(operand.shape)
+          operand.grad+=grad
+  
+  def visit_all_children(self):
     for child in self.children:
-      if not(child.is_visited):
+      child.visited = True
+  
+  def are_children_visited(self):
+    for child in self.children:
+      if not(child.visited):
         return False
     return True
-  
-  def backward(self):
-    self.reset_is_visited()
-    sorted_nodes = self.top_sort(True)
-    self.reset_is_visited()
-    for i,node in enumerate(sorted_nodes):
-      is_start = True if i==0 else False
-      if node.operation.result_tensor.requires_grad:
-        node._backward(is_start) # This is where the damn issue is..... WTF
-  
-  def _backward(self, is_start=False):
-    if is_start or self.check_if_all_children_visited():
-      self.operation.backward()
-      upper_grad = self.operation.result_tensor.grad
-      if self.operation.needs_broadcasting:
-        upper_grad = upper_grad.flatten()
-      broadcast_shape = self.operation.broadcast_shape
-      for tens in self.operation.tensors:
-        if tens.requires_grad:
-          tens._backward(upper_grad, broadcast_shape)
-      self.is_visited = True
+
+  def reset_visited(self):
+    self.visited = False
+    for operand in self.operands:
+      operand.visited = False
   
   def __str__(self):
     return f"Node(\ninputs:{', '.join([tens.__str__() for tens in self.operation.tensors])}\noutputs:{self.operation.result_tensor}\n)"

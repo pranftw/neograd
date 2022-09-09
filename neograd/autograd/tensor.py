@@ -1,35 +1,32 @@
-from .utils import process_data, unflatten_data
+from .utils import process_data
+from .node import Node
 from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, dot
 
 
-class Tensor:
+class Tensor(Node):
   def __init__(self, data, requires_grad=False):
-    self.data = process_data(data)
+    super().__init__()
+    self.data = data
     self.requires_grad = requires_grad
-    self.node = None
+    self.grad = 0. if requires_grad else None
     self.grad_fn = None
-    self.grad = 0.0 if requires_grad else None
-  
-  def zero_grad(self):
-    self.grad = 0.0
+    self.backward_fn = None
+    self.operand_broadcast_shape = None
   
   def backward(self, upper_grad=1.0):
-    self.grad = process_data(upper_grad)
-    self.node.backward()
+    upper_grad = process_data(upper_grad)
+    self.grad+=upper_grad
+    self.node_backward()
   
-  def _backward(self, upper_grad, broadcast_shape):
-    grad = self.grad_fn(upper_grad)
-    grad = unflatten_data(grad, self.shape, broadcast_shape)
-    grad = grad.reshape(self.shape)
-    self.grad+=grad
+  def zero_grad(self):
+    if self.grad:
+      self.grad = 0.
   
   def set_grad_fn(self, grad_fn):
     if self.requires_grad:
       self.grad_fn = grad_fn
-  
-  @property
-  def shape(self):
-    return self.data.shape
+    else:
+      self.grad_fn = None
   
   def __add__(self, other):
     return add(self, other)
@@ -75,6 +72,18 @@ class Tensor:
   
   def exp(self):
     return exp(self)
+  
+  @property
+  def data(self):
+    return self._data
+  
+  @data.setter
+  def data(self, data):
+    self._data = process_data(data)
+
+  @property
+  def shape(self):
+    return self.data.shape
   
   @property
   def T(self):
