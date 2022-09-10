@@ -1,5 +1,5 @@
 class Optimizer:
-  def zero_grad(self): # This is pure BS
+  def zero_grad(self):
     for param in self.params:
       param.zero_grad()
 

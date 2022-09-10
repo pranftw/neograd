@@ -23,6 +23,5 @@ class Model:
     params = []
     layers = self.get_layers()
     for layer in layers:
-      for param in layer.get_params():
-        params.append(param)
+      params+=layer.get_params()
     return params

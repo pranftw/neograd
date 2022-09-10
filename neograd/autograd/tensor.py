@@ -25,6 +25,8 @@ class Tensor(Node):
   def zero_grad(self):
     if self.grad is not None:
       self.grad = 0.
+      for child in self.children:
+        child.zero_grad()
   
   def set_grad_fn(self, grad_fn):
     if self.requires_grad:
