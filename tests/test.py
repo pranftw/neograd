@@ -148,14 +148,15 @@ class Tensor:
   def zero_grad(self):
     self.grad = 0. if self.requires_grad else None
   
-  def backward(self, upper_grad=1.):
+  def backward(self, upper_grad=1., retain_graph=False):
     upper_grad = process_data(upper_grad)
     if self.shape!=upper_grad.shape:
       raise ValueError("Shapes of grad and Tensor data must match!")
     self.grad+=upper_grad
     node = NG_GRAPH.get_node(self)
     node.backward()
-    NG_GRAPH.reset_graph() # if some operations are done after backward and then backward is again called, then it results in incomplete graph
+    if not(retain_graph):
+      NG_GRAPH.reset_graph()
   
   def _backward(self):
     node = NG_GRAPH.get_node(self)
