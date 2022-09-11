@@ -1,17 +1,14 @@
 import numpy as np
+import weakref
 from .node import Node
 from .utils import mul_shape_dims
-import weakref
 
 
 class Operation:
-  __slots__ = ['tensors', 'operation', 'needs_broadcasting']
-  
   def __init__(self, operation, needs_broadcasting):
-    #self.tensors = self.process_operands(operands) # This is the issue, tensors arent getting flushed out and are taking up memory
     self.operation = weakref.proxy(operation)
     self.needs_broadcasting = needs_broadcasting
-
+  
   def process_operands(self, operands):
     from .tensor import Tensor
     operands = list(operands)
@@ -44,20 +41,18 @@ class Operation:
         return True
     return False
   
-  def add_edges(self, result, tensors):
-    for operand in tensors:
-      operand.add_child(result)
-      result.add_operand(operand)
-  
   def get_result_tensor(self, result, *tensors):
     from .tensor import Tensor
+    from .. import _NG_GRAPH
+    graph = _NG_GRAPH
     result = result.astype(np.ndarray)
-    result = Tensor(result, requires_grad=self.check_result_requires_grad(tensors))
-    result.needs_broadcasting = self.needs_broadcasting
-    result.backward_fn = self.operation.backward
-    result.operand_broadcast_shape = self.get_broadcast_shape(*tensors)
-    self.add_edges(result, tensors)
-    return result
+    result_tensor = Tensor(result, self.check_result_requires_grad(tensors))
+    result_node = Node(result_tensor)
+    result_node.needs_broadcasting = self.needs_broadcasting
+    result_node.backward_fn = self.operation.backward
+    result_node.parent_broadcast_shape = self.get_broadcast_shape(*tensors)
+    graph.add_edge(result_node, tensors)
+    return result_tensor
 
 
 # <------------ADD------------>

@@ -1,39 +1,47 @@
-from .utils import process_data
-from .node import Node
+from .utils import process_data, unflatten_data
 from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, dot
 
 
-class Tensor(Node):
-  __slots__ = ['requires_grad', 'grad', 'grad_fn', 'backward_fn', 'operand_broadcast_shape', '_data', '__weakref__']
-
+class Tensor:
   def __init__(self, data, requires_grad=False):
-    super().__init__()
     self.data = data
     self.requires_grad = requires_grad
     self.grad = 0. if requires_grad else None
     self.grad_fn = None
-    self.backward_fn = None
-    self.operand_broadcast_shape = None
-  
-  def backward(self, upper_grad=1.0):
-    upper_grad = process_data(upper_grad)
-    if self.shape!=upper_grad.shape:
-      raise ValueError("Shape of grad and tensor must be the same")
-    self.grad+=upper_grad
-    self.node_backward()
   
   def zero_grad(self):
-    if self.grad is not None:
-      self.grad = 0.
-      for child in self.children:
-        child.zero_grad()
+    self.grad = 0. if self.requires_grad else None
+  
+  def backward(self, upper_grad=1., retain_graph=False):
+    from .. import _NG_GRAPH
+    upper_grad = process_data(upper_grad)
+    if self.shape!=upper_grad.shape:
+      raise ValueError("Shapes of grad and Tensor data must match!")
+    self.grad+=upper_grad
+    node = _NG_GRAPH.get_node(self)
+    node.backward()
+    if not(retain_graph):
+      _NG_GRAPH.reset_graph()
+  
+  def _backward(self):
+    from .. import _NG_GRAPH
+    node = _NG_GRAPH.get_node(self)
+    for child in node.children:
+      child.backward_fn(*[node.tens for node in child.parents])
+      upper_grad = child.tens.grad
+      if child.needs_broadcasting:
+        upper_grad = upper_grad.flatten()
+      grad = self.grad_fn(upper_grad)
+      grad = unflatten_data(grad, self.shape, child.parent_broadcast_shape)
+      grad = grad.reshape(self.shape)
+      self.grad+=grad
   
   def set_grad_fn(self, grad_fn):
     if self.requires_grad:
       self.grad_fn = grad_fn
     else:
       self.grad_fn = None
-  
+
   def __add__(self, other):
     return add(self, other)
   
