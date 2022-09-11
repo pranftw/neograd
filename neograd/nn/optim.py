@@ -1,7 +1,8 @@
+from .. import _NG_GRAPH
+
 class Optimizer:
   def zero_grad(self):
-    for param in self.params:
-      param.zero_grad()
+    _NG_GRAPH.zero_grad()
 
 
 class GD(Optimizer):
