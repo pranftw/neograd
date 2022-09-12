@@ -25,7 +25,8 @@ class Node:
     return sorted_tensors
   
   def backward(self):
-    self.reset_visited()
+    from .. import _NG_GRAPH
+    _NG_GRAPH.reset_visited()
     sorted_tensors = self.top_sort()
     for tens in sorted_tensors:
       if tens.requires_grad:
@@ -40,11 +41,6 @@ class Node:
       if not(child.visited):
         return False
     return True
-
-  def reset_visited(self):
-    self.visited = False
-    for parent in self.parents:
-      parent.visited = False
   
   def add_child(self, other):
     self.children.append(other)

@@ -27,5 +27,9 @@ class Graph:
     for tens in self.nodes_dict:
       tens.zero_grad()
   
+  def reset_visited(self):
+    for node in self.nodes_dict.values():
+      node.visited = False
+  
   def reset_graph(self):
     self.nodes_dict = {}
