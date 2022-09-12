@@ -24,7 +24,12 @@ class Graph:
     self.nodes_dict[tens] = Node(tens)
   
   def remove_tensor(self, tens):
+    from ..nn.layers import Param
+    node = self.nodes_dict.get(tens)
+    del node
     self.nodes_dict.pop(tens)
+    if not(isinstance(tens, Param)):
+      del tens
   
   def zero_grad(self):
     for tens in self.nodes_dict:

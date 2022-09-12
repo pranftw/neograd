@@ -20,15 +20,12 @@ class Node:
       for child in self.children:
         if not(child.visited):
           sorted_tensors+=child.top_sort()
-      self.visited = True
-      sorted_tensors.append(self.tens)
     return sorted_tensors
   
   def backward(self):
     from .. import _NG_GRAPH
     _NG_GRAPH.reset_visited()
     sorted_tensors = self.top_sort()
-    assert len(sorted_tensors)==len(_NG_GRAPH.nodes_dict.keys()) # Here these two arent the same, hence resulting in error while trying to remove tensors
     _NG_GRAPH.reset_visited()
     for tens in sorted_tensors:
       if tens.requires_grad:
