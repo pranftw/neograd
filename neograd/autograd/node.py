@@ -28,6 +28,8 @@ class Node:
     from .. import _NG_GRAPH
     _NG_GRAPH.reset_visited()
     sorted_tensors = self.top_sort()
+    assert len(sorted_tensors)==len(_NG_GRAPH.nodes_dict.keys()) # Here these two arent the same, hence resulting in error while trying to remove tensors
+    _NG_GRAPH.reset_visited()
     for tens in sorted_tensors:
       if tens.requires_grad:
         tens._backward()
@@ -39,6 +41,12 @@ class Node:
   def are_children_visited(self):
     for child in self.children:
       if not(child.visited):
+        return False
+    return True
+  
+  def are_parents_visited(self):
+    for parent in self.parents:
+      if not(parent.visited):
         return False
     return True
   

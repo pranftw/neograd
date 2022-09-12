@@ -26,6 +26,7 @@ class Tensor:
   def _backward(self):
     from .. import _NG_GRAPH
     node = _NG_GRAPH.get_node(self)
+    node.visited = True
     for child in node.children:
       child.backward_fn(*[node.tens for node in child.parents])
       upper_grad = child.tens.grad
@@ -35,6 +36,8 @@ class Tensor:
       grad = unflatten_data(grad, self.shape, child.parent_broadcast_shape)
       grad = grad.reshape(self.shape)
       self.grad+=grad
+      if child.are_parents_visited():
+        _NG_GRAPH.remove_tensor(child.tens)
   
   def set_grad_fn(self, grad_fn):
     if self.requires_grad:

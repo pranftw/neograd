@@ -23,6 +23,9 @@ class Graph:
   def add_tensor(self, tens):
     self.nodes_dict[tens] = Node(tens)
   
+  def remove_tensor(self, tens):
+    self.nodes_dict.pop(tens)
+  
   def zero_grad(self):
     for tens in self.nodes_dict:
       tens.zero_grad()
