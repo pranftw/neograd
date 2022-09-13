@@ -1,7 +1,6 @@
 import numpy as np
 import weakref
 from .node import Node
-from .utils import mul_shape_dims
 
 
 class Operation:

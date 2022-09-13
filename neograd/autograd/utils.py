@@ -38,9 +38,3 @@ def get_dims_to_be_summed(orig_data_shape, broadcasted_shape):
       else:
         dims_to_be_summed.append(1)
     return dims_to_be_summed
-
-def mul_shape_dims(shape):
-    result = 1
-    for dim in shape:
-      result*=dim
-    return result
