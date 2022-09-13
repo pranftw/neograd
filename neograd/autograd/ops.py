@@ -66,7 +66,6 @@ class Add(Operation):
 
   def backward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
-    broadcast_shape = self.get_broadcast_shape(tens1, tens2)
     tens1.set_grad_fn(lambda ug:ug)
     tens2.set_grad_fn(lambda ug:ug)
 
@@ -86,7 +85,6 @@ class Sub(Operation):
   
   def backward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
-    broadcast_shape = self.get_broadcast_shape(tens1, tens2)
     tens1.set_grad_fn(lambda ug:ug)
     tens2.set_grad_fn(lambda ug:-ug)
 
