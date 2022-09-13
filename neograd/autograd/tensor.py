@@ -20,8 +20,16 @@ class Tensor:
     self.grad+=upper_grad
     node = _NG_GRAPH.get_node(self)
     node.backward()
-    for tens,_ in _NG_GRAPH.nodes_dict.items():
+    for tens,node in _NG_GRAPH.nodes_dict.items():
       print(tens)
+      print(node.visited)
+      print("Children")
+      for child in node.children:
+        print(child.visited)
+      print("Parents")
+      for parent in node.parents:
+        print(parent.visited)
+    print(len(_NG_GRAPH.nodes_dict))
     if not(retain_graph):
       _NG_GRAPH.reset_graph()
   

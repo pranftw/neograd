@@ -159,7 +159,7 @@ class Exp(Operation):
   
   def forward(self, tens):
     tens = self.get_tensors(tens)
-    return self.get_result_tensor(tens.local_grad, tens)
+    return self.get_result_tensor(np.exp(tens.data), tens)
   
   def backward(self, tens):
     tens = self.get_tensors(tens)
