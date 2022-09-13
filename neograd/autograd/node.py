@@ -28,8 +28,12 @@ class Node:
     sorted_tensors = self.top_sort()
     _NG_GRAPH.reset_visited()
     for tens in sorted_tensors:
+      node = _NG_GRAPH.get_node(tens)
+      node.visited = True
       if tens.requires_grad:
-        tens._backward()
+        tens._backward(node)
+      else:
+        _NG_GRAPH.remove_tensor(tens)
 
   def visit_all_children(self):
     for child in self.children:

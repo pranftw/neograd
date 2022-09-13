@@ -21,9 +21,9 @@ class NN(ng.nn.Model):
   def __init__(self):
     super().__init__(self)
     self.stack = ng.nn.Sequential(
-      ng.nn.Linear(2,100),
+      ng.nn.Linear(2,10),
       ng.nn.ReLU(),
-      ng.nn.Linear(100,1),
+      ng.nn.Linear(10,1),
       ng.nn.Sigmoid()
     )
   

@@ -20,13 +20,14 @@ class Tensor:
     self.grad+=upper_grad
     node = _NG_GRAPH.get_node(self)
     node.backward()
+    print(_NG_GRAPH.nodes_dict.keys())
+    print(len(_NG_GRAPH.nodes_dict))
     if not(retain_graph):
       _NG_GRAPH.reset_graph()
+    print(_NG_GRAPH.nodes_dict)
   
-  def _backward(self):
+  def _backward(self, node):
     from .. import _NG_GRAPH
-    node = _NG_GRAPH.get_node(self)
-    node.visited = True
     for child in node.children:
       child.backward_fn(*[node.tens for node in child.parents])
       upper_grad = child.tens.grad
@@ -38,6 +39,8 @@ class Tensor:
       self.grad+=grad
       if child.are_parents_visited():
         _NG_GRAPH.remove_tensor(child.tens)
+    if node.are_parents_visited():
+      _NG_GRAPH.remove_tensor(node.tens)
   
   def set_grad_fn(self, grad_fn):
     if self.requires_grad:
@@ -116,4 +119,4 @@ class Tensor:
     return f'Tensor({self.data}, requires_grad={self.requires_grad})'
   
   def __str__(self):
-    return f'Tensor( {self.data},\n requires_grad={self.requires_grad},\n grad_fn={self.grad_fn} )'
+    return f'Tensor( {self.data},\n requires_grad={self.requires_grad},\n grad_fn={self.grad_fn},\n shape={self.shape} )\n'
