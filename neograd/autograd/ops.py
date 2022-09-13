@@ -68,8 +68,8 @@ class Add(Operation):
   def backward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
     broadcast_shape = self.get_broadcast_shape(tens1, tens2)
-    tens1.set_grad_fn(lambda ug:np.dot(np.eye(mul_shape_dims(broadcast_shape)), ug))
-    tens2.set_grad_fn(lambda ug:np.dot(np.eye(mul_shape_dims(broadcast_shape)), ug))
+    tens1.set_grad_fn(lambda ug:ug)
+    tens2.set_grad_fn(lambda ug:ug)
 
 def add(tens1, tens2):
   return Add().forward(tens1, tens2)
@@ -88,8 +88,8 @@ class Sub(Operation):
   def backward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
     broadcast_shape = self.get_broadcast_shape(tens1, tens2)
-    tens1.set_grad_fn(lambda ug:np.dot(np.eye(mul_shape_dims(broadcast_shape)), ug))
-    tens2.set_grad_fn(lambda ug:np.dot(-np.eye(mul_shape_dims(broadcast_shape)), ug))
+    tens1.set_grad_fn(lambda ug:ug)
+    tens2.set_grad_fn(lambda ug:-ug)
 
 def sub(tens1, tens2):
   return Sub().forward(tens1, tens2)
@@ -231,7 +231,7 @@ class Sum(Operation):
           tens_shape[self.axis] = 1
         except IndexError:
           pass
-        lg = np.eye(mul_shape_dims(tuple(tens_shape)))
+        lg = 1
       else:
         lg = np.ones(tens.shape)
 
