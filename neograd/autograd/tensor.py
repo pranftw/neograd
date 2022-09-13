@@ -20,30 +20,21 @@ class Tensor:
     self.grad+=upper_grad
     node = _NG_GRAPH.get_node(self)
     node.backward()
-    for tens,node in _NG_GRAPH.nodes_dict.items():
-      print(tens)
-      print(node.visited)
-      print("Children")
-      for child in node.children:
-        print(child.visited)
-      print("Parents")
-      for parent in node.parents:
-        print(parent.visited)
-    print(len(_NG_GRAPH.nodes_dict))
     if not(retain_graph):
-      _NG_GRAPH.reset_graph()
+      _NG_GRAPH.reset_graph() # tensors are auto-removed, this is just for redundancy / safety
   
   def _backward(self, node):
     from .. import _NG_GRAPH
     for child in node.children:
-      child.backward_fn(*[node.tens for node in child.parents])
-      upper_grad = child.tens.grad
-      if child.needs_broadcasting:
-        upper_grad = upper_grad.flatten()
-      grad = self.grad_fn(upper_grad)
-      grad = unflatten_data(grad, self.shape, child.parent_broadcast_shape)
-      grad = grad.reshape(self.shape)
-      self.grad+=grad
+      if self.requires_grad:
+        child.backward_fn(*[node.tens for node in child.parents])
+        upper_grad = child.tens.grad
+        if child.needs_broadcasting:
+          upper_grad = upper_grad.flatten()
+        grad = self.grad_fn(upper_grad)
+        grad = unflatten_data(grad, self.shape, child.parent_broadcast_shape)
+        grad = grad.reshape(self.shape)
+        self.grad+=grad
       if child.are_parents_visited():
         _NG_GRAPH.remove_tensor(child.tens)
     if node.are_parents_visited():

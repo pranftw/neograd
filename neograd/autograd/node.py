@@ -30,10 +30,7 @@ class Node:
     for tens in sorted_tensors:
       node = _NG_GRAPH.get_node(tens)
       node.visited = True
-      if tens.requires_grad:
-        tens._backward(node)
-      else:
-        _NG_GRAPH.remove_tensor(tens)
+      tens._backward(node)
 
   def visit_all_children(self):
     for child in self.children:
