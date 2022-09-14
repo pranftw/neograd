@@ -36,3 +36,9 @@ class Graph:
   
   def reset_graph(self):
     self.nodes_dict = {}
+  
+  def __repr__(self):
+    return 'Graph()'
+  
+  def __str__(self):
+    return f'Graph( {self.nodes_dict} )'

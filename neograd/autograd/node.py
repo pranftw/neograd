@@ -53,3 +53,9 @@ class Node:
   
   def add_parent(self, other):
     self.parents.append(other)
+  
+  def __repr__(self):
+    return f'Node({self.tens})'
+  
+  def __str__(self):
+    return f'Node( \n{self.tens}\nbackward_fn: {self.backward_fn}\nvisited: {self.visited}\n )'

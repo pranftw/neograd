@@ -15,7 +15,7 @@ y_train, y_test = ng.tensor(y_train.T.reshape(1,750)), ng.tensor(y_test.T.reshap
 
 num_train = 750
 num_test = 250
-num_iter = 1
+num_iter = 1000
 
 class NN(ng.nn.Model):
   def __init__(self):
@@ -31,7 +31,7 @@ class NN(ng.nn.Model):
     return self.stack(inputs)
 
 model = NN()
-loss_fn = BinaryCrossEntropy()
+loss_fn = BCE()
 optim = GD(model.get_params(), 0.15)
 
 # train_data_gen = get_batches(X_train, y_train, num_train, 50) TODO: ISSUE WRT DIMS
@@ -43,5 +43,4 @@ for iter in range(num_iter):
   loss.backward()
   optim.step()
   if iter%50==0:
-    optim.lr+=0.05
     print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")

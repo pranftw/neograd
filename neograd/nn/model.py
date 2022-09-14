@@ -25,3 +25,9 @@ class Model:
     for layer in layers:
       params+=layer.get_params()
     return params
+  
+  def __repr__(self):
+    return f'Model( {[str(layer) for layer in self.layers]} )'
+  
+  def __str__(self):
+    return f'Model( {[str(layer) for layer in self.layers]} )'
