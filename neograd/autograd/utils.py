@@ -14,16 +14,16 @@ def process_data(data):
       raise TypeError(f"Expected data of types {supported_types} instead got {type(data)}")
     return data
 
-def unflatten_data(data, orig_data_shape, broadcasted_shape):
+def unbroadcast_data(data, orig_data_shape, broadcasted_shape):
     if broadcasted_shape is not None:
       dims_to_be_summed = get_dims_to_be_summed(orig_data_shape, broadcasted_shape)
-      unflattened_data = data.reshape(broadcasted_shape)
+      unbroadcasted_data = data.reshape(broadcasted_shape)
       for i,dim in reversed(list(enumerate(dims_to_be_summed))):
         if dim==1:
-          unflattened_data = np.sum(unflattened_data, axis=i)
+          unbroadcasted_data = np.sum(unbroadcasted_data, axis=i)
     else:
-      unflattened_data = data
-    return unflattened_data
+      unbroadcasted_data = data
+    return unbroadcasted_data
 
 def get_dims_to_be_summed(orig_data_shape, broadcasted_shape):
     dims_to_be_summed = []

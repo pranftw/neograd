@@ -1,5 +1,5 @@
 class Node:
-  __slots__ = ['tens', 'children', 'parents', 'parent_broadcast_shape', 'needs_broadcasting',
+  __slots__ = ['tens', 'children', 'parents', 'parent_broadcast_shape', 'parent_needs_broadcasting',
               'backward_fn', 'visited']
 
   def __init__(self, tens):
@@ -7,7 +7,7 @@ class Node:
     self.children = []
     self.parents = []
     self.parent_broadcast_shape = None
-    self.needs_broadcasting = None
+    self.parent_needs_broadcasting = None
     self.backward_fn = None
     self.visited = False
   

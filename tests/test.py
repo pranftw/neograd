@@ -15,7 +15,7 @@ y_train, y_test = ng.tensor(y_train.T.reshape(1,750)), ng.tensor(y_test.T.reshap
 
 num_train = 750
 num_test = 250
-num_iter = 1
+num_iter = 1000
 
 class NN(ng.nn.Model):
   def __init__(self):
@@ -40,7 +40,7 @@ for iter in range(num_iter):
   optim.zero_grad()
   outputs = model(X_train)
   loss = loss_fn(outputs, y_train)
-  loss.backward(retain_graph=True)
+  loss.backward()
   optim.step()
   if iter%50==0:
     print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")

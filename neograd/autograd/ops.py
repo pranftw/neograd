@@ -3,9 +3,9 @@ from .node import Node
 
 
 class Operation:
-  def __init__(self, operation, needs_broadcasting):
+  def __init__(self, operation, operand_needs_broadcasting):
     self.operation = operation
-    self.needs_broadcasting = needs_broadcasting
+    self.operand_needs_broadcasting = operand_needs_broadcasting
   
   def process_operands(self, operands):
     from .tensor import Tensor
@@ -25,7 +25,7 @@ class Operation:
       return tensors
   
   def get_broadcast_shape(self, *tensors):
-    if self.needs_broadcasting:
+    if self.operand_needs_broadcasting:
       try:
         return np.broadcast_shapes(*(tens.data.shape for tens in tensors))
       except ValueError:
@@ -46,7 +46,7 @@ class Operation:
     result = result.astype(np.ndarray)
     result_tensor = Tensor(result, self.check_result_requires_grad(tensors))
     result_node = Node(result_tensor)
-    result_node.needs_broadcasting = self.needs_broadcasting
+    result_node.parent_needs_broadcasting = self.operand_needs_broadcasting
     result_node.backward_fn = self.operation.backward
     result_node.parent_broadcast_shape = self.get_broadcast_shape(*tensors)
     graph.add_edge(result_node, tensors)

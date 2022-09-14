@@ -1,4 +1,4 @@
-from .utils import process_data, unflatten_data
+from .utils import process_data, unbroadcast_data
 from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, dot
 
 
@@ -31,10 +31,10 @@ class Tensor:
       if self.requires_grad:
         child.backward_fn(*[node.tens for node in child.parents])
         upper_grad = child.tens.grad
-        if child.needs_broadcasting:
+        if child.parent_needs_broadcasting:
           upper_grad = upper_grad.flatten()
         grad = self.grad_fn(upper_grad)
-        grad = unflatten_data(grad, self.shape, child.parent_broadcast_shape)
+        grad = unbroadcast_data(grad, self.shape, child.parent_broadcast_shape)
         grad = grad.reshape(self.shape)
         self.grad+=grad
       if not(retain_graph) and child.are_parents_visited():
