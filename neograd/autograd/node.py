@@ -1,7 +1,7 @@
 class Node:
   __slots__ = ['tens', 'children', 'parents', 'parent_broadcast_shape', 'needs_broadcasting',
               'backward_fn', 'visited']
-              
+
   def __init__(self, tens):
     self.tens = tens
     self.children = []
@@ -25,7 +25,7 @@ class Node:
           sorted_tensors+=child.top_sort()
     return sorted_tensors
   
-  def backward(self):
+  def backward(self, retain_graph):
     from .. import _NG_GRAPH
     _NG_GRAPH.reset_visited()
     sorted_tensors = self.top_sort()
@@ -33,7 +33,7 @@ class Node:
     for tens in sorted_tensors:
       node = _NG_GRAPH.get_node(tens)
       node.visited = True
-      tens._backward(node)
+      tens._backward(node, retain_graph)
 
   def visit_all_children(self):
     for child in self.children:

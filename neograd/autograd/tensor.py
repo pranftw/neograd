@@ -3,8 +3,8 @@ from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, d
 
 
 class Tensor:
-  __slots__ = ['data', 'requires_grad', 'grad', 'grad_fn']
-  
+  __slots__ = ['_data', 'requires_grad', 'grad', 'grad_fn']
+
   def __init__(self, data, requires_grad=False):
     self.data = data
     self.requires_grad = requires_grad
@@ -21,11 +21,11 @@ class Tensor:
       raise ValueError("Shapes of grad and Tensor data must match!")
     self.grad+=upper_grad
     node = _NG_GRAPH.get_node(self)
-    node.backward()
+    node.backward(retain_graph)
     if not(retain_graph):
       _NG_GRAPH.reset_graph() # tensors are auto-removed, this is just for redundancy / safety
   
-  def _backward(self, node):
+  def _backward(self, node, retain_graph):
     from .. import _NG_GRAPH
     for child in node.children:
       if self.requires_grad:
@@ -37,9 +37,9 @@ class Tensor:
         grad = unflatten_data(grad, self.shape, child.parent_broadcast_shape)
         grad = grad.reshape(self.shape)
         self.grad+=grad
-      if child.are_parents_visited():
+      if not(retain_graph) and child.are_parents_visited():
         _NG_GRAPH.remove_tensor(child.tens)
-    if node.are_parents_visited():
+    if not(retain_graph) and node.are_parents_visited():
       _NG_GRAPH.remove_tensor(node.tens)
   
   def set_grad_fn(self, grad_fn):
