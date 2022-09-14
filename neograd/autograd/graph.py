@@ -2,6 +2,8 @@ from .node import Node
 
 
 class Graph:
+  __slots__ = ['nodes_dict']
+  
   def __init__(self):
     self.nodes_dict = {} # Tensor is the key, its Node is the value
   

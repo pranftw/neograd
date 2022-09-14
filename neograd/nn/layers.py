@@ -58,6 +58,8 @@ class Param(tensor):
 
 
 class Sequential(Container):
+  __slots__ = ['layers']
+  
   def __init__(self, *args):
     self.layers = args
   

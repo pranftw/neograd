@@ -1,4 +1,7 @@
 class Node:
+  __slots__ = ['tens', 'children', 'parents', 'parent_broadcast_shape', 'needs_broadcasting',
+              'backward_fn', 'visited']
+              
   def __init__(self, tens):
     self.tens = tens
     self.children = []

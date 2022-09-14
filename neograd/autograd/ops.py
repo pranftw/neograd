@@ -1,11 +1,10 @@
 import numpy as np
-import weakref
 from .node import Node
 
 
 class Operation:
   def __init__(self, operation, needs_broadcasting):
-    self.operation = weakref.proxy(operation)
+    self.operation = operation
     self.needs_broadcasting = needs_broadcasting
   
   def process_operands(self, operands):

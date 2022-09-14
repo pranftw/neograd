@@ -3,6 +3,8 @@ from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, d
 
 
 class Tensor:
+  __slots__ = ['data', 'requires_grad', 'grad', 'grad_fn']
+  
   def __init__(self, data, requires_grad=False):
     self.data = data
     self.requires_grad = requires_grad

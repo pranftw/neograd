@@ -1,7 +1,7 @@
 import _setup
 import neograd as ng
 import numpy as np
-from neograd.nn.loss_fns import BinaryCrossEntropy
+from neograd.nn.loss_fns import BCE
 from neograd.nn.optim import GD
 from neograd.nn.utils import get_batches
 from sklearn.datasets import make_circles
