@@ -1,10 +1,17 @@
 class Optimizer:
   def zero_grad(self):
+    '''
+      Since after loss.backward, only Tensors in memory are the params, only their
+        gradients are reset since everytime a new graph is dynamically created
+    '''
     for param in self.params:
       param.zero_grad()
 
 
 class GD(Optimizer):
+  '''
+    Vanilla Gradient Descent
+  '''
   def __init__(self, params, lr):
     self.params = params
     self.lr = lr

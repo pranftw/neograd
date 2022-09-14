@@ -7,6 +7,9 @@ class Loss:
 
 
 class MSE(Loss):
+  '''
+    Mean Squared Error
+  '''
   def forward(self, outputs, targets):
     num_examples = outputs.shape[-1]
     cost = (1/(2*num_examples))*_sum((outputs-targets)**2)
@@ -20,6 +23,11 @@ class MSE(Loss):
 
 
 class BCE(Loss):
+  '''
+    Binary Cross Entropy
+
+    epsilon used here to prevent log0
+  '''
   def forward(self, outputs, targets):
     epsilon = 1e-5
     num_examples = outputs.shape[-1]

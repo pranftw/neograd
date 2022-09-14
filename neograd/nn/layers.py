@@ -4,11 +4,17 @@ import numpy as np
 
 class Container:
   __slots__ = ['layers']
+  '''
+    This acts as a container for Layer/s
+  '''
 
   def __call__(self, inputs):
     return self.forward(inputs)
 
   def get_params(self):
+    '''
+      Goes through all the layers in the Container and gets the params of each Layer
+    '''
     params = []
     for layer in self.layers:
       params+=layer.get_params()
@@ -31,11 +37,18 @@ class Container:
 
 class Layer:
   __slots__ = []
+  '''
+    Performs some kind of computation taking in inputs and giving out outputs
+  '''
 
   def __call__(self, inputs):
     return self.forward(inputs)
 
   def get_params(self):
+    '''
+      If any of the attributes in a Layer is instance of Param, then it is automatically
+        considered as a param for the whole model
+    '''
     params = []
     for attr in dir(self):
       attr_val = self.__getattribute__(attr)
@@ -46,6 +59,11 @@ class Layer:
 
 class Param(tensor):
   __slots__ = []
+  '''
+    Just an alias for Tensor, so that when params are gathered for a Layer, only these
+      are automatically considered for param, while ignoring some helper Tensors which aren't
+      necessarily param
+  '''
 
   def __init__(self, data, requires_grad=False):
     super().__init__(data, requires_grad)
@@ -59,6 +77,9 @@ class Param(tensor):
 
 class Sequential(Container):
   __slots__ = ['layers']
+  '''
+    Outputs of one layer are passed as inputs to the next layer, sequentially
+  '''
   
   def __init__(self, *args):
     self.layers = args
@@ -78,6 +99,9 @@ class Sequential(Container):
 
 class Linear(Layer):
   __slots__ = ['num_in', 'num_out', 'weights', 'bias']
+  '''
+    Implements a fully connected layer
+  '''
 
   def __init__(self, num_in, num_out):
     self.num_in = num_in
