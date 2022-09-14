@@ -4,17 +4,41 @@ from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, d
 
 class Tensor:
   __slots__ = ['_data', 'requires_grad', 'grad', 'grad_fn']
+  '''
+    The main computational element which abstracts the np.ndarray used to
+      perform all the Operation
+  '''
 
   def __init__(self, data, requires_grad=False):
+    '''
+      Params:
+        data:int/float/np.ndarray/[] - Data to be stored in the tensor
+        requires_grad:Bool - If a Tensor requires gradient to be calculated for it or not
+      
+      grad:np.ndarray - The gradient for the current Tensor
+      grad_fn - takes the gradient from above, uses the local gradient to give the gradient
+    '''
     self.data = data
     self.requires_grad = requires_grad
     self.grad = 0. if requires_grad else None
     self.grad_fn = None
   
   def zero_grad(self):
+    '''
+      Resets the grad of the Tensor
+    '''
     self.grad = 0. if self.requires_grad else None
   
   def backward(self, upper_grad=1., retain_graph=False):
+    '''
+      Starts the gradient calculation for the backward pass from the current
+        Tensor
+      
+      Params:
+        upper_grad:int/float/np.ndarray/[] - The gradient with which to start the
+          gradient calculation
+        retain_graph:Bool - If the graph should be retained after backward pass or flushed
+    '''
     from .. import _NG_GRAPH
     upper_grad = process_data(upper_grad)
     if self.shape!=upper_grad.shape:
@@ -26,6 +50,14 @@ class Tensor:
       _NG_GRAPH.reset_graph() # tensors are auto-removed, this is just for redundancy / safety
   
   def _backward(self, node, retain_graph):
+    '''
+      The essence of autograd, final gradient calculations for the Tensor is performed here
+      For each child, its gradient is taken as upper gradient, the backward function of the 
+        Node of the current Tensor is executed to set the grad_fn of current Tensor
+      grad_fn is executed, the grad is then unbroadcasted, if Tensor has been broadcasted
+        during the Operation
+      auto-removal of Tensor from the graph is performed when retain_graph is False
+    '''
     from .. import _NG_GRAPH
     for child in node.children:
       if self.requires_grad:
@@ -43,6 +75,10 @@ class Tensor:
       _NG_GRAPH.remove_tensor(node.tens)
   
   def set_grad_fn(self, grad_fn):
+    '''
+      Sets the grad_fn for the Tensor
+      if it doesn't require_grad it is set to None
+    '''
     if self.requires_grad:
       self.grad_fn = grad_fn
     else:

@@ -3,11 +3,28 @@ from .node import Node
 
 
 class Operation:
+  '''
+    Used when some input is getting transformed into an output, for functions
+      where gradient calculation is required with the forward pass and the backward
+      pass defined
+  '''
   def __init__(self, operation, operand_needs_broadcasting):
+    '''
+      Params:
+        operation:object(cls(Operation)) - Object of an operation that inherits Operation
+        operand_needs_broadcasting:Bool - If the operand_needs_broadcasting for a pareticular
+          Operation
+    '''
     self.operation = operation
     self.operand_needs_broadcasting = operand_needs_broadcasting
   
   def process_operands(self, operands):
+    '''
+      All operands are converted to Tensor
+
+      Params:
+        operands:(any class that is supported/Tensor)
+    '''
     from .tensor import Tensor
     operands = list(operands)
     for i,operand in enumerate(operands):
@@ -16,6 +33,12 @@ class Operation:
     return tuple(operands)
   
   def get_tensors(self, *operands):
+    '''
+      Returns the processed operands as tuple of Tensors
+
+      Params:
+        operands:*args(any class that is supported/Tensor)
+    '''
     tensors = self.process_operands(operands)
     if len(tensors)==0:
       return None
@@ -25,6 +48,13 @@ class Operation:
       return tensors
   
   def get_broadcast_shape(self, *tensors):
+    '''
+      If the tensors can be broadcasted and operand_needs_broadcasting, then the broadcasted
+        shape is returned, else None
+      
+      Params:
+        tensors:*args(Tensor)
+    '''
     if self.operand_needs_broadcasting:
       try:
         return np.broadcast_shapes(*(tens.data.shape for tens in tensors))
@@ -33,18 +63,34 @@ class Operation:
     else:
       return None
   
-  def check_result_requires_grad(self, tensors):
+  def result_requires_grad(self, tensors):
+    '''
+      Checks if the result requires_grad given the operands of the Operation, if atleast
+        one operand requires_grad, then result will also have requires_grad
+      
+      Params:
+        tensors:(Tensor)
+    '''
     for tens in tensors:
       if tens.requires_grad:
         return True
     return False
   
   def get_result_tensor(self, result, *tensors):
+    '''
+      Returns the result tensor of the Operation
+      Creates a Node for the result_tensor with parent_broadcast_shape and parent_needs_broadcasting
+      Adds the edges to the graph
+
+      Params:
+        result:np object - Result after performing a raw numpy operation
+        tensors:*args(Tensor)
+    '''
     from .tensor import Tensor
     from .. import _NG_GRAPH
     graph = _NG_GRAPH
     result = result.astype(np.ndarray)
-    result_tensor = Tensor(result, self.check_result_requires_grad(tensors))
+    result_tensor = Tensor(result, self.result_requires_grad(tensors))
     result_node = Node(result_tensor)
     result_node.parent_needs_broadcasting = self.operand_needs_broadcasting
     result_node.backward_fn = self.operation.backward
