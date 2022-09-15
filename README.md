@@ -1,0 +1,1 @@
+[![Neograd Tests](https://github.com/pranftw/neograd/actions/workflows/python-app.yml/badge.svg)](https://github.com/pranftw/neograd/actions/workflows/python-app.yml)
