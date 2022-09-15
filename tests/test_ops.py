@@ -2,6 +2,7 @@ import _setup
 import numpy as np
 import torch
 import neograd as ng
+from neograd.autograd.ops import relu as ng_relu, sigmoid as ng_sigmoid, tanh as ng_tanh
 from neograd.autograd.utils import process_data
 
 
@@ -85,9 +86,10 @@ def compare_outputs(ng_output, torch_output):
 
 a = np.array(3)
 b = np.array([1,2,3])
-c = np.array([[3,4,5],[6,7,8]])
-d = np.array([[[9,8,7],[6,5,4]], [[1,2,3],[4,5,6]]])
-e = np.array([[1,2],[3,4]])
+c = np.array([[3,4,5], [6,7,8]])
+d = np.array([[[9,8,7], [6,5,4]], [[1,2,3], [4,5,6]]])
+e = np.array([[1,2], [3,4]])
+f = np.array([[0.5, -2, 1], [-1, -0.4, 20]])
 
 
 # <------------ADD------------>
@@ -106,3 +108,55 @@ def test_sub():
 def test_mul():
   compare_outputs(execute_neograd(ng.mul, b, c), execute_torch(torch.mul, b, c))
   compare_outputs(execute_neograd(ng.mul, c, d), execute_torch(torch.mul, c, d))
+
+
+# <------------DIV------------>
+def test_div():
+  compare_outputs(execute_neograd(ng.div, b, c), execute_torch(torch.div, b, c))
+
+
+# <------------DOT------------>
+def test_dot():
+  compare_outputs(execute_neograd(ng.dot, e, c), execute_torch(torch.mm, e, c))
+
+
+# <------------EXP------------>
+def test_exp():
+  compare_outputs(execute_neograd(ng.exp, e), execute_torch(torch.exp, e))
+
+
+# <------------LOG------------>
+def test_log():
+  compare_outputs(execute_neograd(ng.log, d), execute_torch(torch.log, d))
+
+
+# <------------POW------------>
+def test_pow():
+  compare_outputs(execute_neograd(ng.pow, c, b), execute_torch(torch.pow, c, b))
+
+
+# <------------SUM------------>
+def test_sum():
+  compare_outputs(execute_neograd(ng.sum, d), execute_torch(torch.sum, d))
+  compare_outputs(execute_neograd(ng.sum, d, axis=0), execute_torch(torch.sum, d, dim=0))
+  compare_outputs(execute_neograd(ng.sum, d, axis=1), execute_torch(torch.sum, d, dim=1))
+
+
+# <------------TRANSPOSE------------>
+def test_transpose():
+  compare_outputs(execute_neograd(ng.transpose, c), execute_torch(torch.transpose, c, dim0=0, dim1=1))
+
+
+# <------------RELU------------>
+def test_relu():
+  compare_outputs(execute_neograd(ng_relu, f), execute_torch(torch.relu, f))
+
+
+# <------------SIGMOID------------>
+def test_sigmoid():
+  compare_outputs(execute_neograd(ng_sigmoid, c), execute_torch(torch.sigmoid, c))
+
+
+# <------------TANH------------>
+def test_tanh():
+  compare_outputs(execute_neograd(ng_tanh, f), execute_torch(torch.tanh, f))

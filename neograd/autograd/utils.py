@@ -41,6 +41,7 @@ def unbroadcast_data(data, orig_data_shape, broadcasted_shape):
 def get_dims_to_be_summed(orig_data_shape, broadcasted_shape):
   '''
     True is given if it has been broadcasted along that dimension, False if not
+    https://numpy.org/doc/stable/user/basics.broadcasting.html
   '''
   dims_to_be_summed = []
   zipped = zip_longest(tuple(reversed(broadcasted_shape)), tuple(reversed(orig_data_shape)), fillvalue=None)

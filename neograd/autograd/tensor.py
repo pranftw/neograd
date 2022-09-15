@@ -39,6 +39,8 @@ class Tensor:
           gradient calculation
         retain_graph:Bool - If the graph should be retained after backward pass or flushed
     '''
+    if not(self.requires_grad):
+      raise ValueError("Only tensors who requires_grad can call backward")
     from .utils import get_graph
     graph = get_graph()
     upper_grad = process_data(upper_grad)

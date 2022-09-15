@@ -365,7 +365,7 @@ class Tanh(Operation):
   def backward(self, tens):
     tens = self.get_tensors(tens)
     result = np.tanh(tens.data)
-    self.tens.set_grad_fn(lambda ug:(1-np.power(result,2))*ug)
+    tens.set_grad_fn(lambda ug:(1-np.power(result,2))*ug)
 
 def tanh(tens):
   return Tanh().forward(tens)
