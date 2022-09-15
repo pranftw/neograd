@@ -39,15 +39,16 @@ class Tensor:
           gradient calculation
         retain_graph:Bool - If the graph should be retained after backward pass or flushed
     '''
-    from .. import _NG_GRAPH
+    from .utils import get_graph
+    graph = get_graph()
     upper_grad = process_data(upper_grad)
     if self.shape!=upper_grad.shape:
       raise ValueError("Shapes of grad and Tensor data must match!")
     self.grad+=upper_grad
-    node = _NG_GRAPH.get_node(self)
+    node = graph.get_node(self)
     node.backward(retain_graph)
     if not(retain_graph):
-      _NG_GRAPH.reset_graph() # tensors are auto-removed, this is just for redundancy / safety
+      graph.reset_graph() # tensors are auto-removed, this is just for redundancy / safety
   
   def _backward(self, node, retain_graph):
     '''
@@ -58,7 +59,8 @@ class Tensor:
         during the Operation
       auto-removal of Tensor from the graph is performed when retain_graph is False
     '''
-    from .. import _NG_GRAPH
+    from .utils import get_graph
+    graph = get_graph()
     for child in node.children:
       if self.requires_grad:
         child.backward_fn(*[node.tens for node in child.parents])
@@ -70,9 +72,9 @@ class Tensor:
         grad = grad.reshape(self.shape)
         self.grad+=grad
       if not(retain_graph) and child.are_parents_visited():
-        _NG_GRAPH.remove_tensor(child.tens)
+        graph.remove_tensor(child.tens)
     if not(retain_graph) and node.are_parents_visited():
-      _NG_GRAPH.remove_tensor(node.tens)
+      graph.remove_tensor(node.tens)
   
   def set_grad_fn(self, grad_fn):
     '''

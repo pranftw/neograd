@@ -54,12 +54,13 @@ class Node:
       Params:
         retain_graph:Bool - If the graph should be retained after backward pass or flushed
     '''
-    from .. import _NG_GRAPH
-    _NG_GRAPH.reset_visited()
+    from .utils import get_graph
+    graph = get_graph()
+    graph.reset_visited()
     sorted_tensors = self.top_sort()
-    _NG_GRAPH.reset_visited()
+    graph.reset_visited()
     for tens in sorted_tensors:
-      node = _NG_GRAPH.get_node(tens)
+      node = graph.get_node(tens)
       node.visited = True
       tens._backward(node, retain_graph)
 

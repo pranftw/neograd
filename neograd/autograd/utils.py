@@ -1,4 +1,6 @@
 import numpy as np
+from .ops import Operation
+from .graph import Graph
 
 
 def process_data(data):
@@ -51,3 +53,27 @@ def get_dims_to_be_summed(orig_data_shape, broadcasted_shape):
     else:
       dims_to_be_summed.append(True)
   return dims_to_be_summed
+
+def get_graph():
+  '''
+    Returns graph present in Operation.graph, if it is None, then the global graph _NG_GRAPH
+      is used
+  '''
+  if Operation.graph is None:
+    from .. import _NG_GRAPH
+    graph = _NG_GRAPH
+  else:
+    graph = Operation.graph
+  return graph
+
+
+class NewGraph:
+  '''
+    Context Manager to create a new graph if required within an operation or
+      anywhere and shouldn't interfere with the global _NG_GRAPH
+  '''
+  def __enter__(self):
+    Operation.graph = Graph()
+  
+  def __exit__(self, exc_type, exc_value, exc_traceback):
+    Operation.graph = None

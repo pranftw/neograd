@@ -8,6 +8,9 @@ class Operation:
       where gradient calculation is required with the forward pass and the backward
       pass defined
   '''
+
+  graph = None
+
   def __init__(self, operation, operand_needs_broadcasting):
     '''
       Params:
@@ -87,8 +90,8 @@ class Operation:
         tensors:*args(Tensor)
     '''
     from .tensor import Tensor
-    from .. import _NG_GRAPH
-    graph = _NG_GRAPH
+    from .utils import get_graph
+    graph = get_graph()
     result = result.astype(np.ndarray)
     result_tensor = Tensor(result, self.result_requires_grad(tensors))
     result_node = Node(result_tensor)
