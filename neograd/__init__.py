@@ -1,5 +1,5 @@
 from .autograd import tensor, NewGraph
-from .autograd import add, sub, mul, div, _pow, exp, log, dot, _sum, transpose
+from .autograd import add, sub, mul, div, pow, exp, log, dot, sum, transpose
 from .autograd.graph import Graph
 
 

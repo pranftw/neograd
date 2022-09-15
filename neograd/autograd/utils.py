@@ -1,6 +1,7 @@
 import numpy as np
 from .ops import Operation
 from .graph import Graph
+from itertools import zip_longest
 
 
 def process_data(data):
@@ -42,16 +43,12 @@ def get_dims_to_be_summed(orig_data_shape, broadcasted_shape):
     True is given if it has been broadcasted along that dimension, False if not
   '''
   dims_to_be_summed = []
-  for i,broadcasted_shape_dim in enumerate(broadcasted_shape):
-    try:
-      orig_data_shape_dim = orig_data_shape[i]
-    except IndexError:
+  zipped = zip_longest(tuple(reversed(broadcasted_shape)), tuple(reversed(orig_data_shape)), fillvalue=None)
+  for dim_broadcasted, dim_orig in reversed(list(zipped)):
+    if dim_broadcasted!=dim_orig:
       dims_to_be_summed.append(True)
-      continue
-    if broadcasted_shape_dim==orig_data_shape_dim:
-      dims_to_be_summed.append(False)
     else:
-      dims_to_be_summed.append(True)
+      dims_to_be_summed.append(False)
   return dims_to_be_summed
 
 def get_graph():

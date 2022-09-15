@@ -93,3 +93,16 @@ e = np.array([[1,2],[3,4]])
 # <------------ADD------------>
 def test_add():
   compare_outputs(execute_neograd(ng.add, a, b), execute_torch(torch.add, a, b))
+  compare_outputs(execute_neograd(ng.add, a, d), execute_torch(torch.add, a, d))
+
+
+# <------------SUB------------>
+def test_sub():
+  compare_outputs(execute_neograd(ng.sub, a, b), execute_torch(torch.sub, a, b))
+  compare_outputs(execute_neograd(ng.sub, a, d), execute_torch(torch.sub, a, d))
+
+
+# <------------MUL------------>
+def test_mul():
+  compare_outputs(execute_neograd(ng.mul, b, c), execute_torch(torch.mul, b, c))
+  compare_outputs(execute_neograd(ng.mul, c, d), execute_torch(torch.mul, c, d))
