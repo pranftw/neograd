@@ -84,6 +84,6 @@ for iter in range(num_iter):
 
 ## Resources
 - A big thank you to Andrej Karpathy for his CS231n lecture on Backpropagation which was instrumental in helping me gain a good grasp of the basic mechanisms of autograd
-[Lecture](https://www.youtube.com/embed/i94OvYb6noo)
+[Lecture](https://youtu.be/i94OvYb6noo)
 - Thanks to Terance Parr and Jeremy Howard for their paper The Matrix Calculus You Need For Deep Learning which helped me get rid of my fear for matrix calculus, that is beautifully written starting from the very fundamentals and slowly transitioning into advanced topics
 [Paper](https://arxiv.org/abs/1802.01528)
