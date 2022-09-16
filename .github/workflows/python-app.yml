@@ -6,6 +6,8 @@ name: Neograd Tests
 on:
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
+    branches: [ "main" ]
 
 permissions:
   contents: read
