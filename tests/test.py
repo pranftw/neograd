@@ -47,8 +47,8 @@ for iter in range(num_iter):
     print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
 
 with ng.NoTrack():
-  assert len(ng._NG_GRAPH.nodes_dict)==0 # Since we're in NoTrack mode, so graph must be empty
   test_outputs = model(X_test)
+  assert len(ng._NG_GRAPH.nodes_dict)==0 # Since we're in NoTrack mode, so graph must be empty
   preds = np.where(test_outputs.data>=0.5, 1, 0)
 
 print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
