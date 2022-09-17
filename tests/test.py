@@ -2,7 +2,7 @@ import _setup
 import neograd as ng
 import numpy as np
 from neograd.nn.loss import BCE
-from neograd.nn.optim import Momentum
+from neograd.nn.optim import RMSProp
 from neograd.nn.utils import get_batches
 from sklearn.datasets import make_circles
 from sklearn.model_selection import train_test_split
@@ -16,7 +16,7 @@ y_train, y_test = ng.tensor(y_train.T.reshape(1,750)), ng.tensor(y_test.T.reshap
 
 num_train = 750
 num_test = 250
-num_iter = 100
+num_iter = 500
 
 class NN(ng.nn.Model):
   def __init__(self):
@@ -33,7 +33,7 @@ class NN(ng.nn.Model):
 
 model = NN()
 loss_fn = BCE()
-optim = Momentum(model.get_params(), 0.15)
+optim = RMSProp(model.get_params(), 0.008)
 
 for iter in range(num_iter):
   optim.zero_grad()
@@ -41,7 +41,8 @@ for iter in range(num_iter):
   loss = loss_fn(outputs, y_train)
   loss.backward()
   optim.step()
-  print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+  if iter%50==0:
+    print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
 
 with ng.NoTrack():
   test_outputs = model(X_test)
