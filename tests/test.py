@@ -2,7 +2,7 @@ import _setup
 import neograd as ng
 import numpy as np
 from neograd.nn.loss import BCE
-from neograd.nn.optim import GD
+from neograd.nn.optim import Momentum
 from neograd.nn.utils import get_batches
 from sklearn.datasets import make_circles
 from sklearn.model_selection import train_test_split
@@ -16,15 +16,15 @@ y_train, y_test = ng.tensor(y_train.T.reshape(1,750)), ng.tensor(y_test.T.reshap
 
 num_train = 750
 num_test = 250
-num_iter = 1000
+num_iter = 100
 
 class NN(ng.nn.Model):
   def __init__(self):
     super().__init__(self)
     self.stack = ng.nn.Sequential(
-      ng.nn.Linear(2,10),
+      ng.nn.Linear(2,100),
       ng.nn.ReLU(),
-      ng.nn.Linear(10,1),
+      ng.nn.Linear(100,1),
       ng.nn.Sigmoid()
     )
   
@@ -33,9 +33,7 @@ class NN(ng.nn.Model):
 
 model = NN()
 loss_fn = BCE()
-optim = GD(model.get_params(), 0.15)
-
-# train_data_gen = get_batches(X_train, y_train, num_train, 50) TODO: ISSUE WRT DIMS
+optim = Momentum(model.get_params(), 0.15)
 
 for iter in range(num_iter):
   optim.zero_grad()
@@ -43,12 +41,10 @@ for iter in range(num_iter):
   loss = loss_fn(outputs, y_train)
   loss.backward()
   optim.step()
-  if iter%50==0:
-    print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+  print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
 
 with ng.NoTrack():
   test_outputs = model(X_test)
-  assert len(ng._NG_GRAPH.nodes_dict)==0 # Since we're in NoTrack mode, so graph must be empty
   preds = np.where(test_outputs.data>=0.5, 1, 0)
 
 print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))

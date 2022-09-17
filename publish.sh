@@ -8,13 +8,19 @@ source ~/.bashrc
 
 repo=$1
 
+if [ $repo == "testpypi" ]; then
+  setup_file="testpypi_setup.py"
+elif [ $repo == "pypi" ]; then
+  setup_file="setup.py"
+fi
+
 cd tests
 uenv venv
 cd ..
 pip install --upgrade setuptools
 pip install wheel
 pip install twine
-python setup.py sdist bdist_wheel
+python $setup_file sdist bdist_wheel
 twine upload -r $repo dist/*
 deactivate
 

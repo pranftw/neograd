@@ -58,7 +58,6 @@ class Layer:
 
 
 class Param(tensor):
-  __slots__ = []
   '''
     Just an alias for Tensor, so that when params are gathered for a Layer, only these
       are automatically considered for param, while ignoring some helper Tensors which aren't
