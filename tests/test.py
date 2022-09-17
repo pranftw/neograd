@@ -6,6 +6,7 @@ from neograd.nn.optim import GD
 from neograd.nn.utils import get_batches
 from sklearn.datasets import make_circles
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, accuracy_score
 
 X, y = make_circles(n_samples=1000, noise=0.05, random_state=100)
 X_train, X_test, y_train, y_test = train_test_split(X,y)
@@ -44,3 +45,12 @@ for iter in range(num_iter):
   optim.step()
   if iter%50==0:
     print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+
+with ng.NoTrack():
+  assert len(ng._NG_GRAPH.nodes_dict)==0 # Since we're in NoTrack mode, so graph must be empty
+  test_outputs = model(X_test)
+  preds = np.where(test_outputs.data>=0.5, 1, 0)
+
+print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
+print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
+
