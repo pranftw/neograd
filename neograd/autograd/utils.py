@@ -65,7 +65,7 @@ def get_graph():
   return graph
 
 
-class NewGraph:
+class new_graph:
   '''
     Context Manager to create a new graph if required within an operation or
       anywhere and shouldn't interfere with the global _NG_GRAPH
@@ -77,14 +77,17 @@ class NewGraph:
     Operation.graph = None
 
 
-class NoTrack:
+class no_track:
   '''
     Context Manager to prevent creation of a backward graph, when gradient calculation
       is not required, for ex when testing a model after training it, you don't need
       any backward pass
   '''
+  def __init__(self):
+    self.graph = get_graph()
+
   def __enter__(self):
-    Operation.track = False
+    self.graph.track = False
   
   def __exit__(self, exc_type, exc_value, exc_traceback):
-    Operation.track = True
+    self.graph.track = True

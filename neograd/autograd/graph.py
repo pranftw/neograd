@@ -6,13 +6,14 @@ class Graph:
     The graph that is constructed during the forward pass, and used by the backward
       pass to calculate gradients through automatic differentiation
   '''
-  __slots__ = ['nodes_dict']
+  __slots__ = ['nodes_dict', 'track']
   
   def __init__(self):
     '''
       nodes_dict contains a Tensor as the key and its respective Node as the value
     '''
     self.nodes_dict = {}
+    self.track = True
   
   def add_edge(self, result_node, operands):
     '''

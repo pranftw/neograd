@@ -116,3 +116,25 @@ class Linear(Layer):
   
   def __str__(self):
     return f'Linear in:{self.num_in} out:{self.num_out}'
+
+
+class Dropout(Layer):
+  '''
+    Dropout
+    https://youtu.be/D8PJAL-MZv8
+  '''
+
+  def __init__(self, prob, test=False):
+    self.prob = prob
+    self.test = False
+  
+  def forward(self, inputs):
+    if not(self.test):
+      inputs.data = (inputs.data * np.where(np.random.randn(inputs.shape)<self.prob, 1, 0)) / self.prob
+    return inputs
+  
+  def __repr__(self):
+    return f'Dropout(prob={self.prob})'
+  
+  def __str__(self):
+    return f'Dropout(prob={self.prob})'

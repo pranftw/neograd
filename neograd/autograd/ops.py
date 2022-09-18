@@ -10,7 +10,6 @@ class Operation:
   '''
 
   graph = None
-  track = True
 
   def __init__(self, operation, operand_needs_broadcasting):
     '''
@@ -95,7 +94,7 @@ class Operation:
     graph = get_graph()
     result = result.astype(np.ndarray)
     result_tensor = Tensor(result, self.result_requires_grad(tensors))
-    if Operation.track:
+    if graph.track:
       result_node = Node(result_tensor)
       result_node.parent_needs_broadcasting = self.operand_needs_broadcasting
       result_node.backward_fn = self.operation.backward

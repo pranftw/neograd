@@ -1,4 +1,4 @@
-from .autograd import tensor, NewGraph, NoTrack
+from .autograd import tensor, new_graph, no_track
 from .autograd import add, sub, mul, div, pow, exp, log, dot, sum, transpose
 from .autograd.graph import Graph
 

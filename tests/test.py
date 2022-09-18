@@ -43,7 +43,7 @@ for iter in range(num_iter):
   optim.step()
   print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
 
-with ng.NoTrack():
+with ng.no_track():
   test_outputs = model(X_test)
   preds = np.where(test_outputs.data>=0.5, 1, 0)
 
