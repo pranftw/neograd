@@ -53,7 +53,7 @@ class Momentum(Optimizer):
   def init_momentum_grads(self):
     for param in self.params:
       if param.requires_grad:
-        param.momentum_grad = np.zeros(param.shape)
+        param.momentum_grad = 0
   
   def update_momentum_grads(self):
     for param in self.params:
@@ -87,7 +87,7 @@ class RMSProp(Optimizer):
   def init_rms_grads(self):
     for param in self.params:
       if param.requires_grad:
-        param.rms_grad = np.zeros(param.shape)
+        param.rms_grad = 0
   
   def update_rms_grads(self):
     for param in self.params:
@@ -99,4 +99,50 @@ class RMSProp(Optimizer):
   
   def __str__(self):
     return f'RMSProp(params={self.params}, lr={self.lr}, beta={self.beta}, epsilon={self.epsilon})'
+
+
+class Adam(Optimizer):
+  '''
+    Adam
+    https://youtu.be/JXQT_vxqwIs
+  '''
+
+  iter = 0
+
+  def __init__(self, params, lr, beta1=0.9, beta2=0.999, epsilon=1e-8):
+    super().__init__(params, lr)
+    self.beta1, self.beta2 = beta1, beta2
+    self.epsilon = epsilon
+    self.init_adam_grads()
+  
+  def step(self):
+    Adam.iter+=1
+    self.update_adam_grads()
+    for param in self.params:
+      if param.requires_grad:
+        bias_corrected_momentum_grad = param.momentum_grad/(1-(self.beta1**Adam.iter))
+        bias_corrected_rms_grad = param.rms_grad/(1-(self.beta2**Adam.iter))
+        param.data -= (self.lr*(bias_corrected_momentum_grad/(np.sqrt(bias_corrected_rms_grad)+self.epsilon)))
+  
+  def init_adam_grads(self):
+    for param in self.params:
+      if param.requires_grad:
+        param.momentum_grad = 0
+        param.rms_grad = 0
+  
+  def update_adam_grads(self):
+    for param in self.params:
+      if param.requires_grad:
+        param.momentum_grad = (self.beta1*param.momentum_grad) + ((1-self.beta1)*param.grad)
+        param.rms_grad = (self.beta2*param.rms_grad) + ((1-self.beta2)*np.square(param.grad))
+
+  def reset_iter(self):
+    Adam.iter = 0
+  
+  def __repr__(self):
+    return f'Adam(params={self.params}, lr={self.lr}, beta1={self.beta1}, beta2={self.beta2}, epsilon={self.epsilon})'
+  
+  def __str__(self):
+    return f'Adam(params={self.params}, lr={self.lr}, beta1={self.beta1}, beta2={self.beta2}, epsilon={self.epsilon})'
+    
   
