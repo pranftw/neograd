@@ -1,5 +1,6 @@
 from .layers import Layer
-from ..autograd.ops import relu, sigmoid, tanh
+from ..autograd.ops import relu, sigmoid, tanh, exp, sum as _sum
+import numpy as np
 
 
 class ReLU(Layer):
@@ -33,3 +34,15 @@ class Tanh(Layer):
   
   def __str__(self):
     return 'Tanh'
+
+
+class Softmax(Layer):
+  def forward(self, inputs):
+    exponentiated = exp(inputs-np.max(inputs.data)) # Stabilizing Softmax to prevent Nan
+    return exponentiated/_sum(exponentiated)
+  
+  def __repr__(self):
+    return 'Softmax()'
+  
+  def __str__(self):
+    return 'Softmax'

@@ -1,4 +1,5 @@
 from ..autograd import tensor, dot
+from ..autograd.ops import conv2d
 import numpy as np
 
 
@@ -138,3 +139,23 @@ class Dropout(Layer):
   
   def __str__(self):
     return f'Dropout(prob={self.prob})'
+
+
+class Conv2D(Layer):
+  '''
+    Conv2D
+  '''
+
+  def __init__(self, kernel_shape, padding=0, stride=1):
+    self.padding = padding
+    self.stride = stride
+    self.kernel = Param(np.random.randn(*kernel_shape))
+  
+  def forward(self, inputs):
+    return conv2d(inputs, self.kernel, self.padding, self.stride)
+  
+  def __repr__(self):
+    return f'Conv2D(kernel_shape={self.kernel.shape}, padding={self.padding}, stride={self.stride})'
+  
+  def __str__(self):
+    return f'Conv2D(kernel_shape={self.kernel.shape}, padding={self.padding}, stride={self.stride})'

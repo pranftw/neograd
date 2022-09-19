@@ -436,3 +436,6 @@ def Conv2D(Operation):
   def validate_inputs(self, inputs):
     if len(inputs.shape)!=2:
       raise ValueError("Only 2D inputs are supported!")
+
+def conv2d(inputs, kernel, padding, stride):
+  return Conv2D(kernel, padding, stride).forward(inputs)
