@@ -126,11 +126,11 @@ class Dropout(Layer):
 
   def __init__(self, prob, test=False):
     self.prob = prob
-    self.test = False
+    self.test = False # Should be set to True during test time
   
   def forward(self, inputs):
     if not(self.test):
-      inputs.data = (inputs.data * np.where(np.random.randn(inputs.shape)<self.prob, 1, 0)) / self.prob
+      inputs.data = (inputs.data * np.where(np.random.randn(*(inputs.shape))<self.prob, 1, 0)) / self.prob
     return inputs
   
   def __repr__(self):

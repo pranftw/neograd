@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from .node import Node
 
 
@@ -370,3 +371,68 @@ class Tanh(Operation):
 
 def tanh(tens):
   return Tanh().forward(tens)
+
+
+# <------------CONV2D------------>
+def Conv2D(Operation):
+  def __init__(self, kernel, padding=0, stride=1):
+    super().__init__(self, False)
+    self.kernel = kernel
+    self.padding = padding
+    self.stride = stride
+  
+  def forward(self, inputs):
+    inputs, self.kernel = self.get_tensors(inputs, self.kernel)
+    self.validate_inputs()
+    outputs = []
+    padded_inputs = np.pad(inputs.data, self.padding, 'constant')
+    result_shape = self.get_result_shape(inputs)
+    for fragment, _, _ in self.generate_fragments(padded_inputs):
+      outputs.append(np.sum(fragment*self.kernel.data))
+    return self.get_result_tensor(np.array(outputs).reshape(result_shape), inputs)
+  
+  def backward(self, inputs):
+    inputs = self.get_tensors(inputs)
+    padded_inputs = np.pad(inputs.data, self.padding, 'constant')
+    def grad_backward(ug):
+      ug_flattened = ug.flatten()
+      inputs_grads = np.zeros(padded_inputs.shape)
+      for i, fragment, row_slice, col_slice in enumerate(self.generate_fragments(padded_inputs)):
+        sum_grad = np.ones(self.kernel.shape)*ug_flattened[i]
+        fragment_grad = self.kernel.data*sum_grad # New element wise multiplication backward algo
+        kernel_grad = fragment*sum_grad # New element wise multiplication backward algo
+        inputs_grads[row_slice, col_slice]+=fragment_grad
+        self.kernel.grad+=kernel_grad
+      unpadded_inputs_grads = self.unpad(inputs_grads)
+      return unpadded_inputs_grads
+    inputs.set_grad_fn(grad_backward)
+  
+  def generate_fragments(self, inputs_data):
+    inputs_x_dim, inputs_y_dim = inputs_data.shape
+    kernel_x_dim, kernel_y_dim = self.kernel.shape
+    j = 0
+    while(j+kernel_y_dim<=inputs_y_dim):
+      i = 0
+      while(i+kernel_x_dim<=inputs_x_dim):
+        row_slice = slice(i, i+kernel_x_dim)
+        col_slice = slice(j, j+kernel_y_dim)
+        yield inputs_data[row_slice, col_slice], row_slice, col_slice
+        i+=self.stride
+      j+=self.stride
+  
+  def get_result_shape(self, inputs):
+    inputs_x_dim, inputs_y_dim = inputs.shape
+    kernel_x_dim, kernel_y_dim = self.kernel.shape
+    def result_dim(inputs_dim, kernel_dim):
+      return math.floor(((inputs_dim + (2*self.padding) - kernel_dim)/self.stride) + 1)
+    result_x_dim = result_dim(inputs_x_dim, kernel_x_dim)
+    result_y_dim = result_dim(inputs_y_dim, kernel_y_dim)
+    return result_x_dim, result_y_dim
+  
+  def unpad(self, padded_data):
+    padded_x_dim, padded_y_dim = padded_data.shape
+    return padded_data[self.padding:padded_x_dim-self.padding, self.padding:padded_y_dim-self.padding]
+  
+  def validate_inputs(self, inputs):
+    if len(inputs.shape)!=2:
+      raise ValueError("Only 2D inputs are supported!")
