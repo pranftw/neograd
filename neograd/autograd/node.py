@@ -2,7 +2,7 @@ class Node:
   '''
     Used as an abstraction to connect the graph together and hold relationships
   '''
-  __slots__ = ['tens', 'children', 'parents', 'parent_broadcast_shape', 'parent_needs_broadcasting',
+  __slots__ = ['tens', 'children', 'parents', 'parent_broadcast_shape',
               'backward_fn', 'visited']
 
   def __init__(self, tens):
@@ -14,8 +14,6 @@ class Node:
       parents:[Node] - List of all Nodes(operands) that has resulted in the creation of current Node
       parent_broadcast_shape:np.shape - If the parent needs to be broadcasted from one shape to
         another, then the final broadcasted shape of the parent is stored here
-      parent_needs_broadcasting:Bool - Some Operation demands that broadcasting be done, ex add, but
-        some like dot must not perform broadcasting
       backward_fn:Operation.backward - Sets the grad_fn of Tensor(operand) involved in the Operation
       visited:Bool - If Node is visited or not
     '''
@@ -23,7 +21,6 @@ class Node:
     self.children = []
     self.parents = []
     self.parent_broadcast_shape = None
-    self.parent_needs_broadcasting = None
     self.backward_fn = None
     self.visited = False
   

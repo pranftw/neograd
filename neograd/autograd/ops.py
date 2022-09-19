@@ -97,7 +97,6 @@ class Operation:
     result_tensor = Tensor(result, self.result_requires_grad(tensors))
     if graph.track:
       result_node = Node(result_tensor)
-      result_node.parent_needs_broadcasting = self.operand_needs_broadcasting
       result_node.backward_fn = self.operation.backward
       result_node.parent_broadcast_shape = self.get_broadcast_shape(*tensors)
       graph.add_edge(result_node, tensors)
@@ -155,8 +154,8 @@ class Mul(Operation):
   def backward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
     broadcast_shape = self.get_broadcast_shape(tens1, tens2)
-    tens1.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(tens2.data, broadcast_shape))), ug))
-    tens2.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(tens1.data, broadcast_shape))), ug))
+    tens1.set_grad_fn(lambda ug:tens2.data*ug)
+    tens2.set_grad_fn(lambda ug:tens1.data*ug)
 
 def mul(tens1, tens2):
   return Mul().forward(tens1, tens2)
@@ -175,8 +174,8 @@ class Div(Operation):
   def backward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
     broadcast_shape = self.get_broadcast_shape(tens1, tens2)
-    tens1.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to(1/tens2.data, broadcast_shape))), ug))
-    tens2.set_grad_fn(lambda ug:np.dot(np.diag(np.ndarray.flatten(np.broadcast_to((-1*tens1.data)/np.power(tens2.data, 2), broadcast_shape))), ug))
+    tens1.set_grad_fn(lambda ug:(1/tens2.data)*ug)
+    tens2.set_grad_fn(lambda ug:((-1*tens1.data)/np.power(tens2.data, 2))*ug)
 
 def div(tens1, tens2):
   return Div().forward(tens1, tens2)
@@ -250,8 +249,8 @@ class Pow(Operation):
   def backward(self, tens1, tens2):
     result = np.power(tens1.data, tens2.data)
     tens1, tens2 = self.get_tensors(tens1, tens2)
-    tens1.set_grad_fn(lambda ug:(np.power(tens1.data, tens2.data-1) * tens2.data).flatten()*ug)
-    tens2.set_grad_fn(lambda ug:(result*np.log(tens1.data)).flatten()*ug)
+    tens1.set_grad_fn(lambda ug:(np.power(tens1.data, tens2.data-1) * tens2.data)*ug)
+    tens2.set_grad_fn(lambda ug:(result*np.log(tens1.data))*ug)
 
 def pow(tens1, tens2):
   return Pow().forward(tens1, tens2)
@@ -374,6 +373,7 @@ def tanh(tens):
 
 
 # <------------CONV2D------------>
+
 def Conv2D(Operation):
   def __init__(self, kernel, padding=0, stride=1):
     super().__init__(self, False)

@@ -67,8 +67,6 @@ class Tensor:
       if self.requires_grad:
         child.backward_fn(*[node.tens for node in child.parents])
         upper_grad = child.tens.grad
-        if child.parent_needs_broadcasting:
-          upper_grad = upper_grad.flatten()
         grad = self.grad_fn(upper_grad)
         grad = unbroadcast_data(grad, self.shape, child.parent_broadcast_shape)
         grad = grad.reshape(self.shape)
