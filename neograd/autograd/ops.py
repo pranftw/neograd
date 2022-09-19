@@ -101,7 +101,6 @@ class Add(Operation):
     return self.get_result_tensor(tens1.data+tens2.data, tens1, tens2)
 
   def backward(self, tens1, tens2):
-    tens1, tens2 = self.get_tensors(tens1, tens2)
     tens1.set_grad_fn(lambda ug:ug)
     tens2.set_grad_fn(lambda ug:ug)
 
@@ -117,7 +116,6 @@ class Sub(Operation):
     return self.get_result_tensor(tens1.data-tens2.data, tens1, tens2)
   
   def backward(self, tens1, tens2):
-    tens1, tens2 = self.get_tensors(tens1, tens2)
     tens1.set_grad_fn(lambda ug:ug)
     tens2.set_grad_fn(lambda ug:-ug)
 
@@ -133,8 +131,6 @@ class Mul(Operation):
     return self.get_result_tensor(tens1.data*tens2.data, tens1, tens2)
   
   def backward(self, tens1, tens2):
-    tens1, tens2 = self.get_tensors(tens1, tens2)
-    broadcast_shape = self.get_broadcast_shape(tens1, tens2)
     tens1.set_grad_fn(lambda ug:tens2.data*ug)
     tens2.set_grad_fn(lambda ug:tens1.data*ug)
 
@@ -150,8 +146,6 @@ class Div(Operation):
     return self.get_result_tensor(tens1.data/tens2.data, tens1, tens2)
   
   def backward(self, tens1, tens2):
-    tens1, tens2 = self.get_tensors(tens1, tens2)
-    broadcast_shape = self.get_broadcast_shape(tens1, tens2)
     tens1.set_grad_fn(lambda ug:(1/tens2.data)*ug)
     tens2.set_grad_fn(lambda ug:((-1*tens1.data)/np.power(tens2.data, 2))*ug)
 
@@ -167,7 +161,6 @@ class Dot(Operation):
     return self.get_result_tensor(np.dot(tens1.data, tens2.data), tens1, tens2)
   
   def backward(self, tens1, tens2):
-    tens1, tens2 = self.get_tensors(tens1, tens2)
     tens1.set_grad_fn(lambda ug:np.dot(ug, tens2.data.T))
     tens2.set_grad_fn(lambda ug:np.dot(tens1.data.T, ug))
 
@@ -183,7 +176,6 @@ class Exp(Operation):
     return self.get_result_tensor(np.exp(tens.data), tens)
   
   def backward(self, tens):
-    tens = self.get_tensors(tens)
     tens.set_grad_fn(lambda ug:np.exp(tens.data)*ug)
 
 def exp(tens):
@@ -198,7 +190,6 @@ class Log(Operation):
     return self.get_result_tensor(np.log(tens.data), tens)
   
   def backward(self, tens):
-    tens = self.get_tensors(tens)
     tens.set_grad_fn(lambda ug:(1/tens.data)*ug)
 
 def log(tens):
@@ -214,7 +205,6 @@ class Pow(Operation):
   
   def backward(self, tens1, tens2):
     result = np.power(tens1.data, tens2.data)
-    tens1, tens2 = self.get_tensors(tens1, tens2)
     tens1.set_grad_fn(lambda ug:(np.power(tens1.data, tens2.data-1) * tens2.data)*ug)
     tens2.set_grad_fn(lambda ug:(result*np.log(tens1.data))*ug)
 
@@ -233,8 +223,6 @@ class Sum(Operation):
     return self.get_result_tensor(np.sum(tens.data, axis=self.axis), tens)
   
   def backward(self, tens):
-    tens = self.get_tensors(tens)
-    
     def grad_backward(ug):
       tens_shape = list(tens.shape)
       if self.axis is not None:
@@ -271,7 +259,6 @@ class Transpose(Operation):
     return self.get_result_tensor(tens.data.T, tens)
 
   def backward(self, tens):
-    tens = self.get_tensors(tens)
     tens.set_grad_fn(lambda ug:ug.T)
 
 def transpose(tens):
@@ -286,7 +273,6 @@ class ReLU(Operation):
     return self.get_result_tensor(np.maximum(0, tens.data), tens)
   
   def backward(self, tens):
-    tens = self.get_tensors(tens)
     tens.set_grad_fn(lambda ug:np.where(tens.data>=0, 1, 0)*ug)
 
 def relu(tens):
@@ -301,7 +287,6 @@ class Sigmoid(Operation):
     return self.get_result_tensor(1/(1+np.exp(-tens.data)), tens)
   
   def backward(self, tens):
-    tens = self.get_tensors(tens)
     result = 1/(1+np.exp(-tens.data))
     tens.set_grad_fn(lambda ug:(result*(1-result))*ug)
 
@@ -317,7 +302,6 @@ class Tanh(Operation):
     return self.get_result_tensor(np.tanh(tens.data), tens)
   
   def backward(self, tens):
-    tens = self.get_tensors(tens)
     result = np.tanh(tens.data)
     tens.set_grad_fn(lambda ug:(1-np.power(result,2))*ug)
 
@@ -344,7 +328,6 @@ def Conv2D(Operation):
     return self.get_result_tensor(np.array(outputs).reshape(result_shape), inputs)
   
   def backward(self, inputs):
-    inputs = self.get_tensors(inputs)
     padded_inputs = np.pad(inputs.data, self.padding, 'constant')
     def grad_backward(ug):
       ug_flattened = ug.flatten()
