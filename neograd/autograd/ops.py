@@ -11,16 +11,6 @@ class Operation:
   '''
 
   graph = None
-
-  def __init__(self, operation, operand_needs_broadcasting):
-    '''
-      Params:
-        operation:object(cls(Operation)) - Object of an operation that inherits Operation
-        operand_needs_broadcasting:Bool - If the operand_needs_broadcasting for a pareticular
-          Operation
-    '''
-    self.operation = operation
-    self.operand_needs_broadcasting = operand_needs_broadcasting
   
   def process_operands(self, operands):
     '''
@@ -53,18 +43,15 @@ class Operation:
   
   def get_broadcast_shape(self, *tensors):
     '''
-      If the tensors can be broadcasted and operand_needs_broadcasting, then the broadcasted
+      If the tensors can be broadcasted, then the broadcasted
         shape is returned, else None
       
       Params:
         tensors:*args(Tensor)
     '''
-    if self.operand_needs_broadcasting:
-      try:
-        return np.broadcast_shapes(*(tens.data.shape for tens in tensors))
-      except ValueError:
-        return None
-    else:
+    try:
+      return np.broadcast_shapes(*(tens.data.shape for tens in tensors))
+    except ValueError:
       return None
   
   def result_requires_grad(self, tensors):
@@ -97,18 +84,18 @@ class Operation:
     result_tensor = Tensor(result, self.result_requires_grad(tensors))
     if graph.track:
       result_node = Node(result_tensor)
-      result_node.backward_fn = self.operation.backward
+      result_node.backward_fn = self.backward
       result_node.parent_broadcast_shape = self.get_broadcast_shape(*tensors)
       graph.add_edge(result_node, tensors)
     return result_tensor
+  
+  def backward(self, *args):
+    raise NotImplementedError(f"Backward method not implemented for Operation {self}")
 
 
 # <------------ADD------------>
 
 class Add(Operation):
-  def __init__(self):
-    super().__init__(self, True)
-
   def forward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
     return self.get_result_tensor(tens1.data+tens2.data, tens1, tens2)
@@ -125,9 +112,6 @@ def add(tens1, tens2):
 # <------------SUB------------>
 
 class Sub(Operation):
-  def __init__(self):
-    super().__init__(self, True)
-  
   def forward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
     return self.get_result_tensor(tens1.data-tens2.data, tens1, tens2)
@@ -144,9 +128,6 @@ def sub(tens1, tens2):
 # <------------MUL------------>
 
 class Mul(Operation):
-  def __init__(self):
-    super().__init__(self, True)
-  
   def forward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
     return self.get_result_tensor(tens1.data*tens2.data, tens1, tens2)
@@ -164,9 +145,6 @@ def mul(tens1, tens2):
 # <------------DIV------------>
 
 class Div(Operation):
-  def __init__(self):
-    super().__init__(self, True)
-  
   def forward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
     return self.get_result_tensor(tens1.data/tens2.data, tens1, tens2)
@@ -184,9 +162,6 @@ def div(tens1, tens2):
 # <------------DOT------------>
 
 class Dot(Operation):
-  def __init__(self):
-    super().__init__(self, False)
-  
   def forward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
     return self.get_result_tensor(np.dot(tens1.data, tens2.data), tens1, tens2)
@@ -203,9 +178,6 @@ def dot(tens1, tens2):
 # <------------EXP------------>
 
 class Exp(Operation):
-  def __init__(self):
-    super().__init__(self, False)
-  
   def forward(self, tens):
     tens = self.get_tensors(tens)
     return self.get_result_tensor(np.exp(tens.data), tens)
@@ -221,9 +193,6 @@ def exp(tens):
 # <------------LOG------------>
 
 class Log(Operation):
-  def __init__(self):
-    super().__init__(self, False)
-  
   def forward(self, tens):
     tens = self.get_tensors(tens)
     return self.get_result_tensor(np.log(tens.data), tens)
@@ -239,9 +208,6 @@ def log(tens):
 # <------------POW------------>
 
 class Pow(Operation):
-  def __init__(self):
-    super().__init__(self, True)
-  
   def forward(self, tens1, tens2):
     tens1, tens2 = self.get_tensors(tens1, tens2)
     return self.get_result_tensor(np.power(tens1.data, tens2.data), tens1, tens2)
@@ -260,7 +226,6 @@ def pow(tens1, tens2):
 
 class Sum(Operation):
   def __init__(self, axis=None):
-    super().__init__(self, True)
     self.axis = axis
   
   def forward(self, tens):
@@ -301,9 +266,6 @@ def sum(tens, axis=None):
 # <------------TRANSPOSE------------>
 
 class Transpose(Operation):
-  def __init__(self):
-    super().__init__(self, False)
-  
   def forward(self, tens):
     tens = self.get_tensors(tens)
     return self.get_result_tensor(tens.data.T, tens)
@@ -319,9 +281,6 @@ def transpose(tens):
 # <------------RELU------------>
 
 class ReLU(Operation):
-  def __init__(self):
-    super().__init__(self, False)
-  
   def forward(self, tens):
     tens = self.get_tensors(tens)
     return self.get_result_tensor(np.maximum(0, tens.data), tens)
@@ -337,9 +296,6 @@ def relu(tens):
 # <------------SIGMOID------------>
 
 class Sigmoid(Operation):
-  def __init__(self):
-    super().__init__(self, False)
-  
   def forward(self, tens):
     tens = self.get_tensors(tens)
     return self.get_result_tensor(1/(1+np.exp(-tens.data)), tens)
@@ -356,9 +312,6 @@ def sigmoid(tens):
 # <------------TANH------------>
 
 class Tanh(Operation):
-  def __init__(self):
-    super().__init__(self, False)
-  
   def forward(self, tens):
     tens = self.get_tensors(tens)
     return self.get_result_tensor(np.tanh(tens.data), tens)
@@ -376,7 +329,6 @@ def tanh(tens):
 
 def Conv2D(Operation):
   def __init__(self, kernel, padding=0, stride=1):
-    super().__init__(self, False)
     self.kernel = kernel
     self.padding = padding
     self.stride = stride
