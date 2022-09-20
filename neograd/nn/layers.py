@@ -149,10 +149,13 @@ class Conv2D(Layer):
   def __init__(self, kernel_shape, padding=0, stride=1):
     self.padding = padding
     self.stride = stride
-    self.kernel = Param(np.random.randn(*kernel_shape))
+    if len(kernel_shape)!=2:
+      raise ValueError("Kernel shape can only have 2 dims")
+    self.kernel = Param(np.random.randn(*kernel_shape), requires_grad=True)
+    self.bias = Param(0, requires_grad=True)
   
   def forward(self, inputs):
-    return conv2d(inputs, self.kernel, self.padding, self.stride)
+    return conv2d(inputs, self.kernel, self.bias, self.padding, self.stride)
   
   def __repr__(self):
     return f'Conv2D(kernel_shape={self.kernel.shape}, padding={self.padding}, stride={self.stride})'

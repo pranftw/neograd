@@ -1,6 +1,7 @@
 import numpy as np
 import math
 from .node import Node
+from .utils import unbroadcast_data
 
 
 class Operation:
@@ -341,38 +342,47 @@ def reshape(tens, new_shape):
 # <------------CONV2D------------>
 
 def Conv2D(Operation):
-  def __init__(self, kernel, padding=0, stride=1):
+  def __init__(self, kernel, bias, padding=0, stride=1):
     self.kernel = kernel
+    self.bias = bias
     self.padding = padding
     self.stride = stride
   
   def forward(self, inputs):
     inputs, self.kernel = self.get_tensors(inputs, self.kernel)
     self.validate_inputs()
-    outputs = []
-    padded_inputs = np.pad(inputs.data, self.padding, 'constant')
+    num_examples = inputs.shape[0] # first dim should be number of examples
     result_shape = self.get_result_shape(inputs)
-    for fragment, _, _ in self.generate_fragments(padded_inputs):
-      outputs.append(np.sum(fragment*self.kernel.data))
-    return self.get_result_tensor(np.array(outputs).reshape(result_shape), inputs)
+    outputs = np.empty((num_examples, *result_shape))
+    padded_inputs = np.pad(inputs.data, ((0,0),(self.padding,self.padding),(self.padding,self.padding)))
+    for i, fragment, _, _ in enumerate(self.generate_fragments(padded_inputs)):
+      output = np.sum((fragment*self.kernel.data), axis=2)
+      output = np.sum(output, axis=1) + self.bias.data
+      row = math.floor(i/result_shape[1])
+      col = i%result_shape[1]
+      outputs[:,row,col] = output
+    return self.get_result_tensor(outputs, inputs)
   
   def backward(self, inputs):
-    padded_inputs = np.pad(inputs.data, self.padding, 'constant')
+    padded_inputs = np.pad(inputs.data, ((0,0),(self.padding,self.padding),(self.padding,self.padding)))
     def grad_backward(ug):
+      ug = np.sum(ug, axis=0) # Sum up all the gradients from all the examples
       ug_flattened = ug.flatten()
       inputs_grads = np.zeros(padded_inputs.shape)
       for i, fragment, row_slice, col_slice in enumerate(self.generate_fragments(padded_inputs)):
-        sum_grad = np.ones(self.kernel.shape)*ug_flattened[i]
+        sum_grad = np.ones(fragment.shape)*ug_flattened[i]
         fragment_grad = self.kernel.data*sum_grad # New element wise multiplication backward algo
-        kernel_grad = fragment*sum_grad # New element wise multiplication backward algo
-        inputs_grads[row_slice, col_slice]+=fragment_grad
+        kernel_grad = unbroadcast_data(fragment*sum_grad, self.kernel.shape, fragment.shape) # New element wise multiplication backward algo
+        bias_grad = ug_flattened[i]
+        inputs_grads[:, row_slice, col_slice]+=fragment_grad
         self.kernel.grad+=kernel_grad
+        self.bias.grad+=bias_grad
       unpadded_inputs_grads = self.unpad(inputs_grads)
       return unpadded_inputs_grads
     inputs.set_grad_fn(grad_backward)
   
   def generate_fragments(self, inputs_data):
-    inputs_x_dim, inputs_y_dim = inputs_data.shape
+    inputs_x_dim, inputs_y_dim = inputs_data.shape[1:]
     kernel_x_dim, kernel_y_dim = self.kernel.shape
     j = 0
     while(j+kernel_y_dim<=inputs_y_dim):
@@ -380,12 +390,12 @@ def Conv2D(Operation):
       while(i+kernel_x_dim<=inputs_x_dim):
         row_slice = slice(i, i+kernel_x_dim)
         col_slice = slice(j, j+kernel_y_dim)
-        yield inputs_data[row_slice, col_slice], row_slice, col_slice
+        yield inputs_data[:, row_slice, col_slice], row_slice, col_slice
         i+=self.stride
       j+=self.stride
   
   def get_result_shape(self, inputs):
-    inputs_x_dim, inputs_y_dim = inputs.shape
+    inputs_x_dim, inputs_y_dim = inputs.shape[1:]
     kernel_x_dim, kernel_y_dim = self.kernel.shape
     def result_dim(inputs_dim, kernel_dim):
       return math.floor(((inputs_dim + (2*self.padding) - kernel_dim)/self.stride) + 1)
@@ -394,12 +404,12 @@ def Conv2D(Operation):
     return result_x_dim, result_y_dim
   
   def unpad(self, padded_data):
-    padded_x_dim, padded_y_dim = padded_data.shape
-    return padded_data[self.padding:padded_x_dim-self.padding, self.padding:padded_y_dim-self.padding]
+    padded_x_dim, padded_y_dim = padded_data.shape[1:]
+    return padded_data[:, self.padding:padded_x_dim-self.padding, self.padding:padded_y_dim-self.padding]
   
   def validate_inputs(self, inputs):
-    if len(inputs.shape)!=2:
-      raise ValueError("Only 2D inputs are supported!")
+    if len(inputs.shape)!=3: # The first dimension should be number of examples
+      raise ValueError("Only 3D inputs, with 0th dim as number of examples are supported!")
 
-def conv2d(inputs, kernel, padding, stride):
-  return Conv2D(kernel, padding, stride).forward(inputs)
+def conv2d(inputs, kernel, bias, padding, stride):
+  return Conv2D(kernel, bias, padding, stride).forward(inputs)
