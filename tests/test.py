@@ -3,7 +3,6 @@ import neograd as ng
 import numpy as np
 from neograd.nn.loss import BCE
 from neograd.nn.optim import Adam
-from neograd.nn.utils import get_batches
 from sklearn.datasets import make_circles
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score

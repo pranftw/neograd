@@ -38,7 +38,7 @@ class Tanh(Layer):
 
 class Softmax(Layer):
   def forward(self, inputs):
-    exponentiated = exp(inputs-np.max(inputs.data)) # Stabilizing Softmax to prevent Nan
+    exponentiated = exp(inputs-float(np.max(inputs.data))) # Stabilizing Softmax to prevent Nan
     return exponentiated/_sum(exponentiated)
   
   def __repr__(self):

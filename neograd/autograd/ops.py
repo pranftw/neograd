@@ -311,7 +311,7 @@ def tanh(tens):
 
 # <------------FLATTEN------------>
 
-def Flatten(Operation):
+class Flatten(Operation):
   def forward(self, tens):
     tens = self.get_tensors(tens)
     flattened = tens.data.flatten()
@@ -326,7 +326,7 @@ def flatten(tens):
 
 # <------------RESHAPE------------>
 
-def Reshape(Operation):
+class Reshape(Operation):
   def forward(self, tens, new_shape):
     tens = self.get_tensors(tens)
     return self.get_result_tensor(tens.data.reshape(new_shape), tens)
@@ -340,7 +340,7 @@ def reshape(tens, new_shape):
 
 # <------------CONV2D------------>
 
-def Conv2D(Operation):
+class Conv2D(Operation):
   def __init__(self, kernel, bias, padding=0, stride=1):
     self.kernel = kernel
     self.bias = bias
@@ -349,12 +349,12 @@ def Conv2D(Operation):
   
   def forward(self, inputs):
     inputs, self.kernel = self.get_tensors(inputs, self.kernel)
-    self.validate_inputs()
+    self.validate_inputs(inputs)
     num_examples = inputs.shape[0] # first dim should be number of examples
     result_shape = self.get_result_shape(inputs)
     outputs = np.empty((num_examples, *result_shape))
     padded_inputs = np.pad(inputs.data, ((0,0),(self.padding,self.padding),(self.padding,self.padding)))
-    for i, fragment, _, _ in enumerate(self.generate_fragments(padded_inputs)):
+    for i, (fragment, _, _) in enumerate(self.generate_fragments(padded_inputs)):
       output = np.sum((fragment*self.kernel.data), axis=2)
       output = np.sum(output, axis=1) + self.bias.data
       row = math.floor(i/result_shape[1])
@@ -369,7 +369,7 @@ def Conv2D(Operation):
       ug = np.sum(ug, axis=0) # Sum up all the gradients from all the examples
       ug_flattened = ug.flatten()
       inputs_grads = np.zeros(padded_inputs.shape)
-      for i, fragment, row_slice, col_slice in enumerate(self.generate_fragments(padded_inputs)):
+      for i, (fragment, row_slice, col_slice) in enumerate(self.generate_fragments(padded_inputs)):
         sum_grad = np.ones(fragment.shape)*ug_flattened[i]
         fragment_grad = self.kernel.data*sum_grad # New element wise multiplication backward algo
         kernel_grad = unbroadcast_data(fragment*sum_grad, self.kernel.shape, fragment.shape) # New element wise multiplication backward algo

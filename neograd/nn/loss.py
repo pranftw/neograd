@@ -31,8 +31,8 @@ class BCE(Loss):
   def forward(self, outputs, targets):
     epsilon = 1e-5
     num_examples = outputs.shape[0]
-    entropy = ((outputs*log(targets+epsilon)) + ((1-outputs)*(log(1-targets+epsilon))))
-    cost = (-1/num_examples)*(_sum(entropy))
+    entropy = _sum((outputs*log(targets+epsilon)) + ((1-outputs)*(log(1-targets+epsilon))))
+    cost = (-1/num_examples)*entropy
     return cost
   
   def __repr__(self):
@@ -49,7 +49,9 @@ class CE(Loss):
 
   def forward(self, outputs, targets):
     epsilon = 1e-5
-    cost = -(_sum(targets*log(outputs)))
+    num_examples = outputs.shape[0]
+    entropy = _sum(targets*log(outputs+epsilon))
+    cost = (-1/num_examples)*entropy
     return cost
   
   def __repr__(self):
