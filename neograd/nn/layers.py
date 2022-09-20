@@ -1,5 +1,5 @@
 from ..autograd import tensor, dot
-from ..autograd.ops import conv2d
+from ..autograd.ops import conv2d, flatten
 import numpy as np
 
 
@@ -159,3 +159,18 @@ class Conv2D(Layer):
   
   def __str__(self):
     return f'Conv2D(kernel_shape={self.kernel.shape}, padding={self.padding}, stride={self.stride})'
+
+
+class Flatten(Layer):
+  '''
+    Flatten
+  '''
+
+  def forward(self, inputs):
+    return flatten(inputs)
+  
+  def __repr__(self):
+    return 'Flatten()'
+  
+  def __str__(self):
+    return 'Flatten'

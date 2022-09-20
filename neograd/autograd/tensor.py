@@ -1,5 +1,5 @@
 from .utils import process_data, unbroadcast_data
-from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, dot
+from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, dot, flatten, reshape
 
 
 class Tensor:
@@ -130,6 +130,12 @@ class Tensor:
   
   def exp(self):
     return exp(self)
+  
+  def flatten(self):
+    return flatten(self)
+  
+  def reshape(self, new_shape):
+    return reshape(self, new_shape)
   
   @property
   def data(self):

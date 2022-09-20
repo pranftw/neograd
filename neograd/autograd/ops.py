@@ -309,6 +309,35 @@ def tanh(tens):
   return Tanh().forward(tens)
 
 
+# <------------FLATTEN------------>
+
+def Flatten(Operation):
+  def forward(self, tens):
+    tens = self.get_tensors(tens)
+    flattened = tens.data.flatten()
+    return self.get_result_tensor(flattened.reshape(flattened.shape[0],1), tens)
+  
+  def backward(self, tens):
+    tens.set_grad_fn(lambda ug:ug.reshape(tens.shape))
+
+def flatten(tens):
+  return Flatten().forward(tens)
+
+
+# <------------RESHAPE------------>
+
+def Reshape(Operation):
+  def forward(self, tens, new_shape):
+    tens = self.get_tensors(tens)
+    return self.get_result_tensor(tens.data.reshape(new_shape), tens)
+  
+  def backward(self, tens):
+    tens.set_grad_fn(lambda ug:ug.reshape(tens.shape))
+
+def reshape(tens, new_shape):
+  return Reshape().forward(tens, new_shape)
+
+
 # <------------CONV2D------------>
 
 def Conv2D(Operation):

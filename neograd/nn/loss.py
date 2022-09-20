@@ -1,4 +1,4 @@
-from ..autograd import sum, log
+from ..autograd import sum as _sum, log
 
 
 class Loss:
@@ -12,7 +12,7 @@ class MSE(Loss):
   '''
   def forward(self, outputs, targets):
     num_examples = outputs.shape[-1]
-    cost = (1/(2*num_examples))*sum((outputs-targets)**2)
+    cost = (1/(2*num_examples))*_sum((outputs-targets)**2)
     return cost
   
   def __repr__(self):
@@ -32,7 +32,7 @@ class BCE(Loss):
     epsilon = 1e-5
     num_examples = outputs.shape[-1]
     entropy = ((outputs*log(targets+epsilon)) + ((1-outputs)*(log(1-targets+epsilon))))
-    cost = (-1/num_examples)*(sum(entropy))
+    cost = (-1/num_examples)*(_sum(entropy))
     return cost
   
   def __repr__(self):
@@ -40,3 +40,20 @@ class BCE(Loss):
   
   def __str__(self):
     return 'BinaryCrossEntropy'
+
+
+class CE(Loss):
+  '''
+    Cross Entropy
+  '''
+
+  def forward(self, outputs, targets):
+    epsilon = 1e-5
+    cost = -(_sum(targets*log(outputs)))
+    return cost
+  
+  def __repr__(self):
+    return 'CE()'
+  
+  def __str__(self):
+    return 'CrossEntropy'
