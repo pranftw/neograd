@@ -106,11 +106,11 @@ class Linear(Layer):
   def __init__(self, num_in, num_out):
     self.num_in = num_in
     self.num_out = num_out
-    self.weights = Param(np.random.randn(num_out, num_in), requires_grad=True)
-    self.bias = Param(np.zeros((num_out, 1)), requires_grad=True)
+    self.weights = Param(np.random.randn(num_in, num_out), requires_grad=True)
+    self.bias = Param(np.zeros((1, num_out)), requires_grad=True)
   
   def forward(self, inputs):
-    return dot(self.weights, inputs) + self.bias
+    return dot(inputs, self.weights) + self.bias
   
   def __repr__(self):
     return f'Linear({self.num_in}, {self.num_out})'

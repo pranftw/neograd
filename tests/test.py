@@ -11,8 +11,8 @@ from sklearn.metrics import classification_report, accuracy_score
 X, y = make_circles(n_samples=1000, noise=0.05, random_state=100)
 X_train, X_test, y_train, y_test = train_test_split(X,y)
 
-X_train, X_test = ng.tensor(X_train.T), ng.tensor(X_test.T)
-y_train, y_test = ng.tensor(y_train.T.reshape(1,750)), ng.tensor(y_test.T.reshape(1,250))
+X_train, X_test = ng.tensor(X_train), ng.tensor(X_test)
+y_train, y_test = ng.tensor(y_train.reshape(750,1)), ng.tensor(y_test.reshape(250,1))
 
 num_train = 750
 num_test = 250

@@ -1,7 +1,6 @@
 import numpy as np
 import math
 from .node import Node
-from .utils import unbroadcast_data
 
 
 class Operation:
@@ -364,6 +363,7 @@ def Conv2D(Operation):
     return self.get_result_tensor(outputs, inputs)
   
   def backward(self, inputs):
+    from .utils import unbroadcast_data
     padded_inputs = np.pad(inputs.data, ((0,0),(self.padding,self.padding),(self.padding,self.padding)))
     def grad_backward(ug):
       ug = np.sum(ug, axis=0) # Sum up all the gradients from all the examples
