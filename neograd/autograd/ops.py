@@ -309,6 +309,32 @@ def tanh(tens):
   return Tanh().forward(tens)
 
 
+# <------------SOFTMAX------------>
+
+class Softmax(Operation):
+  def __init__(self, axis):
+    self.axis = axis
+
+  def forward(self, tens):
+    return self.get_result_tensor(self.calc_softmax(tens), tens)
+  
+  def backward(self, tens):
+    tens.set_grad_fn(lambda ug:0*ug)
+
+  def calc_softmax(self, tens):
+    max_vals = np.amax(tens.data, axis=self.axis)
+    max_vals_expanded = np.expand_dims(max_vals, self.axis)
+    max_vals_bc = np.broadcast_to(max_vals_expanded, tens.shape)
+    exponentiated = np.exp(tens.data-max_vals_bc)
+    sum_vals = np.sum(exponentiated, axis=self.axis)
+    sum_vals_expanded = np.expand_dims(sum_vals, self.axis)
+    sum_vals_bc = np.broadcast_to(sum_vals_expanded, tens.shape)
+    return exponentiated/sum_vals_bc
+
+def softmax(tens, axis):
+  return Softmax(axis).forward(tens)
+
+
 # <------------FLATTEN------------>
 
 class Flatten(Operation):
@@ -341,49 +367,61 @@ def reshape(tens, new_shape):
 # <------------CONV2D------------>
 
 class Conv2D(Operation):
-  def __init__(self, kernel, bias, padding=0, stride=1):
-    self.kernel = kernel
-    self.bias = bias
+  def __init__(self, padding=0, stride=1):
     self.padding = padding
     self.stride = stride
   
-  def forward(self, inputs):
-    inputs, self.kernel = self.get_tensors(inputs, self.kernel)
+  def forward(self, inputs, kernel, bias):
+    inputs, kernel, bias = self.get_tensors(inputs, kernel, bias)
     self.validate_inputs(inputs)
     num_examples = inputs.shape[0] # first dim should be number of examples
-    result_shape = self.get_result_shape(inputs)
+    result_shape = self.get_result_shape(inputs.shape, kernel.shape)
     outputs = np.empty((num_examples, *result_shape))
     padded_inputs = np.pad(inputs.data, ((0,0),(self.padding,self.padding),(self.padding,self.padding)))
-    for i, (fragment, _, _) in enumerate(self.generate_fragments(padded_inputs)):
-      output = np.sum((fragment*self.kernel.data), axis=2)
-      output = np.sum(output, axis=1) + self.bias.data
+    for i, (fragment, _, _) in enumerate(self.generate_fragments(padded_inputs, kernel.shape)):
+      output = np.sum((fragment*kernel.data), axis=2)
+      output = np.sum(output, axis=1) + bias.data
       row = math.floor(i/result_shape[1])
       col = i%result_shape[1]
       outputs[:,row,col] = output
-    return self.get_result_tensor(outputs, inputs)
+    return self.get_result_tensor(outputs, inputs, kernel, bias)
   
-  def backward(self, inputs):
+  def backward(self, inputs, kernel, bias):
     from .utils import unbroadcast_data
     padded_inputs = np.pad(inputs.data, ((0,0),(self.padding,self.padding),(self.padding,self.padding)))
-    def grad_backward(ug):
+
+    def inputs_backward(ug):
+      print("Executed inputs")
       ug = np.sum(ug, axis=0) # Sum up all the gradients from all the examples
       ug_flattened = ug.flatten()
       inputs_grads = np.zeros(padded_inputs.shape)
-      for i, (fragment, row_slice, col_slice) in enumerate(self.generate_fragments(padded_inputs)):
+      for i, (fragment, row_slice, col_slice) in enumerate(self.generate_fragments(padded_inputs, kernel.shape)):
         sum_grad = np.ones(fragment.shape)*ug_flattened[i]
-        fragment_grad = self.kernel.data*sum_grad # New element wise multiplication backward algo
-        kernel_grad = unbroadcast_data(fragment*sum_grad, self.kernel.shape, fragment.shape) # New element wise multiplication backward algo
-        bias_grad = ug_flattened[i]
+        fragment_grad = kernel.data*sum_grad
         inputs_grads[:, row_slice, col_slice]+=fragment_grad
-        self.kernel.grad+=kernel_grad
-        self.bias.grad+=bias_grad
       unpadded_inputs_grads = self.unpad(inputs_grads)
       return unpadded_inputs_grads
-    inputs.set_grad_fn(grad_backward)
+
+    def kernel_backward(ug):
+      ug = np.sum(ug, axis=0) # Sum up all the gradients from all the examples
+      ug_flattened = ug.flatten()
+      kernel_grads = np.zeros(kernel.shape)
+      for i, (fragment, row_slice, col_slice) in enumerate(self.generate_fragments(padded_inputs, kernel.shape)):
+        sum_grad = np.ones(fragment.shape)*ug_flattened[i]
+        kernel_grad = unbroadcast_data(fragment*sum_grad, kernel.shape, fragment.shape)
+        kernel_grads+=kernel_grad
+      return kernel_grads
+
+    def bias_backward(ug):
+      return np.sum(ug)
+      
+    inputs.set_grad_fn(inputs_backward)
+    kernel.set_grad_fn(kernel_backward)
+    bias.set_grad_fn(bias_backward)
   
-  def generate_fragments(self, inputs_data):
+  def generate_fragments(self, inputs_data, kernel_shape):
     inputs_x_dim, inputs_y_dim = inputs_data.shape[1:]
-    kernel_x_dim, kernel_y_dim = self.kernel.shape
+    kernel_x_dim, kernel_y_dim = kernel_shape
     j = 0
     while(j+kernel_y_dim<=inputs_y_dim):
       i = 0
@@ -394,9 +432,9 @@ class Conv2D(Operation):
         i+=self.stride
       j+=self.stride
   
-  def get_result_shape(self, inputs):
-    inputs_x_dim, inputs_y_dim = inputs.shape[1:]
-    kernel_x_dim, kernel_y_dim = self.kernel.shape
+  def get_result_shape(self, inputs_shape, kernel_shape):
+    inputs_x_dim, inputs_y_dim = inputs_shape[1:]
+    kernel_x_dim, kernel_y_dim = kernel_shape
     def result_dim(inputs_dim, kernel_dim):
       return math.floor(((inputs_dim + (2*self.padding) - kernel_dim)/self.stride) + 1)
     result_x_dim = result_dim(inputs_x_dim, kernel_x_dim)
@@ -412,4 +450,4 @@ class Conv2D(Operation):
       raise ValueError("Only 3D inputs, with 0th dim as number of examples are supported!")
 
 def conv2d(inputs, kernel, bias, padding, stride):
-  return Conv2D(kernel, bias, padding, stride).forward(inputs)
+  return Conv2D(padding, stride).forward(inputs, kernel, bias)

@@ -15,7 +15,7 @@ def process_data(data):
     if not isinstance(data, np.ndarray):
       data = np.array(data)
     try:
-      data = data.astype(float)
+      data = data.astype(np.float32)
     except ValueError:
       raise TypeError("Elements of data should be of type float or be typecastable to float")
   else:
