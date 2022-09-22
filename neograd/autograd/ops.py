@@ -235,7 +235,7 @@ class Sum(Operation):
         lg = np.ones(tens.shape)
 
       if self.axis is not None:
-        grads = np.dot(lg, ug)
+        grads = lg*ug
         try:
           num_repeat = tens.shape[self.axis]
         except IndexError:
@@ -319,7 +319,18 @@ class Softmax(Operation):
     return self.get_result_tensor(self.calc_softmax(tens), tens)
   
   def backward(self, tens):
-    tens.set_grad_fn(lambda ug:0*ug)
+    def softmax_backward(arr): # arr will always be 1d array
+      grads = -np.broadcast_to(arr, (arr.size, arr.size))
+      np.fill_diagonal(grads, 1+(np.diagonal(grads)))
+      grads *= arr
+      return np.dot(grads, arr)
+
+    def grad_backward(ug):
+      result = self.calc_softmax(tens)
+      local_grads = np.apply_along_axis(softmax_backward, self.axis, result)
+      return local_grads*ug
+
+    tens.set_grad_fn(grad_backward)
 
   def calc_softmax(self, tens):
     max_vals = np.amax(tens.data, axis=self.axis)
