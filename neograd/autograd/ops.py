@@ -235,7 +235,7 @@ class Sum(Operation):
         lg = np.ones(tens.shape)
 
       if self.axis is not None:
-        grads = lg*ug
+        grads = np.dot(lg,ug)
         try:
           num_repeat = tens.shape[self.axis]
         except IndexError:
@@ -316,7 +316,9 @@ class Softmax(Operation):
     self.axis = axis
 
   def forward(self, tens):
-    return self.get_result_tensor(self.calc_softmax(tens), tens)
+    tens = self.get_tensors(tens)
+    result = np.apply_along_axis(self.calc_softmax, self.axis, tens.data)
+    return self.get_result_tensor(result, tens)
   
   def backward(self, tens):
     def softmax_backward(arr): # arr will always be 1d array
@@ -326,21 +328,18 @@ class Softmax(Operation):
       return np.dot(grads, arr)
 
     def grad_backward(ug):
-      result = self.calc_softmax(tens)
+      result = np.apply_along_axis(self.calc_softmax, self.axis, tens.data)
       local_grads = np.apply_along_axis(softmax_backward, self.axis, result)
       return local_grads*ug
 
     tens.set_grad_fn(grad_backward)
 
-  def calc_softmax(self, tens):
-    max_vals = np.amax(tens.data, axis=self.axis)
-    max_vals_expanded = np.expand_dims(max_vals, self.axis)
-    max_vals_bc = np.broadcast_to(max_vals_expanded, tens.shape)
-    exponentiated = np.exp(tens.data-max_vals_bc)
-    sum_vals = np.sum(exponentiated, axis=self.axis)
-    sum_vals_expanded = np.expand_dims(sum_vals, self.axis)
-    sum_vals_bc = np.broadcast_to(sum_vals_expanded, tens.shape)
-    return exponentiated/sum_vals_bc
+  def calc_softmax(self, arr):
+    mean_val = np.mean(arr)
+    std_val = np.std(arr)
+    exponentiated = np.exp((arr-mean_val)/std_val)
+    sum_val = np.sum(exponentiated)
+    return exponentiated/sum_val
 
 def softmax(tens, axis):
   return Softmax(axis).forward(tens)
@@ -402,23 +401,20 @@ class Conv2D(Operation):
     padded_inputs = np.pad(inputs.data, ((0,0),(self.padding,self.padding),(self.padding,self.padding)))
 
     def inputs_backward(ug):
-      print("Executed inputs")
-      ug = np.sum(ug, axis=0) # Sum up all the gradients from all the examples
-      ug_flattened = ug.flatten()
       inputs_grads = np.zeros(padded_inputs.shape)
       for i, (fragment, row_slice, col_slice) in enumerate(self.generate_fragments(padded_inputs, kernel.shape)):
-        sum_grad = np.ones(fragment.shape)*ug_flattened[i]
+        sliced_ug = ug[:,row_slice.start,col_slice.start]
+        sum_grad = np.ones(fragment.shape)*sliced_ug.reshape(sliced_ug.size,1,1)
         fragment_grad = kernel.data*sum_grad
         inputs_grads[:, row_slice, col_slice]+=fragment_grad
       unpadded_inputs_grads = self.unpad(inputs_grads)
       return unpadded_inputs_grads
 
     def kernel_backward(ug):
-      ug = np.sum(ug, axis=0) # Sum up all the gradients from all the examples
-      ug_flattened = ug.flatten()
       kernel_grads = np.zeros(kernel.shape)
       for i, (fragment, row_slice, col_slice) in enumerate(self.generate_fragments(padded_inputs, kernel.shape)):
-        sum_grad = np.ones(fragment.shape)*ug_flattened[i]
+        sliced_ug = ug[:,row_slice.start,col_slice.start]
+        sum_grad = np.ones(fragment.shape)*sliced_ug.reshape(sliced_ug.size,1,1)
         kernel_grad = unbroadcast_data(fragment*sum_grad, kernel.shape, fragment.shape)
         kernel_grads+=kernel_grad
       return kernel_grads

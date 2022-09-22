@@ -11,7 +11,7 @@ X, y = load_digits(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 num_train, num_test = 10, 10
-num_iter = 5
+num_iter = 1000
 
 def one_hot(cls_arr, num_examples, num_classes):
   encoded = np.zeros((num_examples, num_classes))
@@ -50,12 +50,14 @@ class NN(ng.nn.Model):
 model = NN()
 
 loss_fn = CE()
-optim = Adam(model.get_params(), 0.05)
+optim = Adam(model.get_params(), 0.5)
 
 for iter in range(num_iter):
   optim.zero_grad()
   outputs = model(X_train)
+  # print(np.array_str(outputs.data, precision=2, suppress_small=True))
   loss = loss_fn(outputs, y_train)
   loss.backward()
   optim.step()
-  print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+  if iter%50==0:
+    print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
