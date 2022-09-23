@@ -29,7 +29,7 @@ class BCE(Loss):
     epsilon used here to prevent log0
   '''
   def forward(self, outputs, targets):
-    epsilon = 1e-5
+    epsilon = 1e-8
     num_examples = outputs.shape[0]
     entropy = _sum((outputs*log(targets+epsilon)) + ((1-outputs)*(log(1-targets+epsilon))))
     cost = (-1/num_examples)*entropy
@@ -48,7 +48,7 @@ class CE(Loss):
   '''
 
   def forward(self, outputs, targets):
-    epsilon = 1e-5
+    epsilon = 1e-8
     num_examples = outputs.shape[0]
     entropy = _sum(targets*log(outputs+epsilon))
     cost = (-1/num_examples)*entropy

@@ -324,7 +324,7 @@ class Softmax(Operation):
     def softmax_backward(arr): # arr will always be 1d array
       grads = -np.broadcast_to(arr, (arr.size, arr.size))
       np.fill_diagonal(grads, 1+(np.diagonal(grads)))
-      grads *= arr
+      grads *= arr.reshape(arr.size, 1)
       return np.dot(grads, arr)
 
     def grad_backward(ug):
@@ -335,9 +335,7 @@ class Softmax(Operation):
     tens.set_grad_fn(grad_backward)
 
   def calc_softmax(self, arr):
-    mean_val = np.mean(arr)
-    std_val = np.std(arr)
-    exponentiated = np.exp((arr-mean_val)/std_val)
+    exponentiated = np.exp(arr-np.max(arr))
     sum_val = np.sum(exponentiated)
     return exponentiated/sum_val
 
