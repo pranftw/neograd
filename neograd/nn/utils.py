@@ -25,6 +25,19 @@ def get_batches(inputs, targets, num_examples, batch_size=None):
     yield (inputs[end:], targets[end:])
 
 def grad_check(model, inputs, targets, loss_fn):
+  '''
+    Implements Gradient Check, to make sure that backprop is calculating
+      the right gradients.
+    If distance between backprop gradients and numerical gradients is less
+      than epsilon=1e-7, then the gradients are proper, if not there is
+      an issue
+    
+    Params:
+      model:Model - The Neural Network to be evaluated
+      inputs:Tensor - Input data(No need for complete data, only sample enough)
+      targets:Tensor - Targets
+      loss_fn:Loss - Loss Function
+  '''
   epsilon = 1e-7
   params = model.get_params()
   analytical_grads = []
@@ -53,5 +66,9 @@ def grad_check(model, inputs, targets, loss_fn):
 
   analytical_grads = np.array(analytical_grads)
   calculated_grads = np.array(calculated_grads)
-  checker = np.linalg.norm(analytical_grads-calculated_grads)/(np.linalg.norm(analytical_grads) + np.linalg.norm(calculated_grads))
-  print(checker)
+  dist = np.linalg.norm(analytical_grads-calculated_grads)/(np.linalg.norm(analytical_grads) + np.linalg.norm(calculated_grads))
+  print("Gradient Check Distance:", dist)
+  if dist<epsilon:
+    print("Gradient Check PASSED")
+  else:
+    print("Gradient Check FAILED")
