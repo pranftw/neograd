@@ -321,16 +321,24 @@ class Softmax(Operation):
     return self.get_result_tensor(result, tens)
   
   def backward(self, tens):
-    def softmax_backward(arr): # arr will always be 1d array
-      grads = -np.broadcast_to(arr, (arr.size, arr.size))
-      np.fill_diagonal(grads, 1+(np.diagonal(grads)))
-      grads *= arr.reshape(arr.size, 1)
-      return np.dot(grads, arr)
+    def softmax_grad(arr, ug_slices, counter): # arr will always be 1d array
+      local_grad = -np.broadcast_to(arr, (arr.size, arr.size))
+      np.fill_diagonal(local_grad, 1+np.diagonal(local_grad))
+      local_grad = local_grad*arr.reshape(arr.size, 1)
+      result = np.dot(local_grad, ug_slices[counter])
+      counter+=1
+      return result
+    
+    def get_ug_slices(arr, ug_slices):
+      ug_slices.append(arr)
 
     def grad_backward(ug):
       result = np.apply_along_axis(self.calc_softmax, self.axis, tens.data)
-      local_grads = np.apply_along_axis(softmax_backward, self.axis, result)
-      return local_grads*ug
+      counter = 0
+      ug_slices = []
+      np.apply_along_axis(get_ug_slices, self.axis, ug, ug_slices)
+      grads = np.apply_along_axis(softmax_grad, self.axis, result, ug_slices, counter)
+      return grads
 
     tens.set_grad_fn(grad_backward)
 

@@ -11,7 +11,7 @@ from sklearn.metrics import classification_report, accuracy_score
 X, y = load_digits(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
-num_train, num_test = 10, 10
+num_train, num_test = 20, 10
 num_iter = 10
 
 def one_hot(cls_arr, num_examples, num_classes):
@@ -41,10 +41,9 @@ class NN(ng.nn.Model):
   def __init__(self):
     super().__init__(self)
     self.stack = ng.nn.Sequential(
-        ng.nn.Linear(64,25),
-        ng.nn.Tanh(),
-        ng.nn.Linear(25,10),
-        ng.nn.Softmax(axis=1)
+      ng.nn.Linear(64,10),
+      ng.nn.ReLU(),
+      ng.nn.Softmax(axis=1)
     )
   
   def forward(self, inputs):
@@ -62,7 +61,7 @@ optim = GD(model.get_params(), 5e-5)
 #   loss.backward()
 #   optim.step()
 #   print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
-#   # if iter%50==0:
-#   #   print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+  # if iter%50==0:
+  #   print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
 
 grad_check(model, X_train, y_train, loss_fn)
