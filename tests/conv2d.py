@@ -4,7 +4,7 @@ import numpy as np
 from neograd.nn.loss import MSE
 
 inputs = ng.tensor(np.random.randn(2,6,6), requires_grad=True)
-conv = ng.nn.Conv2D((3,3))
+conv = ng.nn.Conv2D((3,3),2,2)
 loss_fn = MSE()
 
 outputs = conv(inputs)

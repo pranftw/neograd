@@ -394,23 +394,21 @@ class Conv2D(Operation):
     num_examples = inputs.shape[0] # first dim should be number of examples
     result_shape = self.get_result_shape(inputs.shape, kernel.shape)
     outputs = np.empty((num_examples, *result_shape))
-    padded_inputs = np.pad(inputs.data, ((0,0),(self.padding,self.padding),(self.padding,self.padding)))
-    for i, (fragment, _, _) in enumerate(self.generate_fragments(padded_inputs, kernel.shape)):
+    padded_inputs = self.pad(inputs.data)
+    for (fragment, _, _), idx in self.fragment_iterator(padded_inputs, kernel,np.ndindex(outputs.shape[1:])):
       output = np.sum((fragment*kernel.data), axis=2)
       output = np.sum(output, axis=1) + bias.data
-      row = math.floor(i/result_shape[1])
-      col = i%result_shape[1]
-      outputs[:,row,col] = output
+      outputs[:,idx[0],idx[1]] = output
     return self.get_result_tensor(outputs, inputs, kernel, bias)
   
   def backward(self, inputs, kernel, bias):
     from .utils import unbroadcast_data
-    padded_inputs = np.pad(inputs.data, ((0,0),(self.padding,self.padding),(self.padding,self.padding)))
+    padded_inputs = self.pad(inputs.data)
 
     def inputs_backward(ug):
       inputs_grads = np.zeros(padded_inputs.shape)
-      for fragment, row_slice, col_slice in self.generate_fragments(padded_inputs, kernel.shape):
-        sliced_ug = ug[:,row_slice.start,col_slice.start]
+      for (fragment, row_slice, col_slice), idx in self.fragment_iterator(padded_inputs, kernel,np.ndindex(ug.shape[1:])):
+        sliced_ug = ug[:,idx[0],idx[1]]
         sum_grad = np.ones(fragment.shape)*sliced_ug.reshape(sliced_ug.size,1,1)
         fragment_grad = kernel.data*sum_grad
         inputs_grads[:, row_slice, col_slice]+=fragment_grad
@@ -419,8 +417,8 @@ class Conv2D(Operation):
 
     def kernel_backward(ug):
       kernel_grads = np.zeros(kernel.shape)
-      for fragment, row_slice, col_slice in self.generate_fragments(padded_inputs, kernel.shape):
-        sliced_ug = ug[:,row_slice.start,col_slice.start]
+      for (fragment, _, _), idx in self.fragment_iterator(padded_inputs, kernel,np.ndindex(ug.shape[1:])):
+        sliced_ug = ug[:,idx[0],idx[1]]
         sum_grad = np.ones(fragment.shape)*sliced_ug.reshape(sliced_ug.size,1,1)
         kernel_grad = unbroadcast_data(fragment*sum_grad, kernel.shape, fragment.shape)
         kernel_grads+=kernel_grad
@@ -455,9 +453,15 @@ class Conv2D(Operation):
     result_y_dim = result_dim(inputs_y_dim, kernel_y_dim)
     return result_x_dim, result_y_dim
   
+  def pad(self, data):
+    return np.pad(data, ((0,0),(self.padding,self.padding),(self.padding,self.padding)))
+
   def unpad(self, padded_data):
     padded_x_dim, padded_y_dim = padded_data.shape[1:]
     return padded_data[:, self.padding:padded_x_dim-self.padding, self.padding:padded_y_dim-self.padding]
+  
+  def fragment_iterator(self, padded_inputs, kernel, *args):
+    return zip(self.generate_fragments(padded_inputs, kernel.shape), *args)
   
   def validate_inputs(self, inputs):
     if len(inputs.shape)!=3: # The first dimension should be number of examples
