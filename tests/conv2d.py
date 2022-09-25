@@ -3,7 +3,7 @@ import neograd as ng
 import numpy as np
 from neograd.nn.loss import MSE
 
-inputs = ng.tensor([[[1,1,1],[1,1,1],[1,1,1]],[[2,2,2],[2,2,2],[2,2,2]]], requires_grad=True)
+inputs = ng.tensor(np.random.randn(2,6,6), requires_grad=True)
 conv = ng.nn.Conv2D((3,3))
 loss_fn = MSE()
 
