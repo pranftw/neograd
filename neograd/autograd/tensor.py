@@ -3,13 +3,13 @@ from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, d
 
 
 class Tensor:
-  __slots__ = ['_data', 'requires_grad', 'grad', 'grad_fn']
+  __slots__ = ['_data', 'requires_grad', 'requires_broadcasting', 'grad', 'grad_fn']
   '''
     The main computational element which abstracts the np.ndarray used to
       perform all the Operation
   '''
 
-  def __init__(self, data, requires_grad=False):
+  def __init__(self, data, requires_grad=False, requires_broadcasting=True):
     '''
       Params:
         data:int/float/np.ndarray/[] - Data to be stored in the tensor
@@ -20,6 +20,7 @@ class Tensor:
     '''
     self.data = data
     self.requires_grad = requires_grad
+    self.requires_broadcasting = requires_broadcasting
     self.grad = 0. if requires_grad else None
     self.grad_fn = None
   

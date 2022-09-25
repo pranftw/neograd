@@ -49,6 +49,9 @@ class Operation:
       Params:
         tensors:*args(Tensor)
     '''
+    for tens in tensors:
+      if not(tens.requires_broadcasting):
+        return None
     try:
       return np.broadcast_shapes(*(tens.data.shape for tens in tensors))
     except ValueError:
@@ -406,7 +409,7 @@ class Conv2D(Operation):
 
     def inputs_backward(ug):
       inputs_grads = np.zeros(padded_inputs.shape)
-      for i, (fragment, row_slice, col_slice) in enumerate(self.generate_fragments(padded_inputs, kernel.shape)):
+      for fragment, row_slice, col_slice in self.generate_fragments(padded_inputs, kernel.shape):
         sliced_ug = ug[:,row_slice.start,col_slice.start]
         sum_grad = np.ones(fragment.shape)*sliced_ug.reshape(sliced_ug.size,1,1)
         fragment_grad = kernel.data*sum_grad
@@ -416,7 +419,7 @@ class Conv2D(Operation):
 
     def kernel_backward(ug):
       kernel_grads = np.zeros(kernel.shape)
-      for i, (fragment, row_slice, col_slice) in enumerate(self.generate_fragments(padded_inputs, kernel.shape)):
+      for fragment, row_slice, col_slice in self.generate_fragments(padded_inputs, kernel.shape):
         sliced_ug = ug[:,row_slice.start,col_slice.start]
         sum_grad = np.ones(fragment.shape)*sliced_ug.reshape(sliced_ug.size,1,1)
         kernel_grad = unbroadcast_data(fragment*sum_grad, kernel.shape, fragment.shape)

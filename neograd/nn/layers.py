@@ -65,8 +65,8 @@ class Param(tensor):
       necessarily param
   '''
 
-  def __init__(self, data, requires_grad=False):
-    super().__init__(data, requires_grad)
+  def __init__(self, data, requires_grad=False, requires_broadcasting=True):
+    super().__init__(data, requires_grad, requires_broadcasting)
   
   def __str__(self):
     return f'Param({super().__str__()})'
@@ -151,8 +151,8 @@ class Conv2D(Layer):
     self.stride = stride
     if len(kernel_shape)!=2:
       raise ValueError("Kernel shape can only have 2 dims")
-    self.kernel = Param(np.random.randn(*kernel_shape), requires_grad=True)
-    self.bias = Param(0, requires_grad=True)
+    self.kernel = Param(np.random.randn(*kernel_shape), requires_grad=True, requires_broadcasting=False)
+    self.bias = Param(0, requires_grad=True, requires_broadcasting=False)
   
   def forward(self, inputs):
     return conv2d(inputs, self.kernel, self.bias, self.padding, self.stride)

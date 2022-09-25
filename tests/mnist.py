@@ -25,34 +25,34 @@ def one_hot(cls_arr, num_examples, num_classes):
 X_train_norm = (X_train - np.mean(X_train, keepdims=True))/np.std(X_train, keepdims=True)
 X_test_norm = (X_test - np.mean(X_test, keepdims=True))/np.std(X_test, keepdims=True)
 
-# X_train = ng.tensor(X_train_norm[:num_train,:].reshape(num_train,8,8))
-# X_test = ng.tensor(X_test_norm[:num_test,:].reshape(num_test,8,8))
-# y_train = ng.tensor(one_hot(y_train[:num_train], num_train, 10))
-# y_test = ng.tensor(one_hot(y_test[:num_test], num_test, 10))
-
-X_train = ng.tensor(X_train_norm[:num_train,:])
-X_test = ng.tensor(X_test_norm[:num_test,:])
+X_train = ng.tensor(X_train_norm[:num_train,:].reshape(num_train,8,8))
+X_test = ng.tensor(X_test_norm[:num_test,:].reshape(num_test,8,8))
 y_train = ng.tensor(one_hot(y_train[:num_train], num_train, 10))
 y_test = ng.tensor(one_hot(y_test[:num_test], num_test, 10))
+
+# X_train = ng.tensor(X_train_norm[:num_train,:])
+# X_test = ng.tensor(X_test_norm[:num_test,:])
+# y_train = ng.tensor(one_hot(y_train[:num_train], num_train, 10))
+# y_test = ng.tensor(one_hot(y_test[:num_test], num_test, 10))
 
 # print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
 
 class NN(ng.nn.Model):
   def __init__(self):
     super().__init__(self)
-    self.stack = ng.nn.Sequential(
-      ng.nn.Linear(64,100),
-      ng.nn.ReLU(),
-      ng.nn.Linear(100,50),
-      ng.nn.Tanh(),
-      ng.nn.Linear(50,25),
-      ng.nn.ReLU(),
-      ng.nn.Linear(25,10),
-      ng.nn.Softmax(1)
+    self.conv = ng.nn.Sequential(
+      ng.nn.Conv2D((3,3)),
+      ng.nn.ReLU()
     )
-  
+    self.stack = ng.nn.Sequential(
+        ng.nn.Linear(36,10),
+        ng.nn.Softmax(1)
+    )
+
   def forward(self, inputs):
-    return self.stack(inputs)
+    conv_outputs = self.conv(inputs)
+    conv_outputs_flattened = conv_outputs.reshape((inputs.shape[0], 36))
+    return self.stack(conv_outputs_flattened)
 
 model = NN()
 
