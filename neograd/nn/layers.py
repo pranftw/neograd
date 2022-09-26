@@ -162,3 +162,28 @@ class Conv2D(Layer):
   
   def __str__(self):
     return f'Conv2D(kernel_shape={self.kernel.shape}, padding={self.padding}, stride={self.stride})'
+
+
+class Conv3D(Layer):
+  '''
+    Conv3D
+  '''
+
+  def __init__(self, in_channels, out_channels, kernel_shape, padding, stride):
+    self.padding = padding
+    self.stride = stride
+    if len(kernel_shape)!=2:
+      raise ValueError("Kernel shape can only have 2 dims")
+    self.kernel = Param(np.random.randn(out_channels, in_channels, *kernel_shape), requires_grad=True, requires_broadcasting=False)
+    self.bias = Param(np.zeros((in_channels, 1, 1)), requires_grad=True, requires_broadcasting=False)
+  
+  # def forward(self, inputs):
+  #   return conv3d(inputs, self.kernel, self.bias, self.padding, self.stride)
+  
+  def __repr__(self):
+    kernel_shape = self.kernel.shape
+    return f'Conv3D(out_channels={kernel_shape[0]}, in_channels={kernel_shape[1]}, kernel_shape={kernel_shape[2:]}, padding={self.padding}, stride={self.stride})'
+  
+  def __str__(self):
+    kernel_shape = self.kernel.shape
+    return f'Conv3D(out_channels={kernel_shape[0]}, in_channels={kernel_shape[1]}, kernel_shape={kernel_shape[2:]}, padding={self.padding}, stride={self.stride})'
