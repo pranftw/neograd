@@ -1,5 +1,5 @@
 import numpy as np
-from .ops import Operation
+from .ops.operation import Operation
 from .graph import Graph
 from itertools import zip_longest
 
