@@ -105,7 +105,7 @@ def fn_grad_check(fn, inputs, *params, targets=None, loss_fn=None, epsilon=1e-7)
   analytical_grads = []
   calculated_grads = []
 
-  def get_loss():
+  def get_loss(targets=targets):
     outputs = fn(inputs)
     targets = tensor(np.ones(outputs.shape)) if targets is None else targets
     loss = loss_fn(outputs, targets)

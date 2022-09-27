@@ -1,5 +1,5 @@
 from ..autograd import tensor, dot
-from ..autograd.ops import conv2d
+from ..autograd.ops import conv2d, conv3d
 import numpy as np
 
 
@@ -169,16 +169,16 @@ class Conv3D(Layer):
     Conv3D
   '''
 
-  def __init__(self, in_channels, out_channels, kernel_shape, padding, stride):
+  def __init__(self, in_channels, out_channels, kernel_shape, padding=0, stride=1):
     self.padding = padding
     self.stride = stride
     if len(kernel_shape)!=2:
       raise ValueError("Kernel shape can only have 2 dims")
     self.kernel = Param(np.random.randn(out_channels, in_channels, *kernel_shape), requires_grad=True, requires_broadcasting=False)
-    self.bias = Param(np.zeros((in_channels, 1, 1)), requires_grad=True, requires_broadcasting=False)
+    self.bias = Param(np.zeros(out_channels), requires_grad=True, requires_broadcasting=False)
   
-  # def forward(self, inputs):
-  #   return conv3d(inputs, self.kernel, self.bias, self.padding, self.stride)
+  def forward(self, inputs):
+    return conv3d(inputs, self.kernel, self.bias, self.padding, self.stride)
   
   def __repr__(self):
     kernel_shape = self.kernel.shape
