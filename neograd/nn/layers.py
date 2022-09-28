@@ -1,5 +1,5 @@
 from ..autograd import tensor, dot
-from ..autograd.ops import conv2d, conv3d
+from ..autograd.ops import conv2d, conv3d, maxpool2d, maxpool3d
 import numpy as np
 
 
@@ -187,3 +187,47 @@ class Conv3D(Layer):
   def __str__(self):
     kernel_shape = self.kernel.shape
     return f'Conv3D(out_channels={kernel_shape[0]}, in_channels={kernel_shape[1]}, kernel_shape={kernel_shape[2:]}, padding={self.padding}, stride={self.stride})'
+
+
+class MaxPool2D(Layer):
+  '''
+    MaxPool2D
+  '''
+  
+  def __init__(self, kernel_shape, padding=0, stride=1):
+    self.padding = padding
+    self.stride = stride
+    if len(kernel_shape)!=2:
+      raise ValueError("Kernel shape can only have 2 dims")
+    self.kernel_shape = kernel_shape
+  
+  def forward(self, inputs):
+    return maxpool2d(inputs, self.kernel_shape, self.padding, self.stride)
+  
+  def __repr__(self):
+    return f'MaxPool2D(kernel_shape={self.kernel_shape}, padding={self.padding}, stride={self.stride})'
+  
+  def __str__(self):
+    return f'MaxPool2D(kernel_shape={self.kernel_shape}, padding={self.padding}, stride={self.stride})'
+
+
+class MaxPool3D(Layer):
+  '''
+    MaxPool3D
+  '''
+
+  def __init__(self, kernel_shape, padding=0, stride=1):
+    self.padding = padding
+    self.stride = stride
+    if len(kernel_shape)!=2:
+      raise ValueError("Kernel shape can only have 2 dims")
+    self.kernel_shape = kernel_shape
+  
+  def forward(self, inputs):
+    return maxpool3d(inputs, self.kernel_shape, self.padding, self.stride)
+  
+  def __repr__(self):
+    return f'MaxPool3D(kernel_shape={self.kernel_shape}, padding={self.padding}, stride={self.stride})'
+  
+  def __str__(self):
+    return f'MaxPool3D(kernel_shape={self.kernel_shape}, padding={self.padding}, stride={self.stride})'

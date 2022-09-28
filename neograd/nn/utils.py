@@ -1,5 +1,5 @@
 import numpy as np
-from ..autograd.utils import no_track
+from ..autograd.utils import no_track, new_graph
 from ..autograd import tensor
 from .loss import MSE
 
@@ -77,10 +77,10 @@ def grad_check(model, inputs, targets, loss_fn, epsilon=1e-7):
     loss = loss_fn(outputs, targets)
     return loss
 
-  loss = get_loss()
-  loss.backward()
-
-  _wiggle_params(analytical_grads, calculated_grads, params, get_loss, epsilon)
+  with new_graph():
+    loss = get_loss()
+    loss.backward()
+    _wiggle_params(analytical_grads, calculated_grads, params, get_loss, epsilon)
 
   analytical_grads = np.array(analytical_grads)
   calculated_grads = np.array(calculated_grads)
@@ -111,10 +111,10 @@ def fn_grad_check(fn, inputs, *params, targets=None, loss_fn=None, epsilon=1e-7)
     loss = loss_fn(outputs, targets)
     return loss
   
-  loss = get_loss()
-  loss.backward()
-
-  _wiggle_params(analytical_grads, calculated_grads, params, get_loss, epsilon)
+  with new_graph():
+    loss = get_loss()
+    loss.backward()
+    _wiggle_params(analytical_grads, calculated_grads, params, get_loss, epsilon)
 
   analytical_grads = np.array(analytical_grads)
   calculated_grads = np.array(calculated_grads)
