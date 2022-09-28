@@ -12,14 +12,18 @@ class Container:
   def __call__(self, inputs):
     return self.forward(inputs)
 
-  def get_params(self):
+  def get_params(self, params_taken):
     '''
       Goes through all the layers in the Container and gets the params of each Layer
     '''
     params = []
     for layer in self.layers:
-      params+=layer.get_params()
+      params+=layer.get_params(params_taken)
     return params
+  
+  def set_eval(self, eval):
+    for layer in self.layers:
+      layer.set_eval(eval)
   
   def __repr__(self):
     layers = []
@@ -37,25 +41,29 @@ class Container:
 
 
 class Layer:
-  __slots__ = []
   '''
     Performs some kind of computation taking in inputs and giving out outputs
   '''
+  def __init__(self):
+    self.eval = False
 
   def __call__(self, inputs):
     return self.forward(inputs)
 
-  def get_params(self):
+  def get_params(self, params_taken):
     '''
       If any of the attributes in a Layer is instance of Param, then it is automatically
         considered as a param for the whole model
     '''
     params = []
     for attr in dir(self):
-      attr_val = self.__getattribute__(attr)
-      if isinstance(attr_val, Param):
-        params.append(attr_val)
+      val = self.__getattribute__(attr)
+      if isinstance(val, Param) and (val not in params_taken):
+        params.append(val)
     return params
+  
+  def set_eval(self, eval):
+    self.eval = eval
 
 
 class Param(tensor):
@@ -127,10 +135,9 @@ class Dropout(Layer):
 
   def __init__(self, prob, test=False):
     self.prob = prob
-    self.test = False # Should be set to True during test time
   
   def forward(self, inputs):
-    if not(self.test):
+    if not(self.eval):
       inputs.data = (inputs.data * np.where(np.random.randn(*(inputs.shape))<self.prob, 1, 0)) / self.prob
     return inputs
   
