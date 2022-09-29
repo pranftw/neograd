@@ -18,7 +18,7 @@ class Container:
     '''
     params = []
     for layer in self.layers:
-      params+=layer.get_params(params_taken)
+      params+=layer.get_params(params+params_taken)
     return params
   
   def set_eval(self, eval):
