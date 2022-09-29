@@ -1,3 +1,4 @@
+from itertools import chain as list_flattener
 from .layers import Container, Layer
 from ..autograd.utils import get_graph
 
@@ -10,31 +11,59 @@ class Model:
     return EvalMode(self, no_track)
   
   def get_layers(self):
-    layers = []
+    layers = {}
     for attr in dir(self):
       val = self.__getattribute__(attr)
-      if isinstance(val, (Container, Layer)):
-        layers.append(val)
+      if isinstance(val, (Container, Layer)) and (val not in layers.values()):
+        layers[attr] = val
     return layers
   
-  def get_params(self):
+  def get_params(self, as_dict=False):
     '''
       Gathers the params of the whole model by iterating through all layers and getting their params
     '''
-    params = []
-    for layer in self.get_layers():
-      params+=layer.get_params(params)
-    return params
+    params = {}
+    for attr, layer in self.get_layers().items():
+      params[attr] = layer.get_params(as_dict)
+    return params if as_dict else list(list_flattener(*params.values()))
   
   def set_eval(self, eval):
-    for layer in self.get_layers():
+    for layer in self.get_layers().values():
       layer.set_eval(eval)
   
+  def save(self, fpath):
+    '''
+      Saves the params of the model
+    '''
+    import hickle as hkl
+    params = self.get_params(as_dict=True)
+    hkl.dump(params, fpath, mode='w')
+    print(f"\nPARAMS SAVED at {fpath}")
+
+  def load(self, fpath):
+    '''
+      Loads the params onto the model
+    '''
+    import hickle as hkl
+    params = hkl.load(fpath)
+    for attr, param in params.items():
+      layer = self.__getattribute__(attr)
+      layer.set_params(param)
+    print(f"\nPARAMS LOADED from {fpath}")
+
+  def add_checkpoint(self, fpath, **tracked):
+    pass
+  
+  def __setattr__(self, attr, val):
+    if isinstance(val, (Container, Layer)) and (attr in self.__dict__):
+      raise AttributeError(f"Attribute {attr} has already been defined, it cannot be defined again for a Container/Layer")
+    object.__setattr__(self, attr, val)
+  
   def __repr__(self):
-    return f'Model( {[str(layer) for layer in self.layers]} )'
+    return f'Model( {[str(layer) for layer in self.get_layers().values()]} )'
   
   def __str__(self):
-    return f'Model( {[str(layer) for layer in self.layers]} )'
+    return f'Model( {[str(layer) for layer in self.get_layers().values()]} )'
 
 
 class EvalMode:

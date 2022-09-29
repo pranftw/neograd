@@ -13,7 +13,7 @@ X, y = load_digits(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 num_train, num_test = X_train.shape[0], X_test.shape[0]
-num_iter = 100
+num_iter = 500
 
 def one_hot(cls_arr, num_examples, num_classes):
   encoded = np.zeros((num_examples, num_classes))
@@ -48,25 +48,32 @@ class NN(ng.nn.Model):
     return self.stack(conv_outputs_flattened)
 
 model = NN()
+WGTS_PATH = '/Users/pranavsastry/Downloads/mnist_weights.hkl'
 batch_size = 200
 loss_fn = CE()
 optim = Adam(model.get_params(), 5e-3)
 
-for iter in range(num_iter):
-  for batch_input, batch_target in get_batches(X_train, y_train, batch_size):
-    optim.zero_grad()
-    outputs = model(batch_input)
-    loss = loss_fn(outputs, batch_target)
-    loss.backward()
-    optim.step()
-  if iter%50==0:
-    print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+# for iter in range(num_iter):
+#   for batch_input, batch_target in get_batches(X_train, y_train, batch_size):
+#     optim.zero_grad()
+#     outputs = model(batch_input)
+#     loss = loss_fn(outputs, batch_target)
+#     loss.backward()
+#     optim.step()
+#   if iter%50==0:
+#     print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
 
+loaded_model = model.load(WGTS_PATH)
 with model.eval():
   test_outputs = model(X_test)
   preds = np.argmax(test_outputs.data, axis=1)
 
-print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
-print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
+report = classification_report(y_test.data.astype(int).flatten(), preds.flatten())
+print(report)
+accuracy = accuracy_score(y_test.data.astype(int).flatten(), preds.flatten())
+print('Accuracy:', accuracy)
+
+# if accuracy>0.9:
+#   model.save(WGTS_PATH)
 
 # grad_check(model, X_train, y_train, loss_fn)

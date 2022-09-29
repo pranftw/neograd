@@ -1,6 +1,6 @@
+import numpy as np
 from ..autograd import tensor, dot
 from ..autograd.ops import conv2d, conv3d, maxpool2d, maxpool3d
-import numpy as np
 
 
 class Container:
@@ -12,18 +12,25 @@ class Container:
   def __call__(self, inputs):
     return self.forward(inputs)
 
-  def get_params(self, params_taken):
+  def get_params(self, as_dict):
     '''
       Goes through all the layers in the Container and gets the params of each Layer
     '''
     params = []
     for layer in self.layers:
-      params+=layer.get_params(params+params_taken)
+      if as_dict:
+        params.append(layer.get_params(as_dict))
+      else:
+        params+=layer.get_params(as_dict)
     return params
   
   def set_eval(self, eval):
     for layer in self.layers:
       layer.set_eval(eval)
+  
+  def set_params(self, container_params):
+    for layer_param, layer in zip(container_params, self.layers):
+      layer.set_params(layer_param)
   
   def __repr__(self):
     layers = []
@@ -50,20 +57,31 @@ class Layer:
   def __call__(self, inputs):
     return self.forward(inputs)
 
-  def get_params(self, params_taken):
+  def get_params(self, as_dict):
     '''
       If any of the attributes in a Layer is instance of Param, then it is automatically
         considered as a param for the whole model
     '''
-    params = []
+    params = {}
     for attr in dir(self):
       val = self.__getattribute__(attr)
-      if isinstance(val, Param) and (val not in params_taken):
-        params.append(val)
-    return params
+      if isinstance(val, Param):
+        if attr not in params.keys():
+          params[attr] = val.data if as_dict else val
+    return params if as_dict else params.values()
   
   def set_eval(self, eval):
     self.eval = eval
+  
+  def set_params(self, layer_params):
+    for attr, param_data in layer_params.items():
+      param = self.__getattribute__(attr)
+      param.data = param_data
+  
+  def __setattr__(self, attr, val):
+    if (isinstance(val, Param)) and (attr in self.__dict__):
+      raise AttributeError(f"Attribute {attr} has already been defined, it cannot be defined again for a Param")
+    object.__setattr__(self, attr, val)
 
 
 class Param(tensor):
