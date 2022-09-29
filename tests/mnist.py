@@ -4,6 +4,7 @@ import numpy as np
 from neograd.nn.loss import CE
 from neograd.nn.optim import Adam
 from neograd.autograd.utils import grad_check
+from neograd.nn.utils import get_batches
 from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score
@@ -11,7 +12,8 @@ from sklearn.metrics import classification_report, accuracy_score
 X, y = load_digits(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
-num_train, num_test = X_train.shape[0], X_test.shape[0]
+# num_train, num_test = X_train.shape[0], X_test.shape[0]
+num_train, num_test = 10, 10
 num_iter = 500
 
 def one_hot(cls_arr, num_examples, num_classes):
@@ -47,24 +49,32 @@ class NN(ng.nn.Model):
     return self.stack(conv_outputs_flattened)
 
 model = NN()
-
+batch_size = 5
 loss_fn = CE()
 optim = Adam(model.get_params(), 5e-3)
 
-for iter in range(num_iter):
-  optim.zero_grad()
-  outputs = model(X_train)
-  loss = loss_fn(outputs, y_train)
-  loss.backward()
-  optim.step()
-  if iter%50==0:
-    print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+# for iter in range(num_iter):
+#   for batch_input, batch_target in get_batches(X_train, y_train, batch_size):
+#     optim.zero_grad()
+#     outputs = model(batch_input)
+#     loss = loss_fn(outputs, batch_target)
+#     loss.backward()
+#     optim.step()
+#   if iter%50==0:
+#     print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
 
-with model.eval():
-  test_outputs = model(X_test)
-  preds = np.argmax(test_outputs.data, axis=1)
+# with model.eval():
+#   test_outputs = model(X_test)
+#   preds = np.argmax(test_outputs.data, axis=1)
 
-print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
-print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
+# print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
+# print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
 
 # grad_check(model, X_train, y_train, loss_fn)
+
+for batch_input, batch_target in get_batches(X_train, y_train, batch_size):
+  print("Input")
+  print(batch_input)
+  print("Target")
+  print(batch_target)
+  print()
