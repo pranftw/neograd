@@ -1,3 +1,4 @@
+import hickle as hkl
 from itertools import chain as list_flattener
 from .layers import Container, Layer
 from ..autograd.utils import get_graph
@@ -35,24 +36,19 @@ class Model:
     '''
       Saves the params of the model
     '''
-    import hickle as hkl
     params = self.get_params(as_dict=True)
     hkl.dump(params, fpath, mode='w')
-    print(f"\nPARAMS SAVED at {fpath}")
+    print(f"\nPARAMS SAVED at {fpath}\n")
 
   def load(self, fpath):
     '''
       Loads the params onto the model
     '''
-    import hickle as hkl
     params = hkl.load(fpath)
     for attr, param in params.items():
       layer = self.__getattribute__(attr)
       layer.set_params(param)
-    print(f"\nPARAMS LOADED from {fpath}")
-
-  def add_checkpoint(self, fpath, **tracked):
-    pass
+    print(f"\nPARAMS LOADED from {fpath}\n")
   
   def __setattr__(self, attr, val):
     if isinstance(val, (Container, Layer)) and (attr in self.__dict__):
@@ -83,10 +79,10 @@ class EvalMode:
 
   def __enter__(self):
     if self.no_track:
-      self.graph.track = True
+      self.graph.track = False
     self.model.set_eval(True)
   
   def __exit__(self, exc_type, exc_value, exc_traceback):
     if self.no_track:
-      self.graph.track = False
-    self.model.set_eval(True)
+      self.graph.track = True
+    self.model.set_eval(False)

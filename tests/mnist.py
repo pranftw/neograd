@@ -13,7 +13,7 @@ X, y = load_digits(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
 num_train, num_test = X_train.shape[0], X_test.shape[0]
-num_iter = 500
+num_iter = 200
 
 def one_hot(cls_arr, num_examples, num_classes):
   encoded = np.zeros((num_examples, num_classes))
@@ -47,11 +47,15 @@ class NN(ng.nn.Model):
     conv_outputs_flattened = conv_outputs.reshape((inputs.shape[0], 36))
     return self.stack(conv_outputs_flattened)
 
-model = NN()
+CHKPT_PATH = '/Users/pranavsastry/Downloads/mnist_checkpoints' 
 WGTS_PATH = '/Users/pranavsastry/Downloads/mnist_weights.hkl'
-batch_size = 200
+
+model = NN()
 loss_fn = CE()
 optim = Adam(model.get_params(), 5e-3)
+
+chkpt = ng.Checkpoint(model, CHKPT_PATH)
+batch_size = 200
 
 # for iter in range(num_iter):
 #   for batch_input, batch_target in get_batches(X_train, y_train, batch_size):
@@ -62,8 +66,14 @@ optim = Adam(model.get_params(), 5e-3)
 #     optim.step()
 #   if iter%50==0:
 #     print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+#     chkpt.add(
+#       iter = iter,
+#       loss = float(loss.data)
+#     )
 
-loaded_model = model.load(WGTS_PATH)
+chkpt_reqd = chkpt.load('cafff20006f49a1ac768a2fa3eb392ef6e6f288dbbea7011c2d7e6019df0ff06.hkl')
+print(chkpt_reqd)
+
 with model.eval():
   test_outputs = model(X_test)
   preds = np.argmax(test_outputs.data, axis=1)
@@ -72,8 +82,5 @@ report = classification_report(y_test.data.astype(int).flatten(), preds.flatten(
 print(report)
 accuracy = accuracy_score(y_test.data.astype(int).flatten(), preds.flatten())
 print('Accuracy:', accuracy)
-
-# if accuracy>0.9:
-#   model.save(WGTS_PATH)
 
 # grad_check(model, X_train, y_train, loss_fn)
