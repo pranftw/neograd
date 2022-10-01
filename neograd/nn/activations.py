@@ -4,6 +4,9 @@ import numpy as np
 
 
 class ReLU(Layer):
+  def __init__(self):
+    super().__init__()
+
   def forward(self, inputs):
     return relu(inputs)
 
@@ -15,6 +18,9 @@ class ReLU(Layer):
 
 
 class Sigmoid(Layer):
+  def __init__(self):
+    super().__init__()
+
   def forward(self, inputs):
     return sigmoid(inputs)
 
@@ -26,6 +32,9 @@ class Sigmoid(Layer):
 
 
 class Tanh(Layer):
+  def __init__(self):
+    super().__init__()
+
   def forward(self, inputs):
     return tanh(inputs)
   
@@ -38,6 +47,7 @@ class Tanh(Layer):
 
 class Softmax(Layer):
   def __init__(self, axis):
+    super().__init__()
     self.axis = axis
 
   def forward(self, inputs):

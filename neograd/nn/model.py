@@ -19,7 +19,7 @@ class Model:
         layers[attr] = val
     return layers
   
-  def get_params(self, as_dict=False, return_frozen=True):
+  def get_params(self, as_dict=False, return_frozen=False):
     '''
       Gathers the params of the whole model by iterating through all layers and getting their params
     '''

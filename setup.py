@@ -12,7 +12,7 @@ setup(
   author_email = 'pranava.sri@gmail.com',
   maintainer = 'Pranav Sastry',
   url = 'https://github.com/pranftw/neograd',
-  python_requires = '>=3.5',
+  python_requires = '>=3.7',
   install_requires = read_file('requirements.txt').split('\n'),
   description = 'A deep learning framework created from scratch with Python and NumPy',
   license = 'GPL-3.0',

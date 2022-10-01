@@ -71,16 +71,16 @@ batch_size = 200
 #       loss = float(loss.data)
 #     )
 
-chkpt_reqd = chkpt.load('cafff20006f49a1ac768a2fa3eb392ef6e6f288dbbea7011c2d7e6019df0ff06.hkl')
+chkpt_reqd = chkpt.load('954d8e92ef04df1bbfb017e619aa8c2b3b3b4f21fb54c113dd6bb1ef12f43d25.hkl')
 print(chkpt_reqd)
 
-with model.eval():
-  test_outputs = model(X_test)
-  preds = np.argmax(test_outputs.data, axis=1)
+# with model.eval():
+#   test_outputs = model(X_test)
+#   preds = np.argmax(test_outputs.data, axis=1)
 
-report = classification_report(y_test.data.astype(int).flatten(), preds.flatten())
-print(report)
-accuracy = accuracy_score(y_test.data.astype(int).flatten(), preds.flatten())
-print('Accuracy:', accuracy)
+# report = classification_report(y_test.data.astype(int).flatten(), preds.flatten())
+# print(report)
+# accuracy = accuracy_score(y_test.data.astype(int).flatten(), preds.flatten())
+# print('Accuracy:', accuracy)
 
 # grad_check(model, X_train, y_train, loss_fn)
