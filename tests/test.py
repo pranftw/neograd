@@ -49,8 +49,4 @@ optim = Adam(model.get_params(), 0.05)
 # print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
 # print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
 
-model.stack.layers[0].weights.freeze()
-print(model.get_params(as_dict=True))
-print(model.get_params(as_dict=True, return_frozen=False))
-
-# grad_check(model, X_train, y_train, loss_fn)
+grad_check(model, X_train, y_train, loss_fn)

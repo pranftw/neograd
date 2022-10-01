@@ -4,6 +4,12 @@ from ..autograd import sum as _sum, log
 class Loss:
   def __call__(self, outputs, targets):
     return self.forward(outputs, targets)
+  
+  def get_num_examples(self, outputs_shape):
+    if len(outputs_shape)==0:
+      return 1
+    else:
+      return outputs_shape[0] 
 
 
 class MSE(Loss):
@@ -11,7 +17,7 @@ class MSE(Loss):
     Mean Squared Error
   '''
   def forward(self, outputs, targets):
-    num_examples = outputs.shape[0]
+    num_examples = self.get_num_examples(outputs.shape)
     cost = (1/(2*num_examples))*_sum((outputs-targets)**2)
     return cost
   
@@ -30,7 +36,7 @@ class BCE(Loss):
   '''
   def forward(self, outputs, targets):
     epsilon = 1e-8
-    num_examples = outputs.shape[0]
+    num_examples = self.get_num_examples(outputs.shape)
     entropy = _sum((outputs*log(targets+epsilon)) + ((1-outputs)*(log(1-targets+epsilon))))
     cost = (-1/num_examples)*entropy
     return cost
@@ -49,7 +55,7 @@ class CE(Loss):
 
   def forward(self, outputs, targets):
     epsilon = 1e-8
-    num_examples = outputs.shape[0]
+    num_examples = self.get_num_examples(outputs.shape)
     entropy = _sum(targets*log(outputs+epsilon))
     cost = (-1/num_examples)*entropy
     return cost

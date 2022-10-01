@@ -93,13 +93,15 @@ class no_track:
     self.graph.track = True
 
 
-def _evaluate_grad_check(analytical_grads, calculated_grads, epsilon):
+def _evaluate_grad_check(analytical_grads, calculated_grads, epsilon, print_vals):
   dist = np.linalg.norm(analytical_grads-calculated_grads)/(np.linalg.norm(analytical_grads) + np.linalg.norm(calculated_grads))
-  print("Gradient Check Distance:", dist)
-  if dist<epsilon:
-    print("Gradient Check PASSED")
-  else:
-    print("Gradient Check FAILED")
+  if print_vals:
+    print("Gradient Check Distance:", dist)
+    if dist<epsilon:
+      print("Gradient Check PASSED")
+    else:
+      print("Gradient Check FAILED")
+  return dist
 
 
 def _wiggle_params(analytical_grads, calculated_grads, params, get_loss, epsilon):
@@ -116,9 +118,10 @@ def _wiggle_params(analytical_grads, calculated_grads, params, get_loss, epsilon
           param.data[idx]+=epsilon # ORIGINAL
         calculated_grads.append(param.grad[idx])
         analytical_grads.append((loss1.data-loss2.data)/(2*epsilon))
+    param.zero_grad()
 
 
-def grad_check(model, inputs, targets, loss_fn, epsilon=1e-7):
+def grad_check(model, inputs, targets, loss_fn, epsilon=1e-7, print_vals=True):
   '''
     Implements Gradient Check, to make sure that backprop is calculating
       the right gradients.
@@ -149,10 +152,10 @@ def grad_check(model, inputs, targets, loss_fn, epsilon=1e-7):
 
   analytical_grads = np.array(analytical_grads)
   calculated_grads = np.array(calculated_grads)
-  _evaluate_grad_check(analytical_grads, calculated_grads, epsilon)
+  return _evaluate_grad_check(analytical_grads, calculated_grads, epsilon, print_vals)
 
 
-def fn_grad_check(fn, inputs, *params, targets=None, loss_fn=None, epsilon=1e-7):
+def fn_grad_check(fn, inputs, params, targets=None, loss_fn=None, epsilon=1e-7, print_vals=True, **kwargs):
   '''
     Implements Gradient Check for a function instead of a complete model
     Any params that are required to be gradient checked can be specified
@@ -160,8 +163,8 @@ def fn_grad_check(fn, inputs, *params, targets=None, loss_fn=None, epsilon=1e-7)
 
     Params:
       fn - Function to be gradient checked
-      inputs:Tensor - inputs to the function
-      params:*(Tensor) - the params whose data can be wiggled to get the gradients
+      inputs:tuple(Tensor) - inputs to the function
+      params:tuple(Tensor) - the params whose data can be wiggled to get the gradients
       targets:Tensor - targets of the function
       loss_fn:Loss - loss_fn to evaluate the function
       epsilon:float
@@ -173,7 +176,7 @@ def fn_grad_check(fn, inputs, *params, targets=None, loss_fn=None, epsilon=1e-7)
   calculated_grads = []
 
   def get_loss(targets=targets):
-    outputs = fn(inputs)
+    outputs = fn(*inputs, **kwargs)
     if targets is None:
       from .tensor import Tensor as tensor
       targets = tensor(np.ones(outputs.shape))
@@ -187,4 +190,4 @@ def fn_grad_check(fn, inputs, *params, targets=None, loss_fn=None, epsilon=1e-7)
 
   analytical_grads = np.array(analytical_grads)
   calculated_grads = np.array(calculated_grads)
-  _evaluate_grad_check(analytical_grads, calculated_grads, epsilon)
+  return _evaluate_grad_check(analytical_grads, calculated_grads, epsilon, print_vals)

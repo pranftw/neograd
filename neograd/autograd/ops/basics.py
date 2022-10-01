@@ -132,29 +132,12 @@ class Sum(Operation):
     return self.get_result_tensor(np.sum(tens.data, axis=self.axis), tens)
   
   def backward(self, tens):
-    def grad_backward(ug):
-      tens_shape = list(tens.shape)
+    def sum_backward(ug):
       if self.axis is not None:
-        try:
-          tens_shape[self.axis] = 1
-        except IndexError:
-          pass
-        lg = 1
-      else:
-        lg = np.ones(tens.shape)
-
-      if self.axis is not None:
-        grads = np.dot(lg,ug)
-        try:
-          num_repeat = tens.shape[self.axis]
-        except IndexError:
-          num_repeat = 1
-        grads = grads[np.newaxis]
-        grads = np.concatenate([grads]*num_repeat)
-      else:
-        grads = lg*ug
+        ug = np.expand_dims(ug, axis=self.axis)
+      grads = np.ones(tens.shape)*ug
       return grads
-    tens.set_grad_fn(grad_backward)
+    tens.set_grad_fn(sum_backward)
 
 def sum(tens, axis=None):
   return Sum(axis).forward(tens)
