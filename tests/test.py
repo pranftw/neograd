@@ -11,12 +11,9 @@ from sklearn.metrics import classification_report, accuracy_score
 X, y = make_circles(n_samples=1000, noise=0.05, random_state=100)
 X_train, X_test, y_train, y_test = train_test_split(X,y)
 
-num_train = 10
-num_test = 10
-
-# num_train = 750
-# num_test = 250
-# num_iter = 50
+num_train = 750
+num_test = 250
+num_iter = 50
 
 X_train, X_test = ng.tensor(X_train[:num_train,:]), ng.tensor(X_test[:num_test,:])
 y_train, y_test = ng.tensor(y_train[:num_train].reshape(num_train,1)), ng.tensor(y_test[:num_test].reshape(num_test,1))
@@ -52,4 +49,8 @@ optim = Adam(model.get_params(), 0.05)
 # print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
 # print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
 
-grad_check(model, X_train, y_train, loss_fn)
+model.stack.layers[0].weights.freeze()
+print(model.get_params(as_dict=True))
+print(model.get_params(as_dict=True, return_frozen=False))
+
+# grad_check(model, X_train, y_train, loss_fn)

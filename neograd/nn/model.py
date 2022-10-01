@@ -19,13 +19,14 @@ class Model:
         layers[attr] = val
     return layers
   
-  def get_params(self, as_dict=False):
+  def get_params(self, as_dict=False, return_frozen=True):
     '''
       Gathers the params of the whole model by iterating through all layers and getting their params
     '''
     params = {}
     for attr, layer in self.get_layers().items():
-      params[attr] = layer.get_params(as_dict)
+      if return_frozen or not(layer.frozen):
+        params[attr] = layer.get_params(as_dict, return_frozen)
     return params if as_dict else list(list_flattener(*params.values()))
   
   def set_eval(self, eval):

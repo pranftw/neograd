@@ -4,24 +4,27 @@ from ..autograd.ops import conv2d, conv3d, maxpool2d, maxpool3d
 
 
 class Container:
-  __slots__ = ['layers']
   '''
     This acts as a container for Layer/s
   '''
+  def __init__(self):
+    self.layers = None
+    self.frozen = False
 
   def __call__(self, inputs):
     return self.forward(inputs)
 
-  def get_params(self, as_dict):
+  def get_params(self, as_dict, return_frozen):
     '''
       Goes through all the layers in the Container and gets the params of each Layer
     '''
     params = []
     for layer in self.layers:
-      if as_dict:
-        params.append(layer.get_params(as_dict))
-      else:
-        params+=layer.get_params(as_dict)
+      if return_frozen or not(layer.frozen):
+        if as_dict:
+          params.append(layer.get_params(as_dict, return_frozen))
+        else:
+          params+=layer.get_params(as_dict, return_frozen)
     return params
   
   def set_eval(self, eval):
@@ -31,6 +34,12 @@ class Container:
   def set_params(self, container_params):
     for layer_param, layer in zip(container_params, self.layers):
       layer.set_params(layer_param)
+  
+  def freeze(self):
+    self.frozen = True
+  
+  def unfreeze(self):
+    self.frozen = False
   
   def __repr__(self):
     layers = []
@@ -53,11 +62,12 @@ class Layer:
   '''
   def __init__(self):
     self.eval = False
+    self.frozen = False
 
   def __call__(self, inputs):
     return self.forward(inputs)
 
-  def get_params(self, as_dict):
+  def get_params(self, as_dict, return_frozen):
     '''
       If any of the attributes in a Layer is instance of Param, then it is automatically
         considered as a param for the whole model
@@ -66,7 +76,7 @@ class Layer:
     for attr in dir(self):
       val = self.__getattribute__(attr)
       if isinstance(val, Param):
-        if attr not in params.keys():
+        if return_frozen or not(val.frozen):
           params[attr] = val.data if as_dict else val
     return params if as_dict else params.values()
   
@@ -77,6 +87,12 @@ class Layer:
     for attr, param_data in layer_params.items():
       param = self.__getattribute__(attr)
       param.data = param_data
+  
+  def freeze(self):
+    self.frozen = True
+  
+  def unfreeze(self):
+    self.frozen = False
   
   def __setattr__(self, attr, val):
     if (isinstance(val, Param)) and (attr in self.__dict__):
@@ -93,6 +109,13 @@ class Param(tensor):
 
   def __init__(self, data, requires_grad=False, requires_broadcasting=True):
     super().__init__(data, requires_grad, requires_broadcasting)
+    self.frozen = False
+  
+  def freeze(self):
+    self.frozen = True
+  
+  def unfreeze(self):
+    self.frozen = False
   
   def __str__(self):
     return f'Param({super().__str__()})'
@@ -102,12 +125,12 @@ class Param(tensor):
 
 
 class Sequential(Container):
-  __slots__ = ['layers']
   '''
     Outputs of one layer are passed as inputs to the next layer, sequentially
   '''
   
   def __init__(self, *args):
+    super().__init__()
     self.layers = args
   
   def forward(self, inputs):
@@ -130,6 +153,7 @@ class Linear(Layer):
   '''
 
   def __init__(self, num_in, num_out):
+    super().__init__()
     self.num_in = num_in
     self.num_out = num_out
     self.weights = Param(np.random.randn(num_in, num_out), requires_grad=True)
@@ -151,7 +175,8 @@ class Dropout(Layer):
     https://youtu.be/D8PJAL-MZv8
   '''
 
-  def __init__(self, prob, test=False):
+  def __init__(self, prob):
+    super().__init__()
     self.prob = prob
   
   def forward(self, inputs):
@@ -172,6 +197,7 @@ class Conv2D(Layer):
   '''
 
   def __init__(self, kernel_shape, padding=0, stride=1):
+    super().__init__()
     self.padding = padding
     self.stride = stride
     if len(kernel_shape)!=2:
@@ -195,6 +221,7 @@ class Conv3D(Layer):
   '''
 
   def __init__(self, in_channels, out_channels, kernel_shape, padding=0, stride=1):
+    super().__init__()
     self.padding = padding
     self.stride = stride
     if len(kernel_shape)!=2:
@@ -220,6 +247,7 @@ class MaxPool2D(Layer):
   '''
   
   def __init__(self, kernel_shape, padding=0, stride=1):
+    super().__init__()
     self.padding = padding
     self.stride = stride
     if len(kernel_shape)!=2:
@@ -242,6 +270,7 @@ class MaxPool3D(Layer):
   '''
 
   def __init__(self, kernel_shape, padding=0, stride=1):
+    super().__init__()
     self.padding = padding
     self.stride = stride
     if len(kernel_shape)!=2:
