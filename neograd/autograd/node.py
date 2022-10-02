@@ -81,6 +81,9 @@ class Node:
 
   def are_children_visited(self):
     '''Checks if all children are visited
+
+    Returns:
+      True if all children are visited else False
     '''
     for child in self.children:
       if not(child.visited):
@@ -89,6 +92,9 @@ class Node:
   
   def are_parents_visited(self):
     '''Checks if all parents are visited
+
+    Returns:
+      True if all parents are visited else False
     '''
     for parent in self.parents:
       if not(parent.visited):
