@@ -1,21 +1,27 @@
 class Node:
-  '''
-    Used as an abstraction to connect the graph together and hold relationships
+  '''Used as an abstraction to connect the tensors together and hold relationships
+
+  Each Tensor is assigned a Node and this Node monitors all the incoming edges(parents)
+  and the outgoing edges(children)
+
+  Attributes:
+    children (:obj:`list` of :obj:`Node`): List of all Nodes which uses the current Node
+      as an operand in an Operation
+    parents (:obj:`list` of :obj:`Node`): List of all Nodes(operands) that has resulted in the creation
+      of current Node
+    parent_broadcast_shape (tuple or None): If the parent needs to be broadcasted from one shape to
+      another, then the final broadcasted shape of the parent is stored here.
+      If they cannot be broadcasted, then it is None
+    backward_fn (Operation.backward): Sets the grad_fn of Tensor(operand) involved in the Operation
+    visited (bool) - If Node is visited or not
   '''
   __slots__ = ['tens', 'children', 'parents', 'parent_broadcast_shape',
               'backward_fn', 'visited']
 
   def __init__(self, tens):
     '''
-      Params:
-        tens:Tensor - The Tensor corresponding to the Node
-      
-      children:[Node] - List of all Nodes which uses the current Node as an operand in an Operation
-      parents:[Node] - List of all Nodes(operands) that has resulted in the creation of current Node
-      parent_broadcast_shape:np.shape - If the parent needs to be broadcasted from one shape to
-        another, then the final broadcasted shape of the parent is stored here
-      backward_fn:Operation.backward - Sets the grad_fn of Tensor(operand) involved in the Operation
-      visited:Bool - If Node is visited or not
+      Args:
+        tens (Tensor) - The Tensor corresponding to the Node
     '''
     self.tens = tens
     self.children = []
@@ -25,11 +31,13 @@ class Node:
     self.visited = False
   
   def top_sort(self):
-    '''
-      Sorts the graph topologically, to perform backward pass efficiently, so that all the children's
-        is calculated before the current node's gradient is calculated.
-      Sorting is done by first checking if all the children are visited, if they are then the current
-        node is added to sorted_tensors if not then the top_sort is performed on children
+    '''Performs topological sort of all Nodes starting from current Node
+
+    Sorts the graph topologically, to perform backward pass efficiently, so that all the children's
+    is calculated before the current node's gradient is calculated.
+
+    Sorting is done by first checking if all the children are visited, if they are, then the current
+    node is added to sorted_tensors if not, then topological sort is performed on children
     '''
     sorted_tensors = []
     if self.are_children_visited():
@@ -45,11 +53,15 @@ class Node:
     return sorted_tensors
   
   def backward(self, retain_graph):
-    '''
-      Iterated through all sorted_tensors and performs their backward calculation
+    '''Initiates backward pass starting from current Node
 
-      Params:
-        retain_graph:Bool - If the graph should be retained after backward pass or flushed
+    This first topologically sorts all Tensors starting from current Node, then the Node
+    corresponding to the Tensor is retreived, which is marked as visited and the Tensor's
+    backward pass is initiated.
+
+    Args:
+      retain_graph (bool): If the graph should be retained after backward pass or flushed
+        after backward calculation
     '''
     from .utils import get_graph
     graph = get_graph()
@@ -62,16 +74,13 @@ class Node:
       tens._backward(node, retain_graph)
 
   def visit_all_children(self):
-    '''
-      All children are visited
-      This will be used when Tensor.backward is calculated for a Tensor that is not the leaf TODO
+    '''Marks all children as visited
     '''
     for child in self.children:
       child.visited = True
 
   def are_children_visited(self):
-    '''
-      Checks if all children are visited
+    '''Checks if all children are visited
     '''
     for child in self.children:
       if not(child.visited):
@@ -79,8 +88,7 @@ class Node:
     return True
   
   def are_parents_visited(self):
-    '''
-      Checks if all parents are visited
+    '''Checks if all parents are visited
     '''
     for parent in self.parents:
       if not(parent.visited):
@@ -88,14 +96,18 @@ class Node:
     return True
   
   def add_child(self, other):
-    '''
-      Adds a child to the Node
+    '''Adds a child to the Node
+
+    Args:
+      other (Node): The child Node
     '''
     self.children.append(other)
   
   def add_parent(self, other):
-    '''
-      Adds a parent to the Node
+    '''Adds a parent to the Node
+
+    Args:
+      other (Node): The parent Node
     '''
     self.parents.append(other)
   
