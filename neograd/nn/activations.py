@@ -4,10 +4,20 @@ import numpy as np
 
 
 class ReLU(Layer):
+  '''ReLU Layer
+  '''
   def __init__(self):
     super().__init__()
 
   def forward(self, inputs):
+    '''Calculates ReLU of inputs
+
+    Args:
+      inputs (Tensor): Inputs to the Layer
+    
+    Returns:
+      Tensor of result
+    '''
     return relu(inputs)
 
   def __repr__(self):
@@ -18,10 +28,20 @@ class ReLU(Layer):
 
 
 class Sigmoid(Layer):
+  '''Sigmoid Layer
+  '''
   def __init__(self):
     super().__init__()
 
   def forward(self, inputs):
+    '''Calculates Sigmoid of inputs
+
+    Args:
+      inputs (Tensor): Inputs to the Layer
+    
+    Returns:
+      Tensor of result
+    '''
     return sigmoid(inputs)
 
   def __repr__(self):
@@ -32,10 +52,20 @@ class Sigmoid(Layer):
 
 
 class Tanh(Layer):
+  '''Tanh Layer
+  '''
   def __init__(self):
     super().__init__()
 
   def forward(self, inputs):
+    '''Calculates Tanh of inputs
+
+    Args:
+      inputs (Tensor): Inputs to the Layer
+    
+    Returns:
+      Tensor of result
+    '''
     return tanh(inputs)
   
   def __repr__(self):
@@ -46,11 +76,25 @@ class Tanh(Layer):
 
 
 class Softmax(Layer):
+  '''Softmax Layer
+  '''
   def __init__(self, axis):
+    '''
+    Args:
+      axis (int): Axis along which softmax should be calculated
+    '''
     super().__init__()
     self.axis = axis
 
   def forward(self, inputs):
+    '''Calculates Softmax of inputs
+
+    Args:
+      inputs (Tensor): Inputs to the Layer
+    
+    Returns:
+      Tensor of result
+    '''
     return softmax(inputs, self.axis)
   
   def __repr__(self):

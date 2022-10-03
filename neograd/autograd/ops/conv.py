@@ -26,7 +26,13 @@ class Conv:
     Yields:
       sliced inputs_data(fragment), row slice(start and end indices of fragment among rows)
       and column slice(start and end indices of fragment among columns)
+
+    Raises:
+      AssertionError: if stride isn't greater than or equal to 1
+      AssertionError: if padding isn't greater than or equal to 0
     '''
+    assert self.stride>=1, 'Stride must be greater than or equal to 1'
+    assert self.padding>=0, 'Padding must be greater than or equal to zero'
     inputs_data_slice = ()
     inputs_data_slice += ((slice(None)),)*(len(inputs_data.shape)-2)
     inputs_x_dim, inputs_y_dim = inputs_data.shape[-2:]

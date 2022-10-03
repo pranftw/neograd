@@ -1,8 +1,23 @@
 def get_batches(inputs, targets, batch_size=None):
-  '''
-    Split the inputs and their corresponding targets into batches for efficient
-      training
-    0th dim is taken as number of examples in the data
+  '''Returns batches of inputs and targets
+
+  Split the inputs and their corresponding targets into batches for efficient
+  training
+
+  Args:
+    inputs (Tensor): Inputs to be batched
+    targets (Tensor): Targets to be batched
+    batch_size (int): Size of the batches. Defaults to None meaning batch_size
+      will be same as number of examples
+  
+  Yields:
+    Batches of inputs and their corresponding targets
+
+  Raises:
+    AssertionError: If first dimensions of inputs and targets don't match
+    ValueError: If batch_size is greater than number of examples
+    ValueError: If batch_size is negative
+    ValueError: If batch_size is 0
   '''
   assert inputs.shape[0]==targets.shape[0], '0th dim should be number of examples and should match'
 

@@ -6,14 +6,13 @@ from neograd.autograd.utils import process_data, fn_grad_check
 
 
 def to_tensors(operands):
-  '''
-    Converts all operands of type numpy to ng.tensor
+  '''Converts all operands of type numpy to ng.tensor
 
-    Params:
-      operands:(np.ndarray)
-    
-    Returns:
-      tensors:[ng.tensor]
+  Args:
+    operands (tuple of np.ndarray): Operands to be converted
+  
+  Returns:
+    tuple of Tensors
   '''
   tensors = []
   for operand in operands:
@@ -22,8 +21,16 @@ def to_tensors(operands):
   return tuple(tensors)
 
 def execute(fn, *operands, epsilon=1e-7, **kwargs):
-  '''
-    Performs the grad_check on the fn using fn_grad_check
+  '''Performs the grad_check on the fn using fn_grad_check
+
+  Args:
+    fn: Function to be gradient checked
+    *operands (tuple of np.ndarray): Operands to the function
+    epsilon (float): value of epsilon
+    **kwargs: kwargs to be passed to fn
+  
+  Raises:
+    AssertionError: If distance isn't less than epsilon, then it has failed
   '''
   tensors = to_tensors(operands)
   dist = fn_grad_check(fn, tensors, tensors, epsilon=epsilon, print_vals=False, **kwargs)
