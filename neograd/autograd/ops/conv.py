@@ -1,7 +1,6 @@
 import math
 import numpy as np
 from .operation import Operation
-import warnings
 
 
 class Conv:
@@ -366,9 +365,9 @@ def conv3d(inputs, kernel, bias, padding, stride):
 class MaxPool2D(Operation, Conv):
   '''Implements 2D MaxPooling
 
-  In MaxPooling, it is differentiable only if kernel_shape doesn't overlap, 
-  ie stride should be equal to the dimension of the kernel_shape, so gradient
-  check passes, if it does overlap, then it isnt differentiable and fails gradient check
+  In MaxPooling, it is differentiable only if kernel_shape along with the stride
+  covers the entire input if not it is not differentiable and fails gradient
+  checking
 
   Attributes:
     kernel_shape (tuple): Shape of the kernel
@@ -384,8 +383,6 @@ class MaxPool2D(Operation, Conv):
       raise ValueError("Only 2D kernels are allowed!")
     self.padding = padding
     self.stride = stride
-    if (stride, stride)!=kernel_shape:
-      warnings.warn("If strides don't match the kernel_shape dimensions, then grad_check may fail")
   
   def forward(self, inputs):
     '''Forward pass of max pooling 2d
@@ -468,9 +465,9 @@ def maxpool2d(inputs, kernel_shape, padding, stride):
 class MaxPool3D(Operation, Conv):
   '''Implements 3D MaxPooling
 
-  In MaxPooling, it is differentiable only if kernel_shape doesn't overlap, 
-  ie stride should be equal to the dimension of the kernel_shape, so gradient
-  check passes, if it does overlap, then it isnt differentiable and fails gradient check
+  In MaxPooling, it is differentiable only if kernel_shape along with the stride
+  covers the entire input if not it is not differentiable and fails gradient
+  checking
 
   Attributes:
     kernel_shape (tuple): Shape of the kernel
@@ -486,8 +483,6 @@ class MaxPool3D(Operation, Conv):
       raise ValueError("Only 2D kernels are allowed!")
     self.padding = padding
     self.stride = stride
-    if (stride, stride)!=kernel_shape:
-      warnings.warn("If strides don't match the kernel_shape dimensions, then grad_check may fail")
   
   def forward(self, inputs):
     '''Forward pass of max pooling 3d

@@ -1,7 +1,7 @@
 from . import autograd, nn
 from .nn import Checkpoint
 from .autograd import tensor, new_graph, no_track
-from .autograd import add, sub, mul, div, pow, exp, log, dot, sum, transpose
+from .autograd import add, sub, mul, div, pow, exp, log, dot, sum, transpose, flatten, reshape
 from .autograd.graph import Graph
 
 
