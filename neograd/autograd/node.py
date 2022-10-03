@@ -5,9 +5,9 @@ class Node:
   and the outgoing edges(children)
 
   Attributes:
-    children (:obj:`list` of :obj:`Node`): List of all Nodes which uses the current Node
+    children (list of Node): List of all Nodes which uses the current Node
       as an operand in an Operation
-    parents (:obj:`list` of :obj:`Node`): List of all Nodes(operands) that has resulted in the creation
+    parents (list of Node): List of all Nodes(operands) that has resulted in the creation
       of current Node
     parent_broadcast_shape (tuple or None): If the parent needs to be broadcasted from one shape to
       another, then the final broadcasted shape of the parent is stored here.

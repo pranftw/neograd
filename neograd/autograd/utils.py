@@ -145,9 +145,9 @@ def _evaluate_grad_check(analytical_grads, calculated_grads, epsilon, print_vals
   less than epsilon, then it has passed else failed
 
   Args:
-    analytical_grads (:obj:`list` of int or float): Gradients that are calculated analytically
+    analytical_grads (list of int or float): Gradients that are calculated analytically
       by wiggling the parameters
-    calculated_grads (:obj:`list` of int or float): Gradients that are calulated through
+    calculated_grads (list of int or float): Gradients that are calulated through
       backpropagation
     epsilon (float): The amount by which params need to be wiggled
     print_vals (bool): True if distance and verdict needs to be printed
@@ -173,11 +173,11 @@ def _wiggle_params(analytical_grads, calculated_grads, params, get_loss, epsilon
   and is appended to analytical_grads and the gradient in param is appended to calculated_grads
 
   Args:
-    analytical_grads (:obj:`list` of int or float): Gradients that are calculated analytically
+    analytical_grads (list of int or float): Gradients that are calculated analytically
       by wiggling the parameters
-    calculated_grads (:obj:`list` of int or float): Gradients that are calulated through
+    calculated_grads (list of int or float): Gradients that are calulated through
       backpropagation
-    params (:obj:`list` of Tensor): All params that need to be wiggled
+    params (list of Tensor): All params that need to be wiggled
     get_loss: function that is used to calculate the loss
     epsilon (float): The amount by which params need to be wiggled
   '''
@@ -244,8 +244,8 @@ def fn_grad_check(fn, inputs, params, targets=None, loss_fn=None, epsilon=1e-7, 
 
   Args:
     fn: Function to be gradient checked
-    inputs (:obj:`tuple` of Tensor): inputs to the function
-    params (:obj:`tuple` of Tensor): the params whose data can be wiggled to get the gradients
+    inputs (tuple of Tensor): inputs to the function
+    params (tuple of Tensor): the params whose data can be wiggled to get the gradients
     targets (Tensor): targets of the function
     loss_fn (Loss): loss_fn to evaluate the function
     epsilon (float): The amount by which params need to be wiggled Defaults to 1e-7

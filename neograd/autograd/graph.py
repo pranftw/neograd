@@ -32,7 +32,7 @@ class Graph:
 
     Args:
       result_node (Node): node that is created in Operation.get_result_tensor
-      operands (:obj:`list` of :obj:`Tensor`): All the operands for an Operation
+      operands (list of Tensor): All the operands for an Operation
     '''
     self.add_node(result_node)
     for operand in operands:
