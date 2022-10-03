@@ -3,20 +3,27 @@ from ..node import Node
 
 
 class Operation:
-  '''
-    Used when some input is getting transformed into an output, for functions
-      where gradient calculation is required with the forward pass and the backward
-      pass defined
+  '''Transforms Tensors by applying some function
+
+  Used when some input is getting transformed into an output, for functions
+  where gradient calculation is required with the forward pass and the backward
+  pass defined
+
+  Attributes:
+    graph (Graph or None): Graph object that's currently in use. If None, then the global
+      _NG_GRAPH is used, else a specific graph object is used. Defaults to None
   '''
 
   graph = None
   
   def process_operands(self, operands):
-    '''
-      All operands are converted to Tensor
+    '''All operands are converted to Tensors
 
-      Params:
-        operands:(any class that is supported/Tensor)
+    Args:
+      operands (Tensor or int or float or list or np.ndarray): Operands of the Operation
+    
+    Returns:
+      tuple of Tensors
     '''
     from ..tensor import Tensor
     operands = list(operands)
@@ -26,11 +33,13 @@ class Operation:
     return tuple(operands)
   
   def get_tensors(self, *operands):
-    '''
-      Returns the processed operands as tuple of Tensors
+    '''Returns the processed operands as tuple of Tensors
 
-      Params:
-        operands:*args(any class that is supported/Tensor)
+    Args:
+      *operands (Tensor or int or float or list or np.ndarray): Operands of the Operation
+    
+    Returns:
+      tuple of Tensors if len(tuple)>1 else returns the first Tensor
     '''
     tensors = self.process_operands(operands)
     if len(tensors)==0:
@@ -41,12 +50,18 @@ class Operation:
       return tensors
   
   def get_broadcast_shape(self, *tensors):
-    '''
-      If the tensors can be broadcasted, then the broadcasted
-        shape is returned, else None
-      
-      Params:
-        tensors:*args(Tensor)
+    '''Return broadcasted shape of Tensors
+
+    If the tensors can be broadcasted, then the broadcasted shape is returned
+    , else None.
+
+    Args:
+      *tensors (Tensor): Tensors that should be broadcasted
+
+    Returns:
+      Broadcasted shape if it can be broadcasted, if not None
+      Also even if atleast one of the Tensors has requires_broadcasting set to False,
+      it returns None
     '''
     for tens in tensors:
       if not(tens.requires_broadcasting):
@@ -57,12 +72,14 @@ class Operation:
       return None
   
   def result_requires_grad(self, tensors):
-    '''
-      Checks if the result requires_grad given the operands of the Operation, if atleast
-        one operand requires_grad, then result will also have requires_grad
-      
-      Params:
-        tensors:(Tensor)
+    '''Checks if the result requires grad
+
+    Checks if the result requires gradient to be calculated given the operands of the
+    Operation, if atleast one operand requires_grad to True, then result will also have
+    requires_grad to True
+
+    Args:
+      tensors (Tensor): Tensors that are operated on
     '''
     for tens in tensors:
       if tens.requires_grad:
@@ -70,14 +87,20 @@ class Operation:
     return False
   
   def get_result_tensor(self, result, *tensors):
-    '''
-      Returns the result tensor of the Operation
-      Creates a Node for the result_tensor with parent_broadcast_shape and parent_needs_broadcasting
-      Adds the edges to the graph
+    '''Returns the result tensor of the Operation
+    
+    If tracking is enabled, then, it creates a Node for the result_tensor
+    with parent_broadcast_shape and adds edges to the graph
+    
+    If tracking is disabled, then no Node creation and edge addition
+    occurs
 
-      Params:
-        result:np object - Result after performing a raw numpy operation
-        tensors:*args(Tensor)
+    Args:
+      result (np object): Result after performing a raw numpy operation
+      *tensors (Tensor): Operands of the operation
+
+    Returns:
+      Tensor of the result
     '''
     from ..tensor import Tensor
     from ..utils import get_graph
@@ -92,4 +115,9 @@ class Operation:
     return result_tensor
   
   def backward(self, *args):
+    '''Abstract backward method
+
+    Raises:
+      NotImplementedError: If backward method isn't overridden
+    '''
     raise NotImplementedError(f"Backward method not implemented for Operation {self}")

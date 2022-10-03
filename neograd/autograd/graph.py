@@ -27,7 +27,8 @@ class Graph:
     '''Creates an edge between two nodes
 
     Adds edges between the result_node, which is created during an Operation, and the
-    operands that produced the result.
+    operands that produced the result. This means the result_node is added as a child of
+    each of the operands and the result_node adds all operands as its parents
 
     Args:
       result_node (Node): node that is created in Operation.get_result_tensor
