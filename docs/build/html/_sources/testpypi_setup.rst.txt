@@ -1,0 +1,7 @@
+testpypi\_setup module
+======================
+
+.. automodule:: testpypi_setup
+   :members:
+   :undoc-members:
+   :show-inheritance:

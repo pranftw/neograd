@@ -1,0 +1,1588 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>neograd.autograd.ops package &#8212; neograd  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <link rel="stylesheet" href="_static/css/functions.css" type="text/css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="neograd.nn package" href="neograd.nn.html" />
+    <link rel="prev" title="neograd.autograd package" href="neograd.autograd.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="neograd-autograd-ops-package">
+<h1>neograd.autograd.ops package<a class="headerlink" href="#neograd-autograd-ops-package" title="Permalink to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-neograd.autograd.ops.activations">
+<span id="neograd-autograd-ops-activations-module"></span><h2>neograd.autograd.ops.activations module<a class="headerlink" href="#module-neograd.autograd.ops.activations" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.ReLU">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.activations.</span></span><span class="sig-name descname"><span class="pre">ReLU</span></span><a class="headerlink" href="#neograd.autograd.ops.activations.ReLU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Performs Rectified Linear Unit</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.ReLU.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.ReLU.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of the Tensor</p>
+<p>If element in data is greater than zero, its local gradient will be 1
+else 0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.ReLU.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.ReLU.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only allows positive values to flow through</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Sigmoid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.activations.</span></span><span class="sig-name descname"><span class="pre">Sigmoid</span></span><a class="headerlink" href="#neograd.autograd.ops.activations.Sigmoid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Performs Sigmoid</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Sigmoid.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Sigmoid.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of the Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Sigmoid.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Sigmoid.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Squishes the Tensor to value between 0 and 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Softmax">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.activations.</span></span><span class="sig-name descname"><span class="pre">Softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Softmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Performs Softmax</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Softmax.axis">
+<span class="sig-name descname"><span class="pre">axis</span></span><a class="headerlink" href="#neograd.autograd.ops.activations.Softmax.axis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Axis along which it should be calculated</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None or int or tuple of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Softmax.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Softmax.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of the Tensor</p>
+<p>Quite a tricky one, first the Jacobian of each of the slices along
+the specified axis of the result is taken, which is then dotted with the
+corresponding slice of the upper gradient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Softmax.calc_softmax">
+<span class="sig-name descname"><span class="pre">calc_softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Softmax.calc_softmax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Softmax.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Softmax.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps the Tensor to probabilities, whose sum is 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Tanh">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.activations.</span></span><span class="sig-name descname"><span class="pre">Tanh</span></span><a class="headerlink" href="#neograd.autograd.ops.activations.Tanh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Performs Hyperbolic Tangent</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Tanh.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Tanh.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of the Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Tanh.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Tanh.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Squishes the Tensor to value between -1 and 1</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.relu">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.activations.</span></span><span class="sig-name descname"><span class="pre">relu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.relu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for ReLU.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.sigmoid">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.activations.</span></span><span class="sig-name descname"><span class="pre">sigmoid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.sigmoid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Sigmoid.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.softmax">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.activations.</span></span><span class="sig-name descname"><span class="pre">softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.softmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Softmax.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.activations.tanh">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.activations.</span></span><span class="sig-name descname"><span class="pre">tanh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.tanh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Tanh.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-neograd.autograd.ops.basics">
+<span id="neograd-autograd-ops-basics-module"></span><h2>neograd.autograd.ops.basics module<a class="headerlink" href="#module-neograd.autograd.ops.basics" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Add">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Add</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Element wise addition between two Tensors or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Add.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Add.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operands</p>
+<p>Local gradient is an identity matrix, that should be dotted with the upper gradient
+which results in upper gradient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Second operand</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Add.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Add.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates element wise addition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Div">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Div</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Div" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Element wise division between two Tensors or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Div.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Div.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operands</p>
+<p>Local gradient of tens1 is 1/tens2.data, local gradient of tens2 is
+-1*tens1.data/tens2.data^2, which is element wise multiplied with upper
+gradient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Second operand</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Div.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Div.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates element wise division</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Dot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Dot</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Dot product between two Tensors or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Dot.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Dot.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operands</p>
+<p>Local gradient of tens1 is transpose of tens2.data, local gradient of tens2 is
+transpose of tens1.data, which is dotted with upper gradient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Second operand</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Dot.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Dot.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates dot product</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Exp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Exp</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Exponentiates the Tensor or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Exp.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Exp.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operand</p>
+<p>Local gradient is exponentiation of tens.data itself</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Exp.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Exp.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates exponentiation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Flatten">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Flatten</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Performs flattening of Tensor or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Flatten.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Flatten.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operand</p>
+<p>No local gradient, upper gradient is reshaped to original shape</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Flatten.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Flatten.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs flattening from any dimension to 1D</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Log">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Log</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Natural Logarithm of the Tensor or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Log.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Log.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operand</p>
+<p>Local gradient is exponentiation of 1/tens.data itself</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Log.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Log.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates natural logarithm</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Mul">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Mul</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Mul" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Element wise multiplication between two Tensors or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Mul.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Mul.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operands</p>
+<p>Local gradient for each Tensor is the other Tensor’s data, which is element-wise
+multiplied with upper gradient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Second operand</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Mul.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Mul.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates element wise multiplication</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Pow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Pow</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Pow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Raises one Tensor or Tensor-like to the power of another Tensor or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Pow.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Pow.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operands</p>
+<p>Local gradient of tens1 is tens1.data^(tens2.data-1), local gradient of tens2 is
+log(tens1.data), which is element wise multiplied with upper gradient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Second operand</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Pow.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Pow.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates raising to a power</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Reshape">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Reshape</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Reshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Performs reshaping of Tensor or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Reshape.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Reshape.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operand</p>
+<p>No local gradient, upper gradient is reshaped to original shape</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Reshape.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Reshape.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs reshaping of Tensor to a new shape</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p></li>
+<li><p><strong>new_shape</strong> (<em>tuple</em>) – New shape to be reshaped into</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Sub">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Sub</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Element wise subtraction between two Tensors or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Sub.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Sub.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operands</p>
+<p>Local gradient is an identity matrix, that should be dotted with the upper gradient
+which results in upper gradient, for the other one local gradient is a negative identity
+matrix which results in negative upper gradient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Second operand</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Sub.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Sub.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates element wise subtraction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Sum">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Performs sum along a specified axis</p>
+<p>If axis is None, then the sum of the entire Tensor is calculated</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Sum.axis">
+<span class="sig-name descname"><span class="pre">axis</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Sum.axis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Axis along which it should be summed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None or int or tuple of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Sum.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Sum.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operand</p>
+<p>Local gradient is all ones and the upper gradient must be added a new axis
+along the axis attribute if axis is not None, for broadcasting of upper_gradient
+as during forward pass the dimension will be reduced along the axis it is summed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Sum.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Sum.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates sum along an axis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Transpose">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">Transpose</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Transpose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>Performs transpose of Tensor or Tensor-like</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Transpose.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Transpose.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets grad_fn of operand</p>
+<p>No local gradient, upper gradient is just transposed</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Transpose.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Transpose.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs transpose</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.add">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Add.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.div">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">div</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.div" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Div.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.dot">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">dot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Dot.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.exp">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">exp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Exp.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.flatten">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Flatten.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.log">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Log.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.mul">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.mul" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Mul.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.pow">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">pow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.pow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Pow.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.reshape">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.reshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Reshape.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.sub">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">sub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tens2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Sub.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens1</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – First operand</p></li>
+<li><p><strong>tens2</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Second operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.sum">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Sum.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p></li>
+<li><p><strong>axis</strong> (<em>None</em><em> or </em><em>int</em><em> or </em><em>tuple</em><em> of </em><em>int</em>) – Axis along which it should be summed
+Defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.basics.transpose">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.basics.</span></span><span class="sig-name descname"><span class="pre">transpose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.transpose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction for Transpose.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tens</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-neograd.autograd.ops.conv">
+<span id="neograd-autograd-ops-conv-module"></span><h2>neograd.autograd.ops.conv module<a class="headerlink" href="#module-neograd.autograd.ops.conv" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">Conv</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for Convolution and Pooling operations</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.padding">
+<span class="sig-name descname"><span class="pre">padding</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.padding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Padding value to be applied</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.stride">
+<span class="sig-name descname"><span class="pre">stride</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.stride" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stride to be taken</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.fragment_iterator">
+<span class="sig-name descname"><span class="pre">fragment_iterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padded_inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.fragment_iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Zips the fragments with any other args</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>padded_inputs</strong> (<em>np.ndarray</em>) – Inputs that are padded</p></li>
+<li><p><strong>kernel_shape</strong> (<em>tuple</em>) – Shape of the kernel</p></li>
+<li><p><strong>*args</strong> – Any other objects that should be zipped together, this is usually the
+upper gradient chunks that are the result of the convolution</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>zip of fragments and ony other objects in args</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.generate_fragments">
+<span class="sig-name descname"><span class="pre">generate_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.generate_fragments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates fragments of data</p>
+<p>Takes the data and slices it to the shape of kernel_shape in x and y axis (the last two
+dims), including all the other dimensions, effectively taking a chunk/fragment of the data.</p>
+<p>Each time a chunk is taken, the x index and y index are incremented by the stride</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs_data</strong> (<em>np.ndarray</em>) – Data to be convolved on</p></li>
+<li><p><strong>kernel_shape</strong> (<em>tuple</em>) – Shape of kernel to be convolved with</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p>sliced inputs_data(fragment), row slice(start and end indices of fragment among rows)
+and column slice(start and end indices of fragment among columns)</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>AssertionError</strong> – if stride isn’t greater than or equal to 1</p></li>
+<li><p><strong>AssertionError</strong> – if padding isn’t greater than or equal to 0</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.get_result_shape">
+<span class="sig-name descname"><span class="pre">get_result_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.get_result_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the x and y dimensions of result of convolution</p>
+<p>Takes the inputs_shape and kernel_shape and returns the x and y dims of the result
+of convolving inputs with the kernel as a 2D convolution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs_shape</strong> (<em>tuple</em>) – Shape of inputs</p></li>
+<li><p><strong>kernel_shape</strong> (<em>tuple</em>) – Shape of kernel</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple of x and y dims of result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.pad">
+<span class="sig-name descname"><span class="pre">pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pads the data in x and y dimensions (last two dims)</p>
+<p>Only the last two dimensions are padded rest aren’t padded(padded with 0,
+has no effect)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>np.ndarray</em>) – Data to be padded</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>data that is padded</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.unpad">
+<span class="sig-name descname"><span class="pre">unpad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padded_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.unpad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unpads the padded data</p>
+<p>Slices the padded_data in last two dimensions where it is padded, by rejecting
+the padding and only extracting the original data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>padded_data</strong> (<em>np.ndarray</em>) – Data that needs to be unpadded</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Unpadded data</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv2D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">Conv2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>, <a class="reference internal" href="#neograd.autograd.ops.conv.Conv" title="neograd.autograd.ops.conv.Conv"><code class="xref py py-class docutils literal notranslate"><span class="pre">Conv</span></code></a></p>
+<p>Implements 2D convolution</p>
+<p>2D convolution where the inputs has only 1 channel and its shape is of the form
+(num_examples, x_dim, y_dim) is convolved with a 2D kernel</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv2D.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv2D.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of inputs, kernel and bias</p>
+<p>Since each convolution of a fragment with kernel results in a Tensor, the corresponding upper
+gradient values of all the examples are taken.</p>
+<p>inputs_grads are initialized to zero of shape of padded_inputs, then the corresponding gradient
+that is calculated is tucked into the inputs_grads based on the row slice and the column slice.
+The inputs_grads are then unpadded to reject the gradients of pads and only keeps the gradients
+of the original inputs</p>
+<p>kernel_grads are intitialized to zero and since they are used multiple times, its gradient is added
+each time</p>
+<p>Since bias is added to all outputs, its gradient is just
+the sum of the upper gradient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Tensor that is convolved on</p></li>
+<li><p><strong>kernel</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Tensor that is convolved with(weights)</p></li>
+<li><p><strong>bias</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – bias value</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv2D.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv2D.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the forward pass</p>
+<p>Each fragment of shape (num_examples, kernel_shape[0], kernel_shape[1]) is element wise
+multipled with the kernel and then summed along its x and y axis and then adds it with the bias</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Tensor to be convolved on</p></li>
+<li><p><strong>kernel</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Tensor to be convolved with(weights)</p></li>
+<li><p><strong>bias</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – bias value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result that is convolved</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv2D.validate_inputs">
+<span class="sig-name descname"><span class="pre">validate_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv2D.validate_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the inputs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>np.ndarray</em>) – Data to be validated</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If inputs aren’t of format (num_examples, x_dim, y_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv3D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">Conv3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>, <a class="reference internal" href="#neograd.autograd.ops.conv.Conv" title="neograd.autograd.ops.conv.Conv"><code class="xref py py-class docutils literal notranslate"><span class="pre">Conv</span></code></a></p>
+<p>Implements 3D convolution</p>
+<p>3D convolution over a colume where the inputs has multiple channels and
+its shape is of the form (num_examples, num_channels, x_dim, y_dim) is convolved
+with a 3D kernel of shape (num_channels, kernel_shape[0], kernel_shape[1])</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv3D.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv3D.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of inputs, kernel and bias</p>
+<p>Since each convolution of a fragment with kernel results in a Tensor, the corresponding upper
+gradient values of all the examples, across all channels are taken.</p>
+<p>To calculate sum_grad which is the gradient of the sum operation during forward pass, the fragment
+needs to be expanded along first axis to allow for broadcasting of upper gradient slice.</p>
+<p>inputs_grads are initialized to zero of shape of padded_inputs, then the corresponding gradient
+that is calculated is tucked into the inputs_grads based on the row slice and the column slice.
+The inputs_grads are then unpadded to reject the gradients of pads and only keeps the gradients
+of the original inputs</p>
+<p>kernel_grads are intitialized to zero and since they are used multiple times, its gradient is added
+each time</p>
+<p>Since bias is a vector here and is not added to all the outputs, it is only summed across all the examples
+and the first and second axis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Tensor that is convolved on</p></li>
+<li><p><strong>kernel</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Tensor that is convolved with(weights)</p></li>
+<li><p><strong>bias</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – bias value</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv3D.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv3D.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the forward pass</p>
+<p>Each fragment of shape (num_examples, num_channels, kernel_shape[0], kernel_shape[1])
+is element wise multipled with the kernel and then summed along its x, y and z axis and
+then adds it with the bias</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Tensor to be convolved on</p></li>
+<li><p><strong>kernel</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Tensor to be convolved with(weights)</p></li>
+<li><p><strong>bias</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – bias value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result that is convolved</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv3D.validate_inputs">
+<span class="sig-name descname"><span class="pre">validate_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv3D.validate_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the inputs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>np.ndarray</em>) – Data to be validated</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If inputs aren’t of format (num_examples, num_channels, x_dim, y_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool2D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">MaxPool2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>, <a class="reference internal" href="#neograd.autograd.ops.conv.Conv" title="neograd.autograd.ops.conv.Conv"><code class="xref py py-class docutils literal notranslate"><span class="pre">Conv</span></code></a></p>
+<p>Implements 2D MaxPooling</p>
+<p>In MaxPooling, it is differentiable only if kernel_shape doesn’t overlap,
+ie stride should be equal to the dimension of the kernel_shape, so gradient
+check passes, if it does overlap, then it isnt differentiable and fails gradient check</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool2D.kernel_shape">
+<span class="sig-name descname"><span class="pre">kernel_shape</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool2D.kernel_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shape of the kernel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool2D.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool2D.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of inputs</p>
+<p>Since argmax operates only on one axis, the fragment is first flattened across x and
+y dims (last two dims)
+Then the one hot encoding of the max indices are taken that are the multiplied
+with the corresponding upper grad slice
+fragment_grad is reshaped to original fragment shape</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Tensor that is maxpooled</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool2D.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool2D.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forward pass of max pooling 2d</p>
+<p>The fragments are generated, for each of it, the maximum value in the x and y dims
+is returned for all examples</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Data to be maxpooled</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool2D.validate_inputs">
+<span class="sig-name descname"><span class="pre">validate_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool2D.validate_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the inputs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>np.ndarray</em>) – Data to be validated</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If inputs aren’t of format (num_examples, x_dim, y_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool3D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">MaxPool3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>, <a class="reference internal" href="#neograd.autograd.ops.conv.Conv" title="neograd.autograd.ops.conv.Conv"><code class="xref py py-class docutils literal notranslate"><span class="pre">Conv</span></code></a></p>
+<p>Implements 3D MaxPooling</p>
+<p>In MaxPooling, it is differentiable only if kernel_shape doesn’t overlap,
+ie stride should be equal to the dimension of the kernel_shape, so gradient
+check passes, if it does overlap, then it isnt differentiable and fails gradient check</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool3D.kernel_shape">
+<span class="sig-name descname"><span class="pre">kernel_shape</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool3D.kernel_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shape of the kernel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool3D.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool3D.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of inputs</p>
+<p>Since argmax operates only on one axis, the fragment is first flattened across x and
+y dims (last two dims)
+Then the one hot encoding of the max indices are taken that are the multiplied
+with the corresponding upper grad slice
+fragment_grad is reshaped to original fragment shape</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Tensor that is maxpooled</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool3D.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool3D.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forward pass of max pooling 3d</p>
+<p>The fragments are generated, for each of it, the maximum value in the x and y dims
+is returned for all examples across all channels</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Data to be maxpooled</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool3D.validate_inputs">
+<span class="sig-name descname"><span class="pre">validate_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool3D.validate_inputs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the inputs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>np.ndarray</em>) – Data to be validated</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If inputs aren’t of format (num_examples, num_channels, x_dim, y_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.conv2d">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">conv2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.conv2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction of Conv2D.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Tensor to be convolved on</p></li>
+<li><p><strong>kernel</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Tensor to be convolved with(weights)</p></li>
+<li><p><strong>bias</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – bias value</p></li>
+<li><p><strong>padding</strong> (<em>int</em>) – Padding value to be applied</p></li>
+<li><p><strong>stride</strong> (<em>int</em>) – Stride to be taken</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.conv3d">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">conv3d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.conv3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction of Conv3D.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Tensor to be convolved on</p></li>
+<li><p><strong>kernel</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Tensor to be convolved with(weights)</p></li>
+<li><p><strong>bias</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – bias value</p></li>
+<li><p><strong>padding</strong> (<em>int</em>) – Padding value to be applied</p></li>
+<li><p><strong>stride</strong> (<em>int</em>) – Stride to be taken</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.maxpool2d">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">maxpool2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.maxpool2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction of MaxPool2D.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Tensor to be convolved on</p></li>
+<li><p><strong>kernel_shape</strong> (<em>tuple</em>) – Shape of the kernel</p></li>
+<li><p><strong>padding</strong> (<em>int</em>) – Padding value to be applied</p></li>
+<li><p><strong>stride</strong> (<em>int</em>) – Stride to be taken</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="neograd.autograd.ops.conv.maxpool3d">
+<span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">maxpool3d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.maxpool3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstraction of MaxPool3D.forward</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Tensor to be convolved on</p></li>
+<li><p><strong>kernel_shape</strong> (<em>tuple</em>) – Shape of the kernel</p></li>
+<li><p><strong>padding</strong> (<em>int</em>) – Padding value to be applied</p></li>
+<li><p><strong>stride</strong> (<em>int</em>) – Stride to be taken</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-neograd.autograd.ops.operation">
+<span id="neograd-autograd-ops-operation-module"></span><h2>neograd.autograd.ops.operation module<a class="headerlink" href="#module-neograd.autograd.ops.operation" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.operation.</span></span><span class="sig-name descname"><span class="pre">Operation</span></span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Transforms Tensors by applying some function</p>
+<p>Used when some input is getting transformed into an output, for functions
+where gradient calculation is required with the forward pass and the backward
+pass defined</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.graph">
+<span class="sig-name descname"><span class="pre">graph</span></span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Graph object that’s currently in use. If None, then the global
+_NG_GRAPH is used, else a specific graph object is used. Defaults to None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="neograd.autograd.html#neograd.autograd.graph.Graph" title="neograd.autograd.graph.Graph">Graph</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract backward method</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If backward method isn’t overridden</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.get_broadcast_shape">
+<span class="sig-name descname"><span class="pre">get_broadcast_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tensors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.get_broadcast_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return broadcasted shape of Tensors</p>
+<p>If the tensors can be broadcasted, then the broadcasted shape is returned
+, else None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>*tensors</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Tensors that should be broadcasted</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Broadcasted shape if it can be broadcasted, if not None
+Also even if atleast one of the Tensors has requires_broadcasting set to False,
+it returns None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.get_result_tensor">
+<span class="sig-name descname"><span class="pre">get_result_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">tensors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.get_result_tensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the result tensor of the Operation</p>
+<p>If tracking is enabled, then, it creates a Node for the result_tensor
+with parent_broadcast_shape and adds edges to the graph</p>
+<p>If tracking is disabled, then no Node creation and edge addition
+occurs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<em>np object</em>) – Result after performing a raw numpy operation</p></li>
+<li><p><strong>*tensors</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operands of the operation</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.get_tensors">
+<span class="sig-name descname"><span class="pre">get_tensors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">operands</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.get_tensors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the processed operands as tuple of Tensors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>*operands</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operands of the Operation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple of Tensors if len(tuple)&gt;1 else returns the first Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">graph</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.process_operands">
+<span class="sig-name descname"><span class="pre">process_operands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">operands</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.process_operands" title="Permalink to this definition">¶</a></dt>
+<dd><p>All operands are converted to Tensors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>operands</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a><em> or </em><em>int</em><em> or </em><em>float</em><em> or </em><em>list</em><em> or </em><em>np.ndarray</em>) – Operands of the Operation</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple of Tensors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.result_requires_grad">
+<span class="sig-name descname"><span class="pre">result_requires_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tensors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.result_requires_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the result requires grad</p>
+<p>Checks if the result requires gradient to be calculated given the operands of the
+Operation, if atleast one operand requires_grad to True, then result will also have
+requires_grad to True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tensors</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Tensors that are operated on</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-neograd.autograd.ops">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-neograd.autograd.ops" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">neograd</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">neograd</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="neograd.html">neograd package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">neograd</a><ul>
+  <li><a href="neograd.html">neograd package</a><ul>
+  <li><a href="neograd.autograd.html">neograd.autograd package</a><ul>
+      <li>Previous: <a href="neograd.autograd.html" title="previous chapter">neograd.autograd package</a></li>
+      <li>Next: <a href="neograd.nn.html" title="next chapter">neograd.nn package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Pranav Sastry.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.2.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/neograd.autograd.ops.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
