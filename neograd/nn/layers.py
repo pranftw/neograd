@@ -137,7 +137,7 @@ class Layer:
       if isinstance(val, Param):
         if return_frozen or not(val.frozen):
           params[attr] = val.data if as_dict else val
-    return params if as_dict else params.values()
+    return params if as_dict else list(params.values())
   
   def set_eval(self, eval):
     '''Sets eval

@@ -8,7 +8,7 @@ def to_tensors(operands):
   '''Converts all operands of type numpy to ng.tensor
 
   Args:
-    operands (tuple of np.ndarray): Operands to be converted
+    operands (list of np.ndarray): Operands to be converted
   
   Returns:
     tuple of Tensors
@@ -17,17 +17,17 @@ def to_tensors(operands):
   for operand in operands:
     operand = operand.astype(float)
     tensors.append(ng.tensor(operand, requires_grad=True))
-  return tuple(tensors)
+  return tensors
 
 def execute(fn, operands, params=None, epsilon=1e-7, tolerance=1e-7, **kwargs):
   '''Performs the grad_check on the fn using fn_grad_check
 
   Args:
     fn: Function to be gradient checked
-    operands (tuple of np.ndarray): Operands to the function
-    epsilon (float): value of epsilon
-    params (Param): Any other params involved with the function that needs to be checked
+    operands (list of np.ndarray): Operands to the function
+    params (list of Param): Any other params involved with the function that needs to be checked
       Defaults to None. If not None, then it is combined with the tensors
+    epsilon (float): value of epsilon
     tolerance (float): Lower tolerance acceptable Defaults to 1e-7 tolerance
       is required in cases like Linear layer where the backprop is calculated by
       autograd, without any explicit gradient fns, so there might be some floating point

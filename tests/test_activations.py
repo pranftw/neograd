@@ -16,21 +16,21 @@ f = np.array([[0.5, -2, 1], [-1, -0.4, 20]])
 
 # <------------RELU------------>
 def test_relu():
-  execute(relu, (f,))
+  execute(relu, [f])
 
 
 # <------------SIGMOID------------>
 def test_sigmoid():
-  execute(sigmoid, (c,))
+  execute(sigmoid, [c])
 
 
 # <------------TANH------------>
 def test_tanh():
-  execute(tanh, (f,))
+  execute(tanh, [f])
 
 
 # <------------SOFTMAX------------>
 def test_softmax():
-  execute(softmax, (d,), axis=0)
-  execute(softmax, (d,), axis=1)
-  execute(softmax, (d,), axis=2)
+  execute(softmax, [d], axis=0)
+  execute(softmax, [d], axis=1)
+  execute(softmax, [d], axis=2)

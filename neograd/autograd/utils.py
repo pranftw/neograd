@@ -244,8 +244,8 @@ def fn_grad_check(fn, inputs, params, targets=None, loss_fn=None, epsilon=1e-7, 
 
   Args:
     fn: Function to be gradient checked
-    inputs (tuple of Tensor): inputs to the function
-    params (tuple of Tensor): the params whose data can be wiggled to get the gradients
+    inputs (list of Tensor): inputs to the function
+    params (list of Tensor): the params whose data can be wiggled to get the gradients
     targets (Tensor): targets of the function
     loss_fn (Loss): loss_fn to evaluate the function
     epsilon (float): The amount by which params need to be wiggled Defaults to 1e-7
