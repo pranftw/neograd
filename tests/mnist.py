@@ -1,7 +1,7 @@
 import _setup
 import neograd as ng
 import numpy as np
-from neograd.nn.loss import CE
+from neograd.nn.loss import SoftmaxCE
 from neograd.nn.optim import Adam
 from neograd.autograd.utils import grad_check
 from neograd.nn.utils import get_batches
@@ -15,21 +15,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y)
 num_train, num_test = X_train.shape[0], X_test.shape[0]
 num_iter = 200
 
-def one_hot(cls_arr, num_examples, num_classes):
-  encoded = np.zeros((num_examples, num_classes))
-  for i in range(num_examples):
-    for j in range(num_classes):
-      if j==cls_arr[i]:
-        encoded[i][j] = 1
-  return encoded
-
 X_train_norm = (X_train - np.mean(X_train, keepdims=True))/np.std(X_train, keepdims=True)
 X_test_norm = (X_test - np.mean(X_test, keepdims=True))/np.std(X_test, keepdims=True)
 
 X_train = ng.tensor(X_train_norm[:num_train,:].reshape(num_train,8,8))
 X_test = ng.tensor(X_test_norm[:num_test,:].reshape(num_test,8,8))
-y_train = ng.tensor(one_hot(y_train[:num_train], num_train, 10))
-y_test = ng.tensor(y_test[:num_test])
+y_train = ng.tensor(np.eye(10)[y_train])
+y_test = ng.tensor(y_test)
 
 class NN(ng.nn.Model):
   def __init__(self):
@@ -38,8 +30,7 @@ class NN(ng.nn.Model):
       ng.nn.ReLU()
     )
     self.stack = ng.nn.Sequential(
-        ng.nn.Linear(36,10),
-        ng.nn.Softmax(1)
+        ng.nn.Linear(36,10)
     )
 
   def forward(self, inputs):
@@ -51,7 +42,7 @@ CHKPT_PATH = '/Users/pranavsastry/Downloads/mnist_checkpoints'
 WGTS_PATH = '/Users/pranavsastry/Downloads/mnist_weights.hkl'
 
 model = NN()
-loss_fn = CE()
+loss_fn = SoftmaxCE(axis=1)
 optim = Adam(model.get_params(), 5e-3)
 
 # chkpt = ng.Checkpoint(model, CHKPT_PATH)
@@ -73,7 +64,8 @@ for iter in range(num_iter):
 
 with model.eval():
   test_outputs = model(X_test)
-  preds = np.argmax(test_outputs.data, axis=1)
+  probs = ng.nn.Softmax(1)(test_outputs.data)
+  preds = np.argmax(probs.data, axis=1)
 
 report = classification_report(y_test.data.astype(int).flatten(), preds.flatten())
 print(report)

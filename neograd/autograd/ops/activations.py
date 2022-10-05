@@ -175,9 +175,20 @@ class Softmax(Operation):
 
     tens.set_grad_fn(grad_backward)
 
-  def calc_softmax(self, arr):
-    exponentiated = np.exp(arr-np.max(arr))
-    sum_val = np.sum(exponentiated)
+  @staticmethod
+  def calc_softmax(arr, axis=None):
+    '''Calculates stable Softmax
+
+    Args:
+      arr (np.ndarray): Array whose Softmax is to be calculated
+      axis (int or tuple of int): Axis along which to calculate the Softmax
+        Defaults to None
+    
+    Returns:
+      Softmax of the array
+    '''
+    exponentiated = np.exp(arr-np.max(arr, axis=axis, keepdims=True))
+    sum_val = np.sum(exponentiated, axis=axis, keepdims=True)
     return exponentiated/sum_val
 
 def softmax(tens, axis):
