@@ -12,8 +12,8 @@ from sklearn.metrics import classification_report, accuracy_score
 X, y = load_digits(return_X_y=True)
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
-# num_train, num_test = X_train.shape[0], X_test.shape[0]
-num_train, num_test = 12, 12
+num_train, num_test = X_train.shape[0], X_test.shape[0]
+# num_train, num_test = 50,50
 num_iter = 200
 
 X_train_norm = (X_train - np.mean(X_train, keepdims=True))/np.std(X_train, keepdims=True)
@@ -31,7 +31,8 @@ class NN(ng.nn.Model):
       ng.nn.ReLU()
     )
     self.stack = ng.nn.Sequential(
-        ng.nn.Linear(36,10)
+        ng.nn.Linear(36,10),
+        ng.nn.Tanh()
     )
 
   def forward(self, inputs):
@@ -49,28 +50,28 @@ optim = Adam(model.get_params(), 5e-3)
 # chkpt = ng.Checkpoint(model, CHKPT_PATH)
 batch_size = 200
 
-# for iter in range(num_iter):
-#   for batch_input, batch_target in get_batches(X_train, y_train, batch_size):
-#     optim.zero_grad()
-#     outputs = model(batch_input)
-#     loss = loss_fn(outputs, batch_target)
-#     loss.backward()
-#     optim.step()
-#   if iter%50==0:
-#     print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
-#     # chkpt.add(
-#     #   iter = iter,
-#     #   loss = float(loss.data)
-#     # )
+for iter in range(num_iter):
+  for batch_input, batch_target in get_batches(X_train, y_train, batch_size):
+    optim.zero_grad()
+    outputs = model(batch_input)
+    loss = loss_fn(outputs, batch_target)
+    loss.backward()
+    optim.step()
+  if iter%50==0:
+    print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+    # chkpt.add(
+    #   iter = iter,
+    #   loss = float(loss.data)
+    # )
 
-# with model.eval():
-#   test_outputs = model(X_test)
-#   probs = ng.nn.Softmax(1)(test_outputs.data)
-#   preds = np.argmax(probs.data, axis=1)
+with model.eval():
+  test_outputs = model(X_test)
+  probs = ng.nn.Softmax(1)(test_outputs.data)
+  preds = np.argmax(probs.data, axis=1)
 
-# report = classification_report(y_test.data.astype(int).flatten(), preds.flatten())
-# print(report)
-# accuracy = accuracy_score(y_test.data.astype(int).flatten(), preds.flatten())
-# print('Accuracy:', accuracy)
+report = classification_report(y_test.data.astype(int).flatten(), preds.flatten())
+print(report)
+accuracy = accuracy_score(y_test.data.astype(int).flatten(), preds.flatten())
+print('Accuracy:', accuracy)
 
 grad_check(model, X_train, y_train, loss_fn)

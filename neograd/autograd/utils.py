@@ -221,6 +221,9 @@ def grad_check(model, inputs, targets, loss_fn, epsilon=1e-7, print_vals=True):
   analytical_grads = []
   calculated_grads = []
 
+  for param in params:
+    param.zero_grad()
+
   def get_loss():
     outputs = model(inputs)
     loss = loss_fn(outputs, targets)
@@ -260,6 +263,9 @@ def fn_grad_check(fn, inputs, params, targets=None, loss_fn=None, epsilon=1e-7, 
     loss_fn = MSE()
   analytical_grads = []
   calculated_grads = []
+
+  for param in params:
+    param.zero_grad()
 
   def get_loss(targets=targets):
     outputs = fn(*inputs, **kwargs)
