@@ -31,7 +31,7 @@ class Loss:
     Returns:
       Number of examples
     '''
-    if len(outputs_shape)==0:
+    if len(outputs_shape)==0 or len(outputs_shape)==1:
       return 1
     else:
       return outputs_shape[0] 
@@ -141,16 +141,15 @@ class SoftmaxCE(Operation, Loss):
     '''Calculates Softmax of inputs and the Cross Entropy loss
 
     Args:
-      outputs (Tensor): Tensor which is usually the outputs of the last layer
-        of the network
+      outputs (Tensor): Outputs of Layer/Container/Model/Operation
       targets (Tensor): Targets to be evaluated against
       epsilon (float): For numerical stability of log Defaults to 1e-8
     
     Returns:
       Tensor of the result
     '''
-    probs = Softmax.calc_softmax(outputs.data, axis=self.axis)
     num_examples = self.get_num_examples(outputs.shape)
+    probs = Softmax.calc_softmax(outputs.data, axis=self.axis)
     entropy = np.sum(targets.data*np.log(probs+epsilon))
     cost = (-1/num_examples)*entropy
     return self.get_result_tensor(cost, outputs, targets)
@@ -164,7 +163,8 @@ class SoftmaxCE(Operation, Loss):
       targets (Tensor): Targets to be evaluated against
     '''
     def sce_backward(ug):
+      num_examples = self.get_num_examples(outputs.shape)
       probs = Softmax.calc_softmax(outputs.data, axis=self.axis)
-      return ug*(probs-targets.data) # ug is a scalar(1 by default), because loss calculated in forward is a scalar
+      return (ug/num_examples)*(probs-targets.data) # ug is a scalar(1 by default), because loss calculated in forward is a scalar
     outputs.set_grad_fn(sce_backward)
     assert targets.requires_grad is False, 'Targets Tensor should have requires_grad=False'

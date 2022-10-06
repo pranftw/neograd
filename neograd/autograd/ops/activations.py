@@ -143,7 +143,7 @@ class Softmax(Operation):
       Tensor of the result
     '''
     tens = self.get_tensors(tens)
-    result = np.apply_along_axis(self.calc_softmax, self.axis, tens.data)
+    result = self.calc_softmax(tens.data, axis=self.axis)
     return self.get_result_tensor(result, tens)
   
   def backward(self, tens):
