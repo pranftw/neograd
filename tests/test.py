@@ -34,19 +34,19 @@ model = NN()
 loss_fn = BCE()
 optim = Adam(model.get_params(), 0.05)
 
-# for iter in range(num_iter):
-#   optim.zero_grad()
-#   outputs = model(X_train)
-#   loss = loss_fn(outputs, y_train)
-#   loss.backward()
-#   optim.step()
-#   print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+for iter in range(num_iter):
+  optim.zero_grad()
+  outputs = model(X_train)
+  loss = loss_fn(outputs, y_train)
+  loss.backward()
+  optim.step()
+  print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
 
-# with model.eval():
-#   test_outputs = model(X_test)
-#   preds = np.where(test_outputs.data>=0.5, 1, 0)
+with model.eval():
+  test_outputs = model(X_test)
+  preds = np.where(test_outputs.data>=0.5, 1, 0)
 
-# print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
-# print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
+print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
+print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
 
 grad_check(model, X_train, y_train, loss_fn)

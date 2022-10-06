@@ -72,7 +72,7 @@ class BCE(Loss):
     Args:
       outputs (Tensor): Outputs of Layer/Container/Model/Operation
       targets (Tensor): Targets to be evaluated against
-      epsilon (float): For numerical stability of log Defaults to 1e-8
+      epsilon (float): For numerical stability of log Defaults to 1e-9
     
     Returns:
       Tensor of the result
@@ -100,7 +100,7 @@ class CE(Loss):
     Args:
       outputs (Tensor): Outputs of Layer/Container/Model/Operation
       targets (Tensor): Targets to be evaluated against
-      epsilon (float): For numerical stability of log Defaults to 1e-8
+      epsilon (float): For numerical stability of log Defaults to 1e-9
     
     Returns:
       Tensor of the result
@@ -143,7 +143,7 @@ class SoftmaxCE(Operation, Loss):
     Args:
       outputs (Tensor): Outputs of Layer/Container/Model/Operation
       targets (Tensor): Targets to be evaluated against
-      epsilon (float): For numerical stability of log Defaults to 1e-8
+      epsilon (float): For numerical stability of log Defaults to 1e-9
     
     Returns:
       Tensor of the result

@@ -17,51 +17,66 @@ I firmly believe that in order to understand something completely, you have to b
 
 ## Features
 ### Automatic Differentiation
-`autograd` offers automatic differentiation for vectors of any dimension
+`autograd` offers automatic differentiation, implemented for the most commonly required operations for vectors of any dimension, with broadcasting capabilities
 ```
 import neograd as ng
 a = ng.tensor(3, requires_grad=True)
 b = ng.tensor([1,2,3], requires_grad=True)
 c = a+b
 c.backward([1,1,1])
+print(a.grad)
+print(b.grad)
 ```
-### Optimized Memory Usage
-During the forward pass, a `graph` is created for the backward pass, as soon as the Tensor's gradient is calculated and all its parents have used its gradients to calculate their own, the Tensor is automatically flushed from the memory using `auto-removal`
+### Custom autograd operations
+If you wanted a custom operation to have `autograd` capabilities, those can be defined with very simple interface each having a forward method and a backward method
+```
+class Custom(Operation):
+  def forward(self):
+    pass
+  def backward(self):
+    pass
+```
+### Gradient Checking
+Debug your models/functions with Gradient Checking, to ensure that the gradients are getting propagated correctly
+### Highly customizable
+Create your own custom layers, optimizers, loss functions which provides more flexibility to create anything you
+desire
 ### PyTorch like API
 PyTorch's API is one of the best and one the most elegant API designs, so we've leveraged the same
 ### Neural Network Module
 `nn` contains some of the most commonly used optimizers, activations and loss functions required to train a Neural Network
-### Modular
-Custom `Layer` can be created hence providing more flexibility and personalization to create basically anything you want
-### Custom autograd operations
-If you wanted a custom operation to have `autograd` capabilities, those can be defined with very simple interface each having a forward method and a backward method
+### Save and Load weights
+Trained a model already? Then save the weights onto a file and load them whenever required
+### Checkpoints
+Let's say you're training a model and your computer runs out of juice and if you'd waited until training was finished, to save the weights, then you'd lose all the weights. To prevent this, checkpoint your model with various sessions to save the weights during regular intervals with additional supporting data
 
 ## Example
 ```
 import neograd as ng
 import numpy as np
 from neograd.nn.loss import BCE
-from neograd.nn.optim import GD
+from neograd.nn.optim import Adam
+from neograd.autograd.utils import grad_check
 from sklearn.datasets import make_circles
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, accuracy_score
 
 X, y = make_circles(n_samples=1000, noise=0.05, random_state=100)
 X_train, X_test, y_train, y_test = train_test_split(X,y)
 
-X_train, X_test = ng.tensor(X_train.T), ng.tensor(X_test.T)
-y_train, y_test = ng.tensor(y_train.T.reshape(1,750)), ng.tensor(y_test.T.reshape(1,250))
-
 num_train = 750
 num_test = 250
-num_iter = 1000
+num_iter = 50
+
+X_train, X_test = ng.tensor(X_train[:num_train,:]), ng.tensor(X_test[:num_test,:])
+y_train, y_test = ng.tensor(y_train[:num_train].reshape(num_train,1)), ng.tensor(y_test[:num_test].reshape(num_test,1))
 
 class NN(ng.nn.Model):
   def __init__(self):
-    super().__init__(self)
     self.stack = ng.nn.Sequential(
-      ng.nn.Linear(2,10),
+      ng.nn.Linear(2,100),
       ng.nn.ReLU(),
-      ng.nn.Linear(10,1),
+      ng.nn.Linear(100,1),
       ng.nn.Sigmoid()
     )
   
@@ -70,7 +85,7 @@ class NN(ng.nn.Model):
 
 model = NN()
 loss_fn = BCE()
-optim = GD(model.get_params(), 0.15)
+optim = Adam(model.get_params(), 0.05)
 
 for iter in range(num_iter):
   optim.zero_grad()
@@ -78,8 +93,16 @@ for iter in range(num_iter):
   loss = loss_fn(outputs, y_train)
   loss.backward()
   optim.step()
-  if iter%50==0:
-    print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+  print(f"iter {iter+1}/{num_iter}\nloss: {loss}\n")
+
+with model.eval():
+  test_outputs = model(X_test)
+  preds = np.where(test_outputs.data>=0.5, 1, 0)
+
+print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
+print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
+
+grad_check(model, X_train, y_train, loss_fn)
 ```
 
 ## Resources
