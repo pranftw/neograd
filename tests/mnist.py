@@ -31,8 +31,7 @@ class NN(ng.nn.Model):
       ng.nn.ReLU()
     )
     self.stack = ng.nn.Sequential(
-        ng.nn.Linear(36,10),
-        ng.nn.Tanh()
+        ng.nn.Linear(36,10)
     )
 
   def forward(self, inputs):

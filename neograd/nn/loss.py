@@ -64,7 +64,7 @@ class MSE(Loss):
 class BCE(Loss):
   '''Binary Cross Entropy
   '''
-  def forward(self, outputs, targets, epsilon=1e-8):
+  def forward(self, outputs, targets, epsilon=1e-9):
     '''Forward pass of BCE
 
     epsilon used  to prevent log0
@@ -92,7 +92,7 @@ class BCE(Loss):
 class CE(Loss):
   '''Cross Entropy
   '''
-  def forward(self, outputs, targets, epsilon=1e-8):
+  def forward(self, outputs, targets, epsilon=1e-9):
     '''Forward pass of CE
 
     epsilon used  to prevent log0
@@ -137,7 +137,7 @@ class SoftmaxCE(Operation, Loss):
   def __init__(self, axis):
     self.axis = axis
 
-  def forward(self, outputs, targets, epsilon=1e-8):
+  def forward(self, outputs, targets, epsilon=1e-9):
     '''Calculates Softmax of inputs and the Cross Entropy loss
 
     Args:
