@@ -1,14 +1,16 @@
 import math
 import numpy as np
 from .operation import Operation
-from numba import njit
 
 
 class Conv:
   '''Base class for Convolution and Pooling operations
+
+  Attributes:
+    padding (int): Padding value to be applied
+    stride (int): Stride to be taken
   '''
-  @staticmethod
-  def generate_fragments(padded_inputs, kernel_shape, stride):
+  def generate_fragments(self, padded_data, kernel_shape):
     '''Generates fragments of data
 
     Takes the data and slices it to the shape of kernel_shape in x and y axis (the last two
@@ -17,9 +19,8 @@ class Conv:
     Each time a chunk is taken, the x index and y index are incremented by the stride
 
     Args:
-      padded_inputs (np.ndarray): Padded Data to be convolved on
+      padded_data (np.ndarray): Data that is already padded, to be convolved on
       kernel_shape (tuple): Shape of kernel to be convolved with
-      stride (int): Stride to be taken
     
     Yields:
       sliced inputs_data(fragment), row slice(start and end indices of fragment among rows)
@@ -29,10 +30,11 @@ class Conv:
       AssertionError: if stride isn't greater than or equal to 1
       AssertionError: if padding isn't greater than or equal to 0
     '''
-    assert stride>=1, 'Stride must be greater than or equal to 1'
+    assert self.stride>=1, 'Stride must be greater than or equal to 1'
+    assert self.padding>=0, 'Padding must be greater than or equal to zero'
     padded_data_slice = ()
-    padded_data_slice += ((slice(None)),)*(len(padded_inputs.shape)-2)
-    inputs_x_dim, inputs_y_dim = padded_inputs.shape[-2:]
+    padded_data_slice += ((slice(None)),)*(len(padded_data.shape)-2)
+    inputs_x_dim, inputs_y_dim = padded_data.shape[-2:]
     kernel_x_dim, kernel_y_dim = kernel_shape[-2:]
     j = 0
     while(j+kernel_y_dim<=inputs_y_dim):
@@ -40,12 +42,11 @@ class Conv:
       while(i+kernel_x_dim<=inputs_x_dim):
         row_slice = slice(i, i+kernel_x_dim)
         col_slice = slice(j, j+kernel_y_dim)
-        yield padded_inputs[padded_data_slice+(row_slice, col_slice)], row_slice, col_slice
-        i+=stride
-      j+=stride
+        yield padded_data[padded_data_slice+(row_slice, col_slice)], row_slice, col_slice
+        i+=self.stride
+      j+=self.stride
   
-  @staticmethod
-  def get_result_shape(inputs_shape, kernel_shape, padding, stride):
+  def get_result_shape(self, inputs_shape, kernel_shape):
     '''Calculates the x and y dimensions of result of convolution
 
     Takes the inputs_shape and kernel_shape and returns the x and y dims of the result
@@ -61,13 +62,12 @@ class Conv:
     inputs_x_dim, inputs_y_dim = inputs_shape[-2:]
     kernel_x_dim, kernel_y_dim = kernel_shape[-2:]
     def result_dim(inputs_dim, kernel_dim):
-      return math.floor(((inputs_dim + (2*padding) - kernel_dim)/stride) + 1)
+      return math.floor(((inputs_dim + (2*self.padding) - kernel_dim)/self.stride) + 1)
     result_x_dim = result_dim(inputs_x_dim, kernel_x_dim)
     result_y_dim = result_dim(inputs_y_dim, kernel_y_dim)
     return result_x_dim, result_y_dim
   
-  @staticmethod
-  def pad(data, padding):
+  def pad(self, data):
     '''Pads the data in x and y dimensions (last two dims)
 
     Only the last two dimensions are padded rest aren't padded(padded with 0, 
@@ -75,18 +75,16 @@ class Conv:
 
     Args:
       data (np.ndarray): Data to be padded
-      padding (int): Padding value to be applied
     
     Returns:
       data that is padded
     '''
-    padding_tuple = () 
-    padding_tuple+=((0,0),)*(len(data.shape)-2)
-    padding_tuple+=((padding, padding),)*2
-    return np.pad(data, padding_tuple)
+    padding = () 
+    padding+=((0,0),)*(len(data.shape)-2)
+    padding+=((self.padding,self.padding),)*2
+    return np.pad(data, padding)
 
-  @staticmethod
-  def unpad(padded_data, padding):
+  def unpad(self, padded_data):
     '''Unpads the padded data
 
     Slices the padded_data in last two dimensions where it is padded, by rejecting
@@ -101,11 +99,10 @@ class Conv:
     padded_x_dim, padded_y_dim = padded_data.shape[-2:]
     extractor_slice = ()
     extractor_slice+=((slice(None)),)*(len(padded_data.shape)-2)
-    extractor_slice+=(slice(padding,padded_x_dim-padding), slice(padding,padded_y_dim-padding))
+    extractor_slice+=(slice(self.padding,padded_x_dim-self.padding), slice(self.padding,padded_y_dim-self.padding))
     return padded_data[extractor_slice]
   
-  @staticmethod
-  def fragment_iterator(padded_inputs, kernel_shape, stride, *args):
+  def fragment_iterator(self, padded_inputs, kernel_shape, *args):
     '''Zips the fragments with any other args
 
     Args:
@@ -117,7 +114,7 @@ class Conv:
     Returns:
       zip of fragments and ony other objects in args
     '''
-    return zip(Conv.generate_fragments(padded_inputs, kernel_shape, stride), *args)
+    return zip(self.generate_fragments(padded_inputs, kernel_shape), *args)
 
 
 # <------------CONV2D------------>
@@ -127,10 +124,6 @@ class Conv2D(Operation, Conv):
 
   2D convolution where the inputs has only 1 channel and its shape is of the form
   (num_examples, x_dim, y_dim) is convolved with a 2D kernel
-
-  Attributes:
-    padding (int): Padding value to be applied
-    stride (int): Stride to be taken
   '''
   def __init__(self, padding, stride):
     self.padding = padding
@@ -152,9 +145,9 @@ class Conv2D(Operation, Conv):
     '''
     inputs, kernel, bias = self.get_tensors(inputs, kernel, bias)
     self.validate_inputs(inputs)
-    outputs = np.empty((inputs.shape[0], *self.get_result_shape(inputs.shape, kernel.shape, self.padding, self.stride)))
-    padded_inputs = self.pad(inputs.data, self.padding)
-    for (fragment, _, _), idx in self.fragment_iterator(padded_inputs, kernel.shape, self.stride, np.ndindex(outputs.shape[-2:])):
+    outputs = np.empty((inputs.shape[0], *self.get_result_shape(inputs.shape, kernel.shape)))
+    padded_inputs = self.pad(inputs.data)
+    for (fragment, _, _), idx in self.fragment_iterator(padded_inputs, kernel.shape, np.ndindex(outputs.shape[-2:])):
       output = np.sum((fragment*kernel.data), axis=(1,2)) + bias.data
       outputs[:,idx[0],idx[1]] = output
     return self.get_result_tensor(outputs, inputs, kernel, bias)
@@ -182,21 +175,21 @@ class Conv2D(Operation, Conv):
       bias (Tensor): bias value
     '''
     from ..utils import unbroadcast_data
-    padded_inputs = self.pad(inputs.data, self.padding)
+    padded_inputs = self.pad(inputs.data)
 
     def inputs_backward(ug):
       inputs_grads = np.zeros(padded_inputs.shape)
-      for (fragment, row_slice, col_slice), idx in self.fragment_iterator(padded_inputs, kernel.shape, self.stride, np.ndindex(ug.shape[-2:])):
+      for (fragment, row_slice, col_slice), idx in self.fragment_iterator(padded_inputs, kernel.shape, np.ndindex(ug.shape[-2:])):
         sliced_ug = ug[:,idx[0],idx[1]]
         sum_grad = np.ones(fragment.shape)*sliced_ug.reshape(sliced_ug.size,1,1)
         fragment_grad = kernel.data*sum_grad
         inputs_grads[:, row_slice, col_slice]+=fragment_grad
-      unpadded_inputs_grads = self.unpad(inputs_grads, self.padding)
+      unpadded_inputs_grads = self.unpad(inputs_grads)
       return unpadded_inputs_grads
 
     def kernel_backward(ug):
       kernel_grads = np.zeros(kernel.shape)
-      for (fragment, _, _), idx in self.fragment_iterator(padded_inputs, kernel.shape, self.stride, np.ndindex(ug.shape[-2:])):
+      for (fragment, _, _), idx in self.fragment_iterator(padded_inputs, kernel.shape, np.ndindex(ug.shape[-2:])):
         sliced_ug = ug[:,idx[0],idx[1]]
         sum_grad = np.ones(fragment.shape)*sliced_ug.reshape(sliced_ug.size,1,1)
         kernel_grad = unbroadcast_data(fragment*sum_grad, kernel.shape, fragment.shape)
@@ -246,10 +239,6 @@ class Conv3D(Operation, Conv):
   3D convolution over a colume where the inputs has multiple channels and
   its shape is of the form (num_examples, num_channels, x_dim, y_dim) is convolved
   with a 3D kernel of shape (num_channels, kernel_shape[0], kernel_shape[1])
-
-  Attributes:
-    padding (int): Padding value to be applied
-    stride (int): Stride to be taken
   '''
   def __init__(self, padding, stride):
     self.padding = padding
@@ -272,9 +261,9 @@ class Conv3D(Operation, Conv):
     '''
     inputs, kernel, bias = self.get_tensors(inputs, kernel, bias)
     self.validate_inputs(inputs)
-    outputs = np.empty((inputs.shape[0], kernel.shape[0], *self.get_result_shape(inputs.shape, kernel.shape, self.padding, self.stride)))
-    padded_inputs = self.pad(inputs.data, self.padding)
-    for (fragment,_,_), idx in self.fragment_iterator(padded_inputs, kernel.shape, self.stride, np.ndindex(outputs.shape[-2:])):
+    outputs = np.empty((inputs.shape[0], kernel.shape[0], *self.get_result_shape(inputs.shape, kernel.shape)))
+    padded_inputs = self.pad(inputs.data)
+    for (fragment,_,_), idx in self.fragment_iterator(padded_inputs, kernel.shape, np.ndindex(outputs.shape[-2:])):
       expanded_fragment = np.expand_dims(fragment, axis=1)
       output = expanded_fragment*kernel.data
       output = np.sum(output, axis=(2,3,4)) + bias.data
@@ -307,23 +296,23 @@ class Conv3D(Operation, Conv):
       bias (Tensor): bias value
     '''
     from ..utils import unbroadcast_data
-    padded_inputs = self.pad(inputs.data, self.padding)
+    padded_inputs = self.pad(inputs.data)
 
     def inputs_backward(ug):
       inputs_grads = np.zeros(padded_inputs.shape)
-      for (fragment, row_slice, col_slice), idx in self.fragment_iterator(padded_inputs, kernel.shape, self.stride, np.ndindex(ug.shape[-2:])):
+      for (fragment, row_slice, col_slice), idx in self.fragment_iterator(padded_inputs, kernel.shape, np.ndindex(ug.shape[-2:])):
         expanded_fragment = np.expand_dims(fragment, axis=1)
         sliced_ug = ug[:,:,idx[0],idx[1]]
         sliced_ug = sliced_ug.reshape(*sliced_ug.shape,1,1,1)
         sum_grad = np.ones(expanded_fragment.shape)*sliced_ug
         fragment_grad = np.sum(sum_grad*kernel.data, axis=1)
         inputs_grads[:,:,row_slice,col_slice]+=fragment_grad
-      unpadded_inputs_grads = self.unpad(inputs_grads, self.padding)
+      unpadded_inputs_grads = self.unpad(inputs_grads)
       return unpadded_inputs_grads
     
     def kernel_backward(ug):
       kernel_grads = np.zeros(kernel.shape)
-      for (fragment,_,_), idx in self.fragment_iterator(padded_inputs, kernel.shape, self.stride, np.ndindex(ug.shape[-2:])):
+      for (fragment,_,_), idx in self.fragment_iterator(padded_inputs, kernel.shape, np.ndindex(ug.shape[-2:])):
         expanded_fragment = np.expand_dims(fragment,1)
         sliced_ug = ug[:,:,idx[0],idx[1]]
         sliced_ug = sliced_ug.reshape(*sliced_ug.shape,1,1,1)
@@ -382,8 +371,6 @@ class MaxPool2D(Operation, Conv):
 
   Attributes:
     kernel_shape (tuple): Shape of the kernel
-    padding (int): Padding value to be applied
-    stride (int): Stride to be taken
   '''
   def __init__(self, kernel_shape, padding, stride):
     '''
@@ -411,9 +398,9 @@ class MaxPool2D(Operation, Conv):
     '''
     inputs = self.get_tensors(inputs)
     self.validate_inputs(inputs)
-    outputs = np.empty((inputs.shape[0], *self.get_result_shape(inputs.shape, self.kernel_shape, self.padding, self.stride)))
-    padded_inputs = self.pad(inputs.data, self.padding)
-    for (fragment,_,_), idx in self.fragment_iterator(padded_inputs, self.kernel_shape, self.stride, np.ndindex(outputs.shape[-2:])):
+    outputs = np.empty((inputs.shape[0], *self.get_result_shape(inputs.shape, self.kernel_shape)))
+    padded_inputs = self.pad(inputs.data)
+    for (fragment,_,_), idx in self.fragment_iterator(padded_inputs, self.kernel_shape, np.ndindex(outputs.shape[-2:])):
       outputs[:,idx[0],idx[1]] = np.max(fragment, axis=(1,2))
     return self.get_result_tensor(outputs, inputs)
   
@@ -429,11 +416,11 @@ class MaxPool2D(Operation, Conv):
     Args:
       inputs (Tensor): Tensor that is maxpooled
     '''
-    padded_inputs = self.pad(inputs.data, self.padding)
+    padded_inputs = self.pad(inputs.data)
 
     def inputs_backward(ug):
       inputs_grad = np.empty(padded_inputs.shape)
-      for (fragment,row_slice,col_slice),idx in self.fragment_iterator(padded_inputs, self.kernel_shape, self.stride, np.ndindex(ug.shape[-2:])):
+      for (fragment,row_slice,col_slice),idx in self.fragment_iterator(padded_inputs, self.kernel_shape, np.ndindex(ug.shape[-2:])):
         sliced_ug = ug[:,idx[0],idx[1]]
         fragment_shape = fragment.shape
         flattened_fragment = fragment.reshape(fragment_shape[0], fragment_shape[1]*fragment_shape[2])
@@ -441,7 +428,7 @@ class MaxPool2D(Operation, Conv):
         fragment_grad = np.eye(flattened_fragment.shape[-1])[args] # one hot encoding of args
         fragment_grad = fragment_grad.reshape(fragment_shape)
         inputs_grad[:,row_slice,col_slice] = fragment_grad*np.expand_dims(sliced_ug,axis=(1,2))
-      unpadded_inputs_grads = self.unpad(inputs_grad, self.padding)
+      unpadded_inputs_grads = self.unpad(inputs_grad)
       return unpadded_inputs_grads
 
     inputs.set_grad_fn(inputs_backward)
@@ -484,8 +471,6 @@ class MaxPool3D(Operation, Conv):
 
   Attributes:
     kernel_shape (tuple): Shape of the kernel
-    padding (int): Padding value to be applied
-    stride (int): Stride to be taken
   '''
   def __init__(self, kernel_shape, padding, stride):
     '''
@@ -513,9 +498,9 @@ class MaxPool3D(Operation, Conv):
     '''
     inputs = self.get_tensors(inputs)
     self.validate_inputs(inputs)
-    outputs = np.empty((inputs.shape[0], inputs.shape[1], *self.get_result_shape(inputs.shape, self.kernel_shape, self.padding, self.stride)))
-    padded_inputs = self.pad(inputs.data, self.padding)
-    for (fragment,_,_), idx in self.fragment_iterator(padded_inputs, self.kernel_shape, self.stride, np.ndindex(outputs.shape[-2:])):
+    outputs = np.empty((inputs.shape[0], inputs.shape[1], *self.get_result_shape(inputs.shape, self.kernel_shape)))
+    padded_inputs = self.pad(inputs.data)
+    for (fragment,_,_), idx in self.fragment_iterator(padded_inputs, self.kernel_shape, np.ndindex(outputs.shape[-2:])):
       outputs[:,:,idx[0],idx[1]] = np.max(fragment, axis=(2,3))
     return self.get_result_tensor(outputs, inputs)
   
@@ -531,11 +516,11 @@ class MaxPool3D(Operation, Conv):
     Args:
       inputs (Tensor): Tensor that is maxpooled
     '''
-    padded_inputs = self.pad(inputs.data, self.padding)
+    padded_inputs = self.pad(inputs.data)
 
     def inputs_backward(ug):
       inputs_grad = np.empty(padded_inputs.shape)
-      for (fragment,row_slice,col_slice),idx in self.fragment_iterator(padded_inputs, self.kernel_shape, self.stride, np.ndindex(ug.shape[-2:])):
+      for (fragment,row_slice,col_slice),idx in self.fragment_iterator(padded_inputs, self.kernel_shape, np.ndindex(ug.shape[-2:])):
         sliced_ug = ug[:,:,idx[0],idx[1]]
         fragment_shape = fragment.shape
         flattened_fragment = fragment.reshape(fragment_shape[0]*fragment_shape[1], fragment_shape[2]*fragment_shape[3])
@@ -543,7 +528,7 @@ class MaxPool3D(Operation, Conv):
         fragment_grad = np.eye(flattened_fragment.shape[-1])[args] # one hot encoding of args
         fragment_grad = fragment_grad.reshape(fragment_shape)
         inputs_grad[:,:,row_slice,col_slice] = fragment_grad*np.expand_dims(sliced_ug,axis=(2,3))
-      unpadded_inputs_grads = self.unpad(inputs_grad, self.padding)
+      unpadded_inputs_grads = self.unpad(inputs_grad)
       return unpadded_inputs_grads
     
     inputs.set_grad_fn(inputs_backward)

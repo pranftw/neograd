@@ -249,7 +249,7 @@ class Sequential(Container):
 class Linear(Layer):
   '''Implements a fully connected Layer
 
-  Attributes:
+  Parameters:
     num_in (int): Number of inputs to the Layer
     num_out (int): Number of outputs from the Layer
     weights (Param): Weights of the Layer

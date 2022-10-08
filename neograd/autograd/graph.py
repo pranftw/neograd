@@ -7,7 +7,7 @@ class Graph:
   The graph is constructed during the forward pass, and used by the backward
   pass to calculate gradients through automatic differentiation
 
-  Attributes:
+  Parameters:
     nodes_dict (dict): Stores key-value pairs of tensors and their corresponding
       nodes in the graph
     track (bool): Whether the graph must track the tensor operations or not, ie if True, when any

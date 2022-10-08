@@ -238,9 +238,9 @@ Generates the hash that’ll be used as the filename for the params file that’
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>ValueError</strong> – If forbidden_attrs (‘datetime’) are used as keys in <a href="#id1"><span class="problematic" id="id2">**</span></a>tracked, because
+<li><p><strong>ValueError</strong> – If forbidden_attrs (‘datetime’) are used as keys in tracked, because
     the same key is used by neograd to add key of the same value, which might get overwritten</p></li>
-<li><p><strong>ValueError</strong> – If values in <a href="#id3"><span class="problematic" id="id4">**</span></a>tracked aren’t serializable and don’t belong to builtin classes</p></li>
+<li><p><strong>ValueError</strong> – If values in tracked aren’t serializable and don’t belong to builtin classes</p></li>
 </ul>
 </dd>
 </dl>
@@ -648,53 +648,19 @@ considered as a param for the model</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.layers.</span></span><span class="sig-name descname"><span class="pre">Linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_out</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.Linear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p>
 <p>Implements a fully connected Layer</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Linear.num_in">
-<span class="sig-name descname"><span class="pre">num_in</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.num_in" title="Permalink to this definition">¶</a></dt>
-<dd><p>Number of inputs to the Layer</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_in</strong> (<em>int</em>) – Number of inputs to the Layer</p></li>
+<li><p><strong>num_out</strong> (<em>int</em>) – Number of outputs from the Layer</p></li>
+<li><p><strong>weights</strong> (<a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param"><em>Param</em></a>) – Weights of the Layer</p></li>
+<li><p><strong>bias</strong> (<a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param"><em>Param</em></a>) – Bias of the Layer</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Linear.num_out">
-<span class="sig-name descname"><span class="pre">num_out</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.num_out" title="Permalink to this definition">¶</a></dt>
-<dd><p>Number of outputs from the Layer</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Linear.weights">
-<span class="sig-name descname"><span class="pre">weights</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.weights" title="Permalink to this definition">¶</a></dt>
-<dd><p>Weights of the Layer</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param">Param</a></p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="neograd.nn.layers.Linear.bias">
 <span class="sig-name descname"><span class="pre">bias</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bias of the Layer</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param">Param</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">bias</span></span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -713,18 +679,18 @@ considered as a param for the model</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">num_in</span></span><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.nn.layers.Linear.num_in">
+<span class="sig-name descname"><span class="pre">num_in</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.num_in" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">num_out</span></span><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.nn.layers.Linear.num_out">
+<span class="sig-name descname"><span class="pre">num_out</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.num_out" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">weights</span></span><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.nn.layers.Linear.weights">
+<span class="sig-name descname"><span class="pre">weights</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.weights" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -937,7 +903,7 @@ necessarily param</p>
 <p>Binary Cross Entropy</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.loss.BCE.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.loss.BCE.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.loss.BCE.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forward pass of BCE</p>
 <p>epsilon used  to prevent log0</p>
 <dl class="field-list simple">
@@ -945,6 +911,7 @@ necessarily param</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>outputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Outputs of Layer/Container/Model/Operation</p></li>
 <li><p><strong>targets</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Targets to be evaluated against</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – For numerical stability of log Defaults to 1e-9</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -962,7 +929,7 @@ necessarily param</p>
 <p>Cross Entropy</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.loss.CE.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.loss.CE.forward" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.loss.CE.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forward pass of CE</p>
 <p>epsilon used  to prevent log0</p>
 <dl class="field-list simple">
@@ -970,6 +937,7 @@ necessarily param</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>outputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Outputs of Layer/Container/Model/Operation</p></li>
 <li><p><strong>targets</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Targets to be evaluated against</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – For numerical stability of log Defaults to 1e-9</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1017,6 +985,64 @@ Else the first dimension value of outputs_shape is taken as num_examples</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>outputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Outputs of Layer/Container/Model/Operation</p></li>
 <li><p><strong>targets</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Targets to be evaluated against</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of the result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="neograd.nn.loss.SoftmaxCE">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.loss.</span></span><span class="sig-name descname"><span class="pre">SoftmaxCE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.loss.SoftmaxCE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>, <a class="reference internal" href="#neograd.nn.loss.Loss" title="neograd.nn.loss.Loss"><code class="xref py py-class docutils literal notranslate"><span class="pre">Loss</span></code></a></p>
+<p>Implements Softmax activation with CrossEntropyLoss</p>
+<p>Purpose of this is to eliminate costly Jacobian calculation involved
+with vanilla softmax activation. Since Softmax is most commonly used with
+Cross Entropy loss, if both are combined in one single Operation, then the derivative
+is a very minimal subtraction between the softmax output and the targets.
+So many intermediate backward calculations can be prevented with this.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.nn.loss.SoftmaxCE.axis">
+<span class="sig-name descname"><span class="pre">axis</span></span><a class="headerlink" href="#neograd.nn.loss.SoftmaxCE.axis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Axis along which to calculate the Softmax
+Defaults to None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int or tuple of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>epsilon to prevent log0</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.nn.loss.SoftmaxCE.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.loss.SoftmaxCE.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of outputs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Tensor which is usually the outputs of the last layer
+of the network</p></li>
+<li><p><strong>targets</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Targets to be evaluated against</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.nn.loss.SoftmaxCE.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-09</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.loss.SoftmaxCE.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates Softmax of inputs and the Cross Entropy loss</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>outputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Outputs of Layer/Container/Model/Operation</p></li>
+<li><p><strong>targets</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Targets to be evaluated against</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – For numerical stability of log Defaults to 1e-9</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

@@ -4,7 +4,7 @@ class Node:
   Each Tensor is assigned a Node and this Node monitors all the incoming edges(parents)
   and the outgoing edges(children)
 
-  Attributes:
+  Parameters:
     children (list of Node): List of all Nodes which uses the current Node
       as an operand in an Operation
     parents (list of Node): List of all Nodes(operands) that has resulted in the creation

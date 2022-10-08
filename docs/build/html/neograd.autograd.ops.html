@@ -140,8 +140,21 @@ corresponding slice of the upper gradient</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.activations.Softmax.calc_softmax">
-<span class="sig-name descname"><span class="pre">calc_softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Softmax.calc_softmax" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Softmax.calc_softmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates stable Softmax</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>np.ndarray</em>) – Array whose Softmax is to be calculated</p></li>
+<li><p><strong>axis</strong> (<em>int</em><em> or </em><em>tuple</em><em> of </em><em>int</em>) – Axis along which to calculate the Softmax
+Defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Softmax of the array</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.activations.Softmax.forward">
@@ -948,7 +961,7 @@ upper gradient chunks that are the result of the convolution</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.generate_fragments">
-<span class="sig-name descname"><span class="pre">generate_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.generate_fragments" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">generate_fragments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padded_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.generate_fragments" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates fragments of data</p>
 <p>Takes the data and slices it to the shape of kernel_shape in x and y axis (the last two
 dims), including all the other dimensions, effectively taking a chunk/fragment of the data.</p>
@@ -956,7 +969,7 @@ dims), including all the other dimensions, effectively taking a chunk/fragment o
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>inputs_data</strong> (<em>np.ndarray</em>) – Data to be convolved on</p></li>
+<li><p><strong>padded_data</strong> (<em>np.ndarray</em>) – Data that is already padded, to be convolved on</p></li>
 <li><p><strong>kernel_shape</strong> (<em>tuple</em>) – Shape of kernel to be convolved with</p></li>
 </ul>
 </dd>
@@ -1171,9 +1184,9 @@ then adds it with the bias</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">MaxPool2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool2D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>, <a class="reference internal" href="#neograd.autograd.ops.conv.Conv" title="neograd.autograd.ops.conv.Conv"><code class="xref py py-class docutils literal notranslate"><span class="pre">Conv</span></code></a></p>
 <p>Implements 2D MaxPooling</p>
-<p>In MaxPooling, it is differentiable only if kernel_shape doesn’t overlap,
-ie stride should be equal to the dimension of the kernel_shape, so gradient
-check passes, if it does overlap, then it isnt differentiable and fails gradient check</p>
+<p>In MaxPooling, it is differentiable only if kernel_shape along with the stride
+covers the entire input if not it is not differentiable and fails gradient
+checking</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool2D.kernel_shape">
 <span class="sig-name descname"><span class="pre">kernel_shape</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool2D.kernel_shape" title="Permalink to this definition">¶</a></dt>
@@ -1238,9 +1251,9 @@ is returned for all examples</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">MaxPool3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool3D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a>, <a class="reference internal" href="#neograd.autograd.ops.conv.Conv" title="neograd.autograd.ops.conv.Conv"><code class="xref py py-class docutils literal notranslate"><span class="pre">Conv</span></code></a></p>
 <p>Implements 3D MaxPooling</p>
-<p>In MaxPooling, it is differentiable only if kernel_shape doesn’t overlap,
-ie stride should be equal to the dimension of the kernel_shape, so gradient
-check passes, if it does overlap, then it isnt differentiable and fails gradient check</p>
+<p>In MaxPooling, it is differentiable only if kernel_shape along with the stride
+covers the entire input if not it is not differentiable and fails gradient
+checking</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool3D.kernel_shape">
 <span class="sig-name descname"><span class="pre">kernel_shape</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool3D.kernel_shape" title="Permalink to this definition">¶</a></dt>
@@ -1389,18 +1402,12 @@ is returned for all examples across all channels</p>
 <p>Used when some input is getting transformed into an output, for functions
 where gradient calculation is required with the forward pass and the backward
 pass defined</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.graph">
-<span class="sig-name descname"><span class="pre">graph</span></span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.graph" title="Permalink to this definition">¶</a></dt>
-<dd><p>Graph object that’s currently in use. If None, then the global
-_NG_GRAPH is used, else a specific graph object is used. Defaults to None</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="neograd.autograd.html#neograd.autograd.graph.Graph" title="neograd.autograd.graph.Graph">Graph</a> or None</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.graph.Graph" title="neograd.autograd.graph.Graph"><em>Graph</em></a><em> or </em><em>None</em>) – Graph object that’s currently in use. If None, then the global
+_NG_GRAPH is used, else a specific graph object is used. Defaults to None</p>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.backward">
 <span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.backward" title="Permalink to this definition">¶</a></dt>
@@ -1466,8 +1473,8 @@ occurs</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">graph</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.graph">
+<span class="sig-name descname"><span class="pre">graph</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.graph" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

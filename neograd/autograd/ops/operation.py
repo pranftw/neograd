@@ -9,7 +9,7 @@ class Operation:
   where gradient calculation is required with the forward pass and the backward
   pass defined
 
-  Attributes:
+  Parameters:
     graph (Graph or None): Graph object that's currently in use. If None, then the global
       _NG_GRAPH is used, else a specific graph object is used. Defaults to None
   '''

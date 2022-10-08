@@ -53,15 +53,15 @@ class Checkpoint:
         raise ValueError(f"Invalid session {session} specified!")
 
   def add(self, **tracked):
-    ''' Adds a new checkpoint
+    '''Adds a new checkpoint
 
     Args:
       **tracked: All the data that needs to be tracked in checkpoints.json
     
     Raises:
-      ValueError: If forbidden_attrs ('datetime') are used as keys in **tracked, because
+      ValueError: If forbidden_attrs ('datetime') are used as keys in tracked, because
         the same key is used by neograd to add key of the same value, which might get overwritten
-      ValueError: If values in **tracked aren't serializable and don't belong to builtin classes
+      ValueError: If values in tracked aren't serializable and don't belong to builtin classes
     '''
     forbidden_attrs = ('datetime')
     allowed_types = (int, float, str, dict, list)

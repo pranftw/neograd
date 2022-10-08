@@ -193,12 +193,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neograd.autograd.ops.html#module-neograd.autograd.ops.operation">neograd.autograd.ops.operation module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation"><code class="docutils literal notranslate"><span class="pre">Operation</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.graph"><code class="docutils literal notranslate"><span class="pre">Operation.graph</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.backward"><code class="docutils literal notranslate"><span class="pre">Operation.backward()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.get_broadcast_shape"><code class="docutils literal notranslate"><span class="pre">Operation.get_broadcast_shape()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.get_result_tensor"><code class="docutils literal notranslate"><span class="pre">Operation.get_result_tensor()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.get_tensors"><code class="docutils literal notranslate"><span class="pre">Operation.get_tensors()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#id0"><code class="docutils literal notranslate"><span class="pre">Operation.graph</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.graph"><code class="docutils literal notranslate"><span class="pre">Operation.graph</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.process_operands"><code class="docutils literal notranslate"><span class="pre">Operation.process_operands()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.result_requires_grad"><code class="docutils literal notranslate"><span class="pre">Operation.result_requires_grad()</span></code></a></li>
 </ul>
@@ -223,32 +222,18 @@
 <p>Used to keep track of nodes and tensors</p>
 <p>The graph is constructed during the forward pass, and used by the backward
 pass to calculate gradients through automatic differentiation</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.graph.Graph.nodes_dict">
-<span class="sig-name descname"><span class="pre">nodes_dict</span></span><a class="headerlink" href="#neograd.autograd.graph.Graph.nodes_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stores key-value pairs of tensors and their corresponding
-nodes in the graph</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.graph.Graph.track">
-<span class="sig-name descname"><span class="pre">track</span></span><a class="headerlink" href="#neograd.autograd.graph.Graph.track" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether the graph must track the tensor operations or not, ie if True, when any
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nodes_dict</strong> (<em>dict</em>) – Stores key-value pairs of tensors and their corresponding
+nodes in the graph</p></li>
+<li><p><strong>track</strong> (<em>bool</em>) – Whether the graph must track the tensor operations or not, ie if True, when any
 operation happens and a new result tensor is created, then the operands of the operation
 are added as parents to the result tensor and the result tensor is added as child to the
-operands, if False, none of these happens. Defaults to True</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+operands, if False, none of these happens. Defaults to True</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.graph.Graph.add_edge">
 <span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operands</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.graph.Graph.add_edge" title="Permalink to this definition">¶</a></dt>
@@ -307,8 +292,8 @@ in nodes_dict</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">nodes_dict</span></span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.autograd.graph.Graph.nodes_dict">
+<span class="sig-name descname"><span class="pre">nodes_dict</span></span><a class="headerlink" href="#neograd.autograd.graph.Graph.nodes_dict" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -338,8 +323,8 @@ Doing so, removes all the Tensors and their Nodes from the graph</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id1">
-<span class="sig-name descname"><span class="pre">track</span></span><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.autograd.graph.Graph.track">
+<span class="sig-name descname"><span class="pre">track</span></span><a class="headerlink" href="#neograd.autograd.graph.Graph.track" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -354,64 +339,21 @@ Doing so, removes all the Tensors and their Nodes from the graph</p>
 <p>Used as an abstraction to connect the tensors together and hold relationships</p>
 <p>Each Tensor is assigned a Node and this Node monitors all the incoming edges(parents)
 and the outgoing edges(children)</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.children">
-<span class="sig-name descname"><span class="pre">children</span></span><a class="headerlink" href="#neograd.autograd.node.Node.children" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of all Nodes which uses the current Node
-as an operand in an Operation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of <a class="reference internal" href="#neograd.autograd.node.Node" title="neograd.autograd.node.Node">Node</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.parents">
-<span class="sig-name descname"><span class="pre">parents</span></span><a class="headerlink" href="#neograd.autograd.node.Node.parents" title="Permalink to this definition">¶</a></dt>
-<dd><p>List of all Nodes(operands) that has resulted in the creation
-of current Node</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of <a class="reference internal" href="#neograd.autograd.node.Node" title="neograd.autograd.node.Node">Node</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.parent_broadcast_shape">
-<span class="sig-name descname"><span class="pre">parent_broadcast_shape</span></span><a class="headerlink" href="#neograd.autograd.node.Node.parent_broadcast_shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the parent needs to be broadcasted from one shape to
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>children</strong> (<em>list</em><em> of </em><a class="reference internal" href="#neograd.autograd.node.Node" title="neograd.autograd.node.Node"><em>Node</em></a>) – List of all Nodes which uses the current Node
+as an operand in an Operation</p></li>
+<li><p><strong>parents</strong> (<em>list</em><em> of </em><a class="reference internal" href="#neograd.autograd.node.Node" title="neograd.autograd.node.Node"><em>Node</em></a>) – List of all Nodes(operands) that has resulted in the creation
+of current Node</p></li>
+<li><p><strong>parent_broadcast_shape</strong> (<em>tuple</em><em> or </em><em>None</em>) – If the parent needs to be broadcasted from one shape to
 another, then the final broadcasted shape of the parent is stored here.
-If they cannot be broadcasted, then it is None</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple or None</p>
+If they cannot be broadcasted, then it is None</p></li>
+<li><p><strong>backward_fn</strong> (<em>Operation.backward</em>) – Sets the grad_fn of Tensor(operand) involved in the Operation</p></li>
+<li><p><strong>visited</strong> (<em>bool</em>) – </p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.backward_fn">
-<span class="sig-name descname"><span class="pre">backward_fn</span></span><a class="headerlink" href="#neograd.autograd.node.Node.backward_fn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the grad_fn of Tensor(operand) involved in the Operation</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Operation.backward</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.visited">
-<span class="sig-name descname"><span class="pre">visited</span></span><a class="headerlink" href="#neograd.autograd.node.Node.visited" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.node.Node.add_child">
 <span class="sig-name descname"><span class="pre">add_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.node.Node.add_child" title="Permalink to this definition">¶</a></dt>
@@ -472,23 +414,23 @@ after backward calculation</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">backward_fn</span></span><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.autograd.node.Node.backward_fn">
+<span class="sig-name descname"><span class="pre">backward_fn</span></span><a class="headerlink" href="#neograd.autograd.node.Node.backward_fn" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">children</span></span><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.autograd.node.Node.children">
+<span class="sig-name descname"><span class="pre">children</span></span><a class="headerlink" href="#neograd.autograd.node.Node.children" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">parent_broadcast_shape</span></span><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.autograd.node.Node.parent_broadcast_shape">
+<span class="sig-name descname"><span class="pre">parent_broadcast_shape</span></span><a class="headerlink" href="#neograd.autograd.node.Node.parent_broadcast_shape" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">parents</span></span><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.autograd.node.Node.parents">
+<span class="sig-name descname"><span class="pre">parents</span></span><a class="headerlink" href="#neograd.autograd.node.Node.parents" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -513,8 +455,8 @@ node is added to sorted_tensors if not, then topological sort is performed on ch
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="id6">
-<span class="sig-name descname"><span class="pre">visited</span></span><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="neograd.autograd.node.Node.visited">
+<span class="sig-name descname"><span class="pre">visited</span></span><a class="headerlink" href="#neograd.autograd.node.Node.visited" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -774,8 +716,8 @@ Any params that are required to be gradient checked can be specified</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fn</strong> – Function to be gradient checked</p></li>
-<li><p><strong>inputs</strong> (<em>tuple</em><em> of </em><a class="reference internal" href="#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – inputs to the function</p></li>
-<li><p><strong>params</strong> (<em>tuple</em><em> of </em><a class="reference internal" href="#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – the params whose data can be wiggled to get the gradients</p></li>
+<li><p><strong>inputs</strong> (<em>list</em><em> of </em><a class="reference internal" href="#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – inputs to the function</p></li>
+<li><p><strong>params</strong> (<em>list</em><em> of </em><a class="reference internal" href="#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – the params whose data can be wiggled to get the gradients</p></li>
 <li><p><strong>targets</strong> (<a class="reference internal" href="#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – targets of the function</p></li>
 <li><p><strong>loss_fn</strong> (<a class="reference internal" href="neograd.nn.html#neograd.nn.loss.Loss" title="neograd.nn.loss.Loss"><em>Loss</em></a>) – loss_fn to evaluate the function</p></li>
 <li><p><strong>epsilon</strong> (<em>float</em>) – The amount by which params need to be wiggled Defaults to 1e-7</p></li>
