@@ -46,8 +46,8 @@ desire
 PyTorch's API is one of the best and one the most elegant API designs, so we've leveraged the same
 ### Neural Network module
 `nn` contains some of the most commonly used optimizers, activations and loss functions required to train a Neural Network
-### Save and Load weights
-Trained a model already? Then save the weights onto a file and load them whenever required
+### Save and Load weights, model
+Trained a model already? Then save the weights onto a file and load them whenever required or save the entire model, onto a file
 ### Checkpoints
 Let's say you're training a model and your computer runs out of juice and if you'd waited until training was finished, to save the weights, then you'd lose all the weights. To prevent this, checkpoint your model with various sessions to save the weights during regular intervals with additional supporting data
 

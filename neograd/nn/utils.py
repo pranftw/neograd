@@ -1,3 +1,35 @@
+import dill
+
+
+def save_model(fpath, model):
+  '''Saves the model
+
+  Saves the model by pickling it onto a file
+
+  Args:
+    fpath (str): Path in which to save the model
+    model (Model): Model to be saved
+  '''
+  with open(fpath,'wb') as fp:
+    dill.dump(model, fp)
+    print(f'MODEL SAVED to {fpath}')
+
+
+def load_model(fpath):
+  '''Loads the model
+
+  Args:
+    fpath (str): Path from which to load the model
+  
+  Returns:
+    Model object that is loaded
+  '''
+  with open(fpath,'rb') as fp:
+    model = dill.load(fp)
+    print(f'MODEL LOADED from {fpath}')
+  return model
+
+
 def get_batches(inputs, targets, batch_size=None):
   '''Returns batches of inputs and targets
 

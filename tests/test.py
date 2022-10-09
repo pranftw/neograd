@@ -50,3 +50,7 @@ print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
 print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
 
 grad_check(model, X_train, y_train, loss_fn)
+
+ng.save('model_test.pkl', model)
+model = ng.load('model_test.pkl')
+print(model)

@@ -524,6 +524,8 @@ node’s parents have been calculated will be turned off.</p></li>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>ValueError</strong> – If called on a Tensor that doesn’t have requires_grad</p></li>
 <li><p><strong>ValueError</strong> – If shapes of upper_grad and Tensor doesn’t match</p></li>
+<li><p><strong>ValueError</strong> – If backward is called on a Tensor, whose children aren’t 0, ie
+    they are further involved in some other operations and aren’t the leaves</p></li>
 </ul>
 </dd>
 </dl>
