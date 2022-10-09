@@ -3,7 +3,7 @@
 
 <br>
 <div align="center">
-  <img width="251" alt="image" src="ng.png">
+  <img width="251" alt="image" src="https://github.com/pranftw/neograd/raw/main/ng.png">
 </div>
 <br>
 
