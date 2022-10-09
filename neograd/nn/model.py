@@ -37,9 +37,8 @@ class Model:
       Dict with attributes as key and their objects as value
     '''
     layers = {}
-    for attr in dir(self):
-      val = self.__getattribute__(attr)
-      if isinstance(val, (Container, Layer)) and (val not in layers.values()):
+    for attr, val in self.__dict__.items():
+      if isinstance(val, (Container, Layer)):
         layers[attr] = val
     return layers
   

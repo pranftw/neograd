@@ -1,4 +1,5 @@
 import numpy as np
+from copy import deepcopy
 from ..autograd import tensor, dot
 from ..autograd.ops import conv2d, conv3d, maxpool2d, maxpool3d
 
@@ -132,8 +133,7 @@ class Layer:
       list of Params or dict
     '''
     params = {}
-    for attr in dir(self):
-      val = self.__getattribute__(attr)
+    for attr, val in self.__dict__.items():
       if isinstance(val, Param):
         if return_frozen or not(val.frozen):
           params[attr] = val.data if as_dict else val
@@ -165,6 +165,21 @@ class Layer:
     '''Sets frozen to False
     '''
     self.frozen = False
+  
+  def __getstate__(self):
+    '''Returns the state for the object that is to be pickled
+
+    The instances of Param are set to None, to prevent saving of all the params`
+    in the Layer.
+    If required, then the weights can be saved and loaded separately
+
+    Returns:
+      state of the current Layer
+    '''
+    state = deepcopy(self.__dict__)
+    for param_attr in self.get_params(as_dict=True, return_frozen=True).keys():
+      state[param_attr] = None
+    return state
   
   def __setattr__(self, attr, val):
     '''Sets attributes for the Layer
@@ -255,8 +270,6 @@ class Linear(Layer):
     weights (Param): Weights of the Layer
     bias (Param): Bias of the Layer
   '''
-  __slots__ = ['num_in', 'num_out', 'weights', 'bias']
-
   def __init__(self, num_in, num_out):
     super().__init__()
     self.num_in = num_in

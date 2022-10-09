@@ -15,8 +15,6 @@ class Node:
     backward_fn (Operation.backward): Sets the grad_fn of Tensor(operand) involved in the Operation
     visited (bool) - If Node is visited or not
   '''
-  __slots__ = ['tens', 'children', 'parents', 'parent_broadcast_shape',
-              'backward_fn', 'visited']
 
   def __init__(self, tens):
     '''

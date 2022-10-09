@@ -15,7 +15,6 @@ class Graph:
       are added as parents to the result tensor and the result tensor is added as child to the
       operands, if False, none of these happens. Defaults to True
   '''
-  __slots__ = ['nodes_dict', 'track']
   
   def __init__(self):
     '''Initializes the nodes_dict to empty dict, track to True

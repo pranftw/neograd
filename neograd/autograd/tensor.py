@@ -3,7 +3,6 @@ from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, d
 
 
 class Tensor:
-  __slots__ = ['_data', 'requires_grad', 'requires_broadcasting', 'grad', 'grad_fn']
   '''Wrapper around NumPy arrays
   
   Attributes:
