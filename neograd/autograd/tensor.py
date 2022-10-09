@@ -59,6 +59,8 @@ class Tensor:
     Raises:
       ValueError: If called on a Tensor that doesn't have requires_grad
       ValueError: If shapes of upper_grad and Tensor doesn't match
+      ValueError: If backward is called on a Tensor, whose children aren't 0, ie
+        they are further involved in some other operations and aren't the leaves
     '''
     if not(self.requires_grad):
       raise ValueError("Only tensors who requires_grad can call backward")
@@ -67,8 +69,10 @@ class Tensor:
     upper_grad = process_data(upper_grad)
     if self.shape!=upper_grad.shape:
       raise ValueError("Shapes of grad and Tensor data must match!")
-    self.grad+=upper_grad
+    self.grad+=upper_grad # Setting the grad of the current Tensor by adding the upper_grad
     node = graph.get_node(self)
+    if len(node.children)!=0:
+      raise ValueError("Only leaf tensors, ie Tensors who don't have any children, can call backward")
     node.backward(retain_graph)
     if not(retain_graph):
       graph.reset_graph() # tensors are auto-removed, this is just for redundancy / safety
