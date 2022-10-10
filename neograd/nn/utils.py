@@ -1,4 +1,5 @@
 import dill
+from .model import Model
 
 
 def save_model(fpath, model):
@@ -9,7 +10,12 @@ def save_model(fpath, model):
   Args:
     fpath (str): Path in which to save the model
     model (Model): Model to be saved
+  
+  Raises:
+    TypeError: if model isn't an instance of Model
   '''
+  if not isinstance(model, Model):
+    raise TypeError(f'Expected Model object, instead got {type(model)}')
   with open(fpath,'wb') as fp:
     dill.dump(model, fp)
     print(f'MODEL SAVED to {fpath}')

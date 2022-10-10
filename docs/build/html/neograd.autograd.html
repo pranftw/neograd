@@ -291,11 +291,6 @@ in nodes_dict</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.graph.Graph.nodes_dict">
-<span class="sig-name descname"><span class="pre">nodes_dict</span></span><a class="headerlink" href="#neograd.autograd.graph.Graph.nodes_dict" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.graph.Graph.remove_tensor">
 <span class="sig-name descname"><span class="pre">remove_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.graph.Graph.remove_tensor" title="Permalink to this definition">¶</a></dt>
@@ -321,11 +316,6 @@ Doing so, removes all the Tensors and their Nodes from the graph</p>
 <span class="sig-name descname"><span class="pre">reset_visited</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.graph.Graph.reset_visited" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets visited=False for each Node in the graph</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.graph.Graph.track">
-<span class="sig-name descname"><span class="pre">track</span></span><a class="headerlink" href="#neograd.autograd.graph.Graph.track" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -413,31 +403,6 @@ after backward calculation</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.backward_fn">
-<span class="sig-name descname"><span class="pre">backward_fn</span></span><a class="headerlink" href="#neograd.autograd.node.Node.backward_fn" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.children">
-<span class="sig-name descname"><span class="pre">children</span></span><a class="headerlink" href="#neograd.autograd.node.Node.children" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.parent_broadcast_shape">
-<span class="sig-name descname"><span class="pre">parent_broadcast_shape</span></span><a class="headerlink" href="#neograd.autograd.node.Node.parent_broadcast_shape" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.parents">
-<span class="sig-name descname"><span class="pre">parents</span></span><a class="headerlink" href="#neograd.autograd.node.Node.parents" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.tens">
-<span class="sig-name descname"><span class="pre">tens</span></span><a class="headerlink" href="#neograd.autograd.node.Node.tens" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.node.Node.top_sort">
 <span class="sig-name descname"><span class="pre">top_sort</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.node.Node.top_sort" title="Permalink to this definition">¶</a></dt>
@@ -454,11 +419,6 @@ node is added to sorted_tensors if not, then topological sort is performed on ch
 <dd><p>Marks all children as visited</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.node.Node.visited">
-<span class="sig-name descname"><span class="pre">visited</span></span><a class="headerlink" href="#neograd.autograd.node.Node.visited" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
@@ -468,6 +428,61 @@ node is added to sorted_tensors if not, then topological sort is performed on ch
 <dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.tensor.</span></span><span class="sig-name descname"><span class="pre">Tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requires_grad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requires_broadcasting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.tensor.Tensor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper around NumPy arrays</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.data">
+<span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>The data to be stored or manipulated</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int or float or list or np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.requires_grad">
+<span class="sig-name descname"><span class="pre">requires_grad</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.requires_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the Tensor requires gradient to be calculated or not
+Defaults to False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.requires_broadcasting">
+<span class="sig-name descname"><span class="pre">requires_broadcasting</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.requires_broadcasting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the Tensor needs to be broadcasted when some Operation
+is performed. Defaults to True. This attribute is present as there are some operations like
+Convolution for which the kernel shouldn’t be broadcasted to inputs shape</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.grad">
+<span class="sig-name descname"><span class="pre">grad</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>The gradient value of the Tensor. Defaults to 0 if requires_grad else None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.grad_fn">
+<span class="sig-name descname"><span class="pre">grad_fn</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.grad_fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function that is set in Operation.backward, that’ll be executed during backward
+pass to set the gradient of the Tensor</p>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.T">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">T</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.T" title="Permalink to this definition">¶</a></dt>
@@ -498,11 +513,6 @@ retain_graph is False</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor._data">
-<span class="sig-name descname"><span class="pre">_data</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor._data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.backward">
 <span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upper_grad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retain_graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.backward" title="Permalink to this definition">¶</a></dt>
@@ -532,8 +542,8 @@ node’s parents have been calculated will be turned off.</p></li>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.data">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id0">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the data present in the Tensor</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -580,26 +590,6 @@ node’s parents have been calculated will be turned off.</p></li>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.grad">
-<span class="sig-name descname"><span class="pre">grad</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.grad" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.grad_fn">
-<span class="sig-name descname"><span class="pre">grad_fn</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.grad_fn" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.requires_broadcasting">
-<span class="sig-name descname"><span class="pre">requires_broadcasting</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.requires_broadcasting" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.requires_grad">
-<span class="sig-name descname"><span class="pre">requires_grad</span></span><a class="headerlink" href="#neograd.autograd.tensor.Tensor.requires_grad" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.tensor.Tensor.reshape">
@@ -721,7 +711,7 @@ Any params that are required to be gradient checked can be specified</p>
 <li><p><strong>inputs</strong> (<em>list</em><em> of </em><a class="reference internal" href="#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – inputs to the function</p></li>
 <li><p><strong>params</strong> (<em>list</em><em> of </em><a class="reference internal" href="#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – the params whose data can be wiggled to get the gradients</p></li>
 <li><p><strong>targets</strong> (<a class="reference internal" href="#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – targets of the function</p></li>
-<li><p><strong>loss_fn</strong> (<a class="reference internal" href="neograd.nn.html#neograd.nn.loss.Loss" title="neograd.nn.loss.Loss"><em>Loss</em></a>) – loss_fn to evaluate the function</p></li>
+<li><p><strong>loss_fn</strong> (<em>Loss</em>) – loss_fn to evaluate the function</p></li>
 <li><p><strong>epsilon</strong> (<em>float</em>) – The amount by which params need to be wiggled Defaults to 1e-7</p></li>
 <li><p><strong>print_vals</strong> (<em>bool</em>) – True if distance and verdict needs to be printed</p></li>
 <li><p><strong>**kwargs</strong> – Any kwargs to be passed to fn</p></li>
@@ -780,7 +770,7 @@ than epsilon, then the gradients are proper, if not there is an issue</p>
 <li><p><strong>model</strong> (<a class="reference internal" href="neograd.nn.html#neograd.nn.model.Model" title="neograd.nn.model.Model"><em>Model</em></a>) – The Neural Network to be evaluated</p></li>
 <li><p><strong>inputs</strong> (<a class="reference internal" href="#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Input data(No need for complete data, only sample enough)</p></li>
 <li><p><strong>targets</strong> (<a class="reference internal" href="#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Targets</p></li>
-<li><p><strong>loss_fn</strong> (<a class="reference internal" href="neograd.nn.html#neograd.nn.loss.Loss" title="neograd.nn.loss.Loss"><em>Loss</em></a>) – Loss Function</p></li>
+<li><p><strong>loss_fn</strong> (<em>Loss</em>) – Loss Function</p></li>
 <li><p><strong>epsilon</strong> (<em>float</em>) – The amount by which params need to be wiggled Defaults to 1e-7</p></li>
 <li><p><strong>print_vals</strong> (<em>bool</em>) – True if distance and verdict needs to be printed</p></li>
 </ul>

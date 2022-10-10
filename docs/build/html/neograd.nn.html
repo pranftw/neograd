@@ -658,11 +658,6 @@ considered as a param for the model</p>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Linear.bias">
-<span class="sig-name descname"><span class="pre">bias</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.bias" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.layers.Linear.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.Linear.forward" title="Permalink to this definition">¶</a></dt>
@@ -677,21 +672,6 @@ considered as a param for the model</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Linear.num_in">
-<span class="sig-name descname"><span class="pre">num_in</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.num_in" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Linear.num_out">
-<span class="sig-name descname"><span class="pre">num_out</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.num_out" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Linear.weights">
-<span class="sig-name descname"><span class="pre">weights</span></span><a class="headerlink" href="#neograd.nn.layers.Linear.weights" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -832,36 +812,11 @@ necessarily param</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Param._data">
-<span class="sig-name descname"><span class="pre">_data</span></span><a class="headerlink" href="#neograd.nn.layers.Param._data" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.layers.Param.freeze">
 <span class="sig-name descname"><span class="pre">freeze</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.Param.freeze" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets frozen to True</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Param.grad">
-<span class="sig-name descname"><span class="pre">grad</span></span><a class="headerlink" href="#neograd.nn.layers.Param.grad" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Param.grad_fn">
-<span class="sig-name descname"><span class="pre">grad_fn</span></span><a class="headerlink" href="#neograd.nn.layers.Param.grad_fn" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Param.requires_broadcasting">
-<span class="sig-name descname"><span class="pre">requires_broadcasting</span></span><a class="headerlink" href="#neograd.nn.layers.Param.requires_broadcasting" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Param.requires_grad">
-<span class="sig-name descname"><span class="pre">requires_grad</span></span><a class="headerlink" href="#neograd.nn.layers.Param.requires_grad" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.layers.Param.unfreeze">
@@ -1434,6 +1389,9 @@ will be same as number of examples</p></li>
 <li><p><strong>fpath</strong> (<em>str</em>) – Path in which to save the model</p></li>
 <li><p><strong>model</strong> (<a class="reference internal" href="#neograd.nn.model.Model" title="neograd.nn.model.Model"><em>Model</em></a>) – Model to be saved</p></li>
 </ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TypeError</strong> – if model isn’t an instance of Model</p>
 </dd>
 </dl>
 </dd></dl>
