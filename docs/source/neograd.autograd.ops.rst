@@ -4,14 +4,6 @@ neograd.autograd.ops package
 Submodules
 ----------
 
-neograd.autograd.ops.activations module
----------------------------------------
-
-.. automodule:: neograd.autograd.ops.activations
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 neograd.autograd.ops.basics module
 ----------------------------------
 

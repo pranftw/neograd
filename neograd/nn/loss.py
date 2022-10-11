@@ -1,7 +1,7 @@
 import numpy as np
 from ..autograd import sum as _sum, log
 from ..autograd.ops.operation import Operation
-from ..autograd.ops.activations import Softmax
+from .activations import Softmax
 
 
 class Loss:

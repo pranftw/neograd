@@ -3,7 +3,6 @@ import sys
 basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.insert(0, basedir)
 
-
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -20,7 +19,7 @@ author = 'Pranav Sastry'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = ['sphinx.ext.napoleon']
-autodoc_default_options = {"members": True, "undoc-members": True, "private-members": True}
+autodoc_default_options = {"private-members": True}
 
 templates_path = ['_templates']
 exclude_patterns = []

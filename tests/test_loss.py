@@ -3,7 +3,7 @@ from _setup import execute
 import numpy as np
 import neograd as ng
 from neograd.nn.loss import BCE, CE, MSE, SoftmaxCE
-from neograd.autograd.ops.activations import Softmax
+from neograd.nn.activations import Softmax
 
 
 inputs = np.random.randn(10,5)

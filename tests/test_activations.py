@@ -3,7 +3,7 @@ from _setup import execute
 import numpy as np
 import neograd as ng
 
-from neograd.nn.activations import relu, sigmoid, tanh, softmax
+from neograd.nn.activations import ReLU, Sigmoid, Tanh, Softmax, LeakyReLU
 
 
 a = np.array(3)
@@ -16,21 +16,33 @@ f = np.array([[0.5, -2, 1], [-1, -0.4, 20]])
 
 # <------------RELU------------>
 def test_relu():
+  relu = ReLU()
   execute(relu, [f])
 
 
 # <------------SIGMOID------------>
 def test_sigmoid():
+  sigmoid = Sigmoid()
   execute(sigmoid, [c])
 
 
 # <------------TANH------------>
 def test_tanh():
+  tanh = Tanh()
   execute(tanh, [f])
 
 
 # <------------SOFTMAX------------>
 def test_softmax():
-  execute(softmax, [d], axis=0)
-  execute(softmax, [d], axis=1)
-  execute(softmax, [d], axis=2)
+  softmax1 = Softmax(axis=0)
+  softmax2 = Softmax(axis=1)
+  softmax3 = Softmax(axis=2)
+  execute(softmax1, [d])
+  execute(softmax2, [d])
+  execute(softmax3, [d])
+
+
+# <------------LEAKYRELU------------>
+def test_leaky_relu():
+  leaky_relu = LeakyReLU()
+  execute(leaky_relu, [c])

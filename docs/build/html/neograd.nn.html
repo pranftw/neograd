@@ -42,10 +42,57 @@
 <section id="module-neograd.nn.activations">
 <span id="neograd-nn-activations-module"></span><h2>neograd.nn.activations module<a class="headerlink" href="#module-neograd.nn.activations" title="Permalink to this heading">¶</a></h2>
 <dl class="py class">
+<dt class="sig sig-object py" id="neograd.nn.activations.LeakyReLU">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.activations.</span></span><span class="sig-name descname"><span class="pre">LeakyReLU</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">leak</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.LeakyReLU" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a>, <a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
+<p>LeakyReLU Layer</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.nn.activations.LeakyReLU.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.LeakyReLU.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of the Tensor</p>
+<p>If element in data is greater than zero, its local gradient will be 1
+else will be leak value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.nn.activations.LeakyReLU.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.LeakyReLU.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates LeakyReLU of inputs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Inputs to the Layer</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tensor of result</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="neograd.nn.activations.ReLU">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.activations.</span></span><span class="sig-name descname"><span class="pre">ReLU</span></span><a class="headerlink" href="#neograd.nn.activations.ReLU" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a>, <a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
 <p>ReLU Layer</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.nn.activations.ReLU.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.ReLU.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of the Tensor</p>
+<p>If element in data is greater than zero, its local gradient will be 1
+else 0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.activations.ReLU.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.ReLU.forward" title="Permalink to this definition">¶</a></dt>
@@ -65,8 +112,19 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="neograd.nn.activations.Sigmoid">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.activations.</span></span><span class="sig-name descname"><span class="pre">Sigmoid</span></span><a class="headerlink" href="#neograd.nn.activations.Sigmoid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a>, <a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
 <p>Sigmoid Layer</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.nn.activations.Sigmoid.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.Sigmoid.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of the Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.activations.Sigmoid.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.Sigmoid.forward" title="Permalink to this definition">¶</a></dt>
@@ -86,8 +144,45 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="neograd.nn.activations.Softmax">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.activations.</span></span><span class="sig-name descname"><span class="pre">Softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.Softmax" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a>, <a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
 <p>Softmax Layer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>None</em><em> or </em><em>int</em><em> or </em><em>tuple</em><em> of </em><em>int</em>) – Axis along which it should be calculated</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.nn.activations.Softmax.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.Softmax.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of the Tensor</p>
+<p>Quite a tricky one, first the Jacobian of each of the slices along
+the specified axis of the result is taken, which is then dotted with the
+corresponding slice of the upper gradient</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.nn.activations.Softmax.calc_softmax">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.Softmax.calc_softmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates stable Softmax</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>np.ndarray</em>) – Array whose Softmax is to be calculated</p></li>
+<li><p><strong>axis</strong> (<em>int</em><em> or </em><em>tuple</em><em> of </em><em>int</em>) – Axis along which to calculate the Softmax
+Defaults to None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Softmax of the array</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.activations.Softmax.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.Softmax.forward" title="Permalink to this definition">¶</a></dt>
@@ -107,8 +202,19 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="neograd.nn.activations.Tanh">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.activations.</span></span><span class="sig-name descname"><span class="pre">Tanh</span></span><a class="headerlink" href="#neograd.nn.activations.Tanh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a>, <a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
 <p>Tanh Layer</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="neograd.nn.activations.Tanh.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.Tanh.backward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the grad_fn of the Tensor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor" title="neograd.autograd.tensor.Tensor"><em>Tensor</em></a>) – Operand</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.activations.Tanh.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.activations.Tanh.forward" title="Permalink to this definition">¶</a></dt>
