@@ -3,6 +3,7 @@ from ..autograd.ops.operation import Operation
 import numpy as np
 
 
+# <------------RELU------------>
 class ReLU(Layer, Operation):
   '''ReLU Layer
   '''
@@ -39,6 +40,7 @@ class ReLU(Layer, Operation):
     return 'ReLU'
 
 
+# <------------SIGMOID------------>
 class Sigmoid(Layer, Operation):
   '''Sigmoid Layer
   '''
@@ -73,6 +75,7 @@ class Sigmoid(Layer, Operation):
     return 'Sigmoid'
 
 
+# <------------TANH------------>
 class Tanh(Layer, Operation):
   '''Tanh Layer
   '''
@@ -107,6 +110,7 @@ class Tanh(Layer, Operation):
     return 'Tanh'
 
 
+# <------------SOFTMAX------------>
 class Softmax(Layer, Operation):
   '''Softmax Layer
 
@@ -186,6 +190,7 @@ class Softmax(Layer, Operation):
     return 'Softmax'
 
 
+# <------------LEAKYRELU------------>
 class LeakyReLU(Layer, Operation):
   '''LeakyReLU Layer
   '''

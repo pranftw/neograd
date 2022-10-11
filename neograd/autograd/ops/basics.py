@@ -3,7 +3,6 @@ from .operation import Operation
 
 
 # <------------ADD------------>
-
 class Add(Operation):
   '''Element wise addition between two Tensors or Tensor-like
   '''
@@ -47,7 +46,6 @@ def add(tens1, tens2):
 
 
 # <------------SUB------------>
-
 class Sub(Operation):
   '''Element wise subtraction between two Tensors or Tensor-like
   '''
@@ -92,7 +90,6 @@ def sub(tens1, tens2):
 
 
 # <------------MUL------------>
-
 class Mul(Operation):
   '''Element wise multiplication between two Tensors or Tensor-like
   '''
@@ -136,7 +133,6 @@ def mul(tens1, tens2):
 
 
 # <------------DIV------------>
-
 class Div(Operation):
   '''Element wise division between two Tensors or Tensor-like
   '''
@@ -181,7 +177,6 @@ def div(tens1, tens2):
 
 
 # <------------DOT------------>
-
 class Dot(Operation):
   '''Dot product between two Tensors or Tensor-like
   '''
@@ -225,7 +220,6 @@ def dot(tens1, tens2):
 
 
 # <------------EXP------------>
-
 class Exp(Operation):
   '''Exponentiates the Tensor or Tensor-like
   '''
@@ -264,7 +258,6 @@ def exp(tens):
 
 
 # <------------LOG------------>
-
 class Log(Operation):
   '''Natural Logarithm of the Tensor or Tensor-like
   '''
@@ -303,7 +296,6 @@ def log(tens):
 
 
 # <------------POW------------>
-
 class Pow(Operation):
   '''Raises one Tensor or Tensor-like to the power of another Tensor or Tensor-like
   '''
@@ -348,7 +340,6 @@ def pow(tens1, tens2):
 
 
 # <------------SUM------------>
-
 class Sum(Operation):
   '''Performs sum along a specified axis
 
@@ -409,7 +400,6 @@ def sum(tens, axis=None):
 
 
 # <------------TRANSPOSE------------>
-
 class Transpose(Operation):
   '''Performs transpose of Tensor or Tensor-like
   '''
@@ -448,7 +438,6 @@ def transpose(tens):
 
 
 # <------------FLATTEN------------>
-
 class Flatten(Operation):
   '''Performs flattening of Tensor or Tensor-like
   '''
@@ -488,7 +477,6 @@ def flatten(tens):
 
 
 # <------------RESHAPE------------>
-
 class Reshape(Operation):
   '''Performs reshaping of Tensor or Tensor-like
   '''

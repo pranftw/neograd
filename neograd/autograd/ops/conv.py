@@ -118,7 +118,6 @@ class Conv:
 
 
 # <------------CONV2D------------>
-
 class Conv2D(Operation, Conv):
   '''Implements 2D convolution
 
@@ -232,7 +231,6 @@ def conv2d(inputs, kernel, bias, padding, stride):
 
 
 # <------------CONV3D------------>
-
 class Conv3D(Operation, Conv):
   '''Implements 3D convolution
 
@@ -361,7 +359,6 @@ def conv3d(inputs, kernel, bias, padding, stride):
 
 
 # <------------MAXPOOL2D------------>
-
 class MaxPool2D(Operation, Conv):
   '''Implements 2D MaxPooling
 
@@ -461,7 +458,6 @@ def maxpool2d(inputs, kernel_shape, padding, stride):
 
 
 # <------------MAXPOOL3D------------>
-
 class MaxPool3D(Operation, Conv):
   '''Implements 3D MaxPooling
 
