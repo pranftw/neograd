@@ -64,6 +64,7 @@
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.graph.Graph.remove_tensor"><code class="docutils literal notranslate"><span class="pre">Graph.remove_tensor()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.graph.Graph.reset_graph"><code class="docutils literal notranslate"><span class="pre">Graph.reset_graph()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.graph.Graph.reset_visited"><code class="docutils literal notranslate"><span class="pre">Graph.reset_visited()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.graph.Graph.zero_grad"><code class="docutils literal notranslate"><span class="pre">Graph.zero_grad()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -83,15 +84,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neograd.autograd.html#module-neograd.autograd.tensor">neograd.autograd.tensor module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor"><code class="docutils literal notranslate"><span class="pre">Tensor</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.data"><code class="docutils literal notranslate"><span class="pre">Tensor.data</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.requires_grad"><code class="docutils literal notranslate"><span class="pre">Tensor.requires_grad</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.requires_broadcasting"><code class="docutils literal notranslate"><span class="pre">Tensor.requires_broadcasting</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.grad"><code class="docutils literal notranslate"><span class="pre">Tensor.grad</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.grad_fn"><code class="docutils literal notranslate"><span class="pre">Tensor.grad_fn</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.T"><code class="docutils literal notranslate"><span class="pre">Tensor.T</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor._backward"><code class="docutils literal notranslate"><span class="pre">Tensor._backward()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.backward"><code class="docutils literal notranslate"><span class="pre">Tensor.backward()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#id0"><code class="docutils literal notranslate"><span class="pre">Tensor.data</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.data"><code class="docutils literal notranslate"><span class="pre">Tensor.data</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.dot"><code class="docutils literal notranslate"><span class="pre">Tensor.dot()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.exp"><code class="docutils literal notranslate"><span class="pre">Tensor.exp()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.tensor.Tensor.flatten"><code class="docutils literal notranslate"><span class="pre">Tensor.flatten()</span></code></a></li>
@@ -112,10 +108,7 @@
 <li class="toctree-l3"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.utils.get_graph"><code class="docutils literal notranslate"><span class="pre">get_graph()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.utils.grad_check"><code class="docutils literal notranslate"><span class="pre">grad_check()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.utils.new_graph"><code class="docutils literal notranslate"><span class="pre">new_graph</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.utils.no_track"><code class="docutils literal notranslate"><span class="pre">no_track</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.utils.no_track.graph"><code class="docutils literal notranslate"><span class="pre">no_track.graph</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.utils.no_track"><code class="docutils literal notranslate"><span class="pre">no_track</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.utils.process_data"><code class="docutils literal notranslate"><span class="pre">process_data()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.autograd.html#neograd.autograd.utils.unbroadcast_data"><code class="docutils literal notranslate"><span class="pre">unbroadcast_data()</span></code></a></li>
 </ul>
@@ -146,9 +139,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neograd.nn.html#module-neograd.nn.checkpoint">neograd.nn.checkpoint module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.checkpoint.Checkpoint"><code class="docutils literal notranslate"><span class="pre">Checkpoint</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.checkpoint.Checkpoint.session"><code class="docutils literal notranslate"><span class="pre">Checkpoint.session</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.checkpoint.Checkpoint.dirpath"><code class="docutils literal notranslate"><span class="pre">Checkpoint.dirpath</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.checkpoint.Checkpoint.model"><code class="docutils literal notranslate"><span class="pre">Checkpoint.model</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.checkpoint.Checkpoint._generate_hash"><code class="docutils literal notranslate"><span class="pre">Checkpoint._generate_hash()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.checkpoint.Checkpoint._init_files"><code class="docutils literal notranslate"><span class="pre">Checkpoint._init_files()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.checkpoint.Checkpoint._save"><code class="docutils literal notranslate"><span class="pre">Checkpoint._save()</span></code></a></li>
@@ -163,9 +153,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neograd.nn.html#module-neograd.nn.layers">neograd.nn.layers module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Container"><code class="docutils literal notranslate"><span class="pre">Container</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Container.eval"><code class="docutils literal notranslate"><span class="pre">Container.eval</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Container.layers"><code class="docutils literal notranslate"><span class="pre">Container.layers</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Container.frozen"><code class="docutils literal notranslate"><span class="pre">Container.frozen</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Container.freeze"><code class="docutils literal notranslate"><span class="pre">Container.freeze()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Container.get_params"><code class="docutils literal notranslate"><span class="pre">Container.get_params()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Container.set_eval"><code class="docutils literal notranslate"><span class="pre">Container.set_eval()</span></code></a></li>
@@ -174,29 +161,18 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv2D"><code class="docutils literal notranslate"><span class="pre">Conv2D</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv2D.padding"><code class="docutils literal notranslate"><span class="pre">Conv2D.padding</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv2D.stride"><code class="docutils literal notranslate"><span class="pre">Conv2D.stride</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv2D.kernel"><code class="docutils literal notranslate"><span class="pre">Conv2D.kernel</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv2D.bias"><code class="docutils literal notranslate"><span class="pre">Conv2D.bias</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv2D.forward"><code class="docutils literal notranslate"><span class="pre">Conv2D.forward()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv3D"><code class="docutils literal notranslate"><span class="pre">Conv3D</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv3D.padding"><code class="docutils literal notranslate"><span class="pre">Conv3D.padding</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv3D.stride"><code class="docutils literal notranslate"><span class="pre">Conv3D.stride</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv3D.kernel"><code class="docutils literal notranslate"><span class="pre">Conv3D.kernel</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv3D.bias"><code class="docutils literal notranslate"><span class="pre">Conv3D.bias</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Conv3D.forward"><code class="docutils literal notranslate"><span class="pre">Conv3D.forward()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Dropout"><code class="docutils literal notranslate"><span class="pre">Dropout</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Dropout.prob"><code class="docutils literal notranslate"><span class="pre">Dropout.prob</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Dropout.forward"><code class="docutils literal notranslate"><span class="pre">Dropout.forward()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Layer"><code class="docutils literal notranslate"><span class="pre">Layer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Layer.eval"><code class="docutils literal notranslate"><span class="pre">Layer.eval</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Layer.frozen"><code class="docutils literal notranslate"><span class="pre">Layer.frozen</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Layer.freeze"><code class="docutils literal notranslate"><span class="pre">Layer.freeze()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Layer.get_params"><code class="docutils literal notranslate"><span class="pre">Layer.get_params()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Layer.set_eval"><code class="docutils literal notranslate"><span class="pre">Layer.set_eval()</span></code></a></li>
@@ -209,21 +185,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.MaxPool2D"><code class="docutils literal notranslate"><span class="pre">MaxPool2D</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.MaxPool2D.padding"><code class="docutils literal notranslate"><span class="pre">MaxPool2D.padding</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.MaxPool2D.stride"><code class="docutils literal notranslate"><span class="pre">MaxPool2D.stride</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.MaxPool2D.kernel_shape"><code class="docutils literal notranslate"><span class="pre">MaxPool2D.kernel_shape</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.MaxPool2D.forward"><code class="docutils literal notranslate"><span class="pre">MaxPool2D.forward()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.MaxPool3D"><code class="docutils literal notranslate"><span class="pre">MaxPool3D</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.MaxPool3D.padding"><code class="docutils literal notranslate"><span class="pre">MaxPool3D.padding</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.MaxPool3D.stride"><code class="docutils literal notranslate"><span class="pre">MaxPool3D.stride</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.MaxPool3D.kernel_shape"><code class="docutils literal notranslate"><span class="pre">MaxPool3D.kernel_shape</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.MaxPool3D.forward"><code class="docutils literal notranslate"><span class="pre">MaxPool3D.forward()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Param"><code class="docutils literal notranslate"><span class="pre">Param</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Param.frozen"><code class="docutils literal notranslate"><span class="pre">Param.frozen</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Param.freeze"><code class="docutils literal notranslate"><span class="pre">Param.freeze()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.layers.Param.unfreeze"><code class="docutils literal notranslate"><span class="pre">Param.unfreeze()</span></code></a></li>
 </ul>
@@ -252,7 +221,6 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.loss.SoftmaxCE"><code class="docutils literal notranslate"><span class="pre">SoftmaxCE</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.loss.SoftmaxCE.axis"><code class="docutils literal notranslate"><span class="pre">SoftmaxCE.axis</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.loss.SoftmaxCE.backward"><code class="docutils literal notranslate"><span class="pre">SoftmaxCE.backward()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.loss.SoftmaxCE.forward"><code class="docutils literal notranslate"><span class="pre">SoftmaxCE.forward()</span></code></a></li>
 </ul>
@@ -274,10 +242,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="neograd.nn.html#module-neograd.nn.optim">neograd.nn.optim module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Adam"><code class="docutils literal notranslate"><span class="pre">Adam</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Adam.iter"><code class="docutils literal notranslate"><span class="pre">Adam.iter</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Adam.beta1"><code class="docutils literal notranslate"><span class="pre">Adam.beta1</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Adam.beta2"><code class="docutils literal notranslate"><span class="pre">Adam.beta2</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Adam.epsilon"><code class="docutils literal notranslate"><span class="pre">Adam.epsilon</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Adam.init_adam_grads"><code class="docutils literal notranslate"><span class="pre">Adam.init_adam_grads()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Adam.reset_iter"><code class="docutils literal notranslate"><span class="pre">Adam.reset_iter()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Adam.step"><code class="docutils literal notranslate"><span class="pre">Adam.step()</span></code></a></li>
@@ -289,21 +253,16 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Momentum"><code class="docutils literal notranslate"><span class="pre">Momentum</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Momentum.beta"><code class="docutils literal notranslate"><span class="pre">Momentum.beta</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Momentum.init_momentum_grads"><code class="docutils literal notranslate"><span class="pre">Momentum.init_momentum_grads()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Momentum.step"><code class="docutils literal notranslate"><span class="pre">Momentum.step()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Momentum.update_momentum_grads"><code class="docutils literal notranslate"><span class="pre">Momentum.update_momentum_grads()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Optimizer"><code class="docutils literal notranslate"><span class="pre">Optimizer</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Optimizer.params"><code class="docutils literal notranslate"><span class="pre">Optimizer.params</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Optimizer.lr"><code class="docutils literal notranslate"><span class="pre">Optimizer.lr</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.Optimizer.zero_grad"><code class="docutils literal notranslate"><span class="pre">Optimizer.zero_grad()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.RMSProp"><code class="docutils literal notranslate"><span class="pre">RMSProp</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.RMSProp.beta"><code class="docutils literal notranslate"><span class="pre">RMSProp.beta</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.RMSProp.epsilon"><code class="docutils literal notranslate"><span class="pre">RMSProp.epsilon</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.RMSProp.init_rms_grads"><code class="docutils literal notranslate"><span class="pre">RMSProp.init_rms_grads()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.RMSProp.step"><code class="docutils literal notranslate"><span class="pre">RMSProp.step()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.nn.html#neograd.nn.optim.RMSProp.update_rms_grads"><code class="docutils literal notranslate"><span class="pre">RMSProp.update_rms_grads()</span></code></a></li>

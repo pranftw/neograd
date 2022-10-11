@@ -125,7 +125,7 @@ class no_track:
   On entering, graph.track is set to False to indicate no tracking and on exiting, it is
   set back to True
 
-  Attributes:
+  Parameters:
     graph (Graph): The current graph in use
   '''
   def __init__(self):

@@ -13,7 +13,7 @@ class Checkpoint:
   and also the params file name at the time of adding a checkpoint, operates in append mode
   A new params file is created at each checkpoint and the JSON file is updated
 
-  Attributes:
+  Parameters:
     session (str): Current session that is in use
     dirpath (str): Directory in which checkpoints must be saved
     model (Model): Model to be checkpointed

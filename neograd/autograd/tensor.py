@@ -5,7 +5,7 @@ from .ops import add, sub, mul, div, pow as _pow, transpose, sum as _sum, exp, d
 class Tensor:
   '''Wrapper around NumPy arrays
   
-  Attributes:
+  Parameters:
     data (int or float or list or np.ndarray): The data to be stored or manipulated
     requires_grad (bool): Whether the Tensor requires gradient to be calculated or not
       Defaults to False

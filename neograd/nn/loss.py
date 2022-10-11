@@ -128,7 +128,7 @@ class SoftmaxCE(Operation, Loss):
   is a very minimal subtraction between the softmax output and the targets.
   So many intermediate backward calculations can be prevented with this.
 
-  Attributes:
+  Parameters:
     axis (int or tuple of int): Axis along which to calculate the Softmax
       Defaults to None
 

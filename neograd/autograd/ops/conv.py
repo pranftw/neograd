@@ -6,7 +6,7 @@ from .operation import Operation
 class Conv:
   '''Base class for Convolution and Pooling operations
 
-  Attributes:
+  Parameters:
     padding (int): Padding value to be applied
     stride (int): Stride to be taken
   '''
@@ -369,7 +369,7 @@ class MaxPool2D(Operation, Conv):
   covers the entire input if not it is not differentiable and fails gradient
   checking
 
-  Attributes:
+  Parameters:
     kernel_shape (tuple): Shape of the kernel
   '''
   def __init__(self, kernel_shape, padding, stride):
@@ -469,7 +469,7 @@ class MaxPool3D(Operation, Conv):
   covers the entire input if not it is not differentiable and fails gradient
   checking
 
-  Attributes:
+  Parameters:
     kernel_shape (tuple): Shape of the kernel
   '''
   def __init__(self, kernel_shape, padding, stride):

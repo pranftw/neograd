@@ -1,10 +1,11 @@
 import numpy as np
+from ..autograd.utils import get_graph
 
 
 class Optimizer:
   '''Base class for all optimizers
 
-  Attributes:
+  Parameters:
     params (list of Param): Params that need to be updated
     lr (float): Learning rate
   '''
@@ -12,14 +13,24 @@ class Optimizer:
     self.params = params
     self.lr = lr
 
-  def zero_grad(self):
-    '''Resets the grads of the params
+  def zero_grad(self, all_members=False):
+    '''Resets the grads of tensors
 
-    Since after loss.backward, only Tensors in memory are the params, only their
+    By default, since after loss.backward, only Tensors in memory are the params, only their
     gradients are reset since everytime a new graph is dynamically created
+
+    However if retain_graph=True in backward, then all the members in the graph, need to be
+    zero_grad-ed to get the correct gradients, to prevent this all_members can be set to True
+
+    Args:
+      all_members (bool): If all the members in the graph should be zero_grad-ed.
+        Defaults to False
     '''
-    for param in self.params:
-      param.zero_grad()
+    if all_members:
+      graph = get_graph()
+      graph.zero_grad()
+    for param in self.params: # This is done for redundancy, if all_members=True on a graph that's been reset
+        param.zero_grad()
 
 
 class GD(Optimizer):
@@ -47,7 +58,7 @@ class Momentum(Optimizer):
     
   https://youtu.be/k8fTYJPd3_I
 
-  Attributes:
+  Parameters:
     beta (float): Value of Beta
   '''
   def __init__(self, params, lr, beta=0.9):
@@ -93,7 +104,7 @@ class RMSProp(Optimizer):
     
   https://youtu.be/_e-LFe_igno
 
-  Attributes:
+  Parameters:
     beta (float): Value of Beta
     epsilon (float): Value of epsilon
   '''
@@ -141,7 +152,7 @@ class Adam(Optimizer):
 
   https://youtu.be/JXQT_vxqwIs
 
-  Attributes:
+  Parameters:
     iter (int): The number of iterations that has occurred, used for bias correction
     beta1 (float): Value of beta1
     beta2 (float): Value of beta2

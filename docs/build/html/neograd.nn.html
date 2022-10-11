@@ -136,39 +136,15 @@
 <p>A JSON file checkpoints.json is created which contains the dict which has the tracked values
 and also the params file name at the time of adding a checkpoint, operates in append mode
 A new params file is created at each checkpoint and the JSON file is updated</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.checkpoint.Checkpoint.session">
-<span class="sig-name descname"><span class="pre">session</span></span><a class="headerlink" href="#neograd.nn.checkpoint.Checkpoint.session" title="Permalink to this definition">¶</a></dt>
-<dd><p>Current session that is in use</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>session</strong> (<em>str</em>) – Current session that is in use</p></li>
+<li><p><strong>dirpath</strong> (<em>str</em>) – Directory in which checkpoints must be saved</p></li>
+<li><p><strong>model</strong> (<a class="reference internal" href="#neograd.nn.model.Model" title="neograd.nn.model.Model"><em>Model</em></a>) – Model to be checkpointed</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.checkpoint.Checkpoint.dirpath">
-<span class="sig-name descname"><span class="pre">dirpath</span></span><a class="headerlink" href="#neograd.nn.checkpoint.Checkpoint.dirpath" title="Permalink to this definition">¶</a></dt>
-<dd><p>Directory in which checkpoints must be saved</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.checkpoint.Checkpoint.model">
-<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#neograd.nn.checkpoint.Checkpoint.model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Model to be checkpointed</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#neograd.nn.model.Model" title="neograd.nn.model.Model">Model</a></p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.checkpoint.Checkpoint._generate_hash">
 <span class="sig-name descname"><span class="pre">_generate_hash</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.checkpoint.Checkpoint._generate_hash" title="Permalink to this definition">¶</a></dt>
@@ -301,40 +277,16 @@ onto the model if load_params is True</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.layers.</span></span><span class="sig-name descname"><span class="pre">Container</span></span><a class="headerlink" href="#neograd.nn.layers.Container" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Contains many Layers</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Container.eval">
-<span class="sig-name descname"><span class="pre">eval</span></span><a class="headerlink" href="#neograd.nn.layers.Container.eval" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether the Container is in eval mode</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eval</strong> (<em>bool</em>) – Whether the Container is in eval mode</p></li>
+<li><p><strong>layers</strong> (<em>list</em><em> of </em><em>Layer/Container</em>) – Layer to be included in the container</p></li>
+<li><p><strong>frozen</strong> (<em>bool</em>) – Whether the layer is frozen or not. If frozen, then all of its parameters
+won’t be updated during optimization, but allows the gradients to flow through</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Container.layers">
-<span class="sig-name descname"><span class="pre">layers</span></span><a class="headerlink" href="#neograd.nn.layers.Container.layers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Layer to be included in the container</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of Layer/Container</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Container.frozen">
-<span class="sig-name descname"><span class="pre">frozen</span></span><a class="headerlink" href="#neograd.nn.layers.Container.frozen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether the layer is frozen or not. If frozen, then all of its parameters
-won’t be updated during optimization, but allows the gradients to flow through</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.layers.Container.freeze">
 <span class="sig-name descname"><span class="pre">freeze</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.Container.freeze" title="Permalink to this definition">¶</a></dt>
@@ -392,53 +344,17 @@ of its layers</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.layers.</span></span><span class="sig-name descname"><span class="pre">Conv2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.Conv2D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p>
 <p>Implements Conv2D</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Conv2D.padding">
-<span class="sig-name descname"><span class="pre">padding</span></span><a class="headerlink" href="#neograd.nn.layers.Conv2D.padding" title="Permalink to this definition">¶</a></dt>
-<dd><p>Padding value to be applied. Defaults to 0</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>padding</strong> (<em>int</em>) – Padding value to be applied. Defaults to 0</p></li>
+<li><p><strong>stride</strong> (<em>int</em>) – Stride to be taken. Defaults to 1</p></li>
+<li><p><strong>kernel</strong> (<a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param"><em>Param</em></a>) – Kernel for the Convolution</p></li>
+<li><p><strong>bias</strong> (<a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param"><em>Param</em></a>) – Bias for the Convolution</p></li>
+</ul>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Conv2D.stride">
-<span class="sig-name descname"><span class="pre">stride</span></span><a class="headerlink" href="#neograd.nn.layers.Conv2D.stride" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stride to be taken. Defaults to 1</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Conv2D.kernel">
-<span class="sig-name descname"><span class="pre">kernel</span></span><a class="headerlink" href="#neograd.nn.layers.Conv2D.kernel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Kernel for the Convolution</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param">Param</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Conv2D.bias">
-<span class="sig-name descname"><span class="pre">bias</span></span><a class="headerlink" href="#neograd.nn.layers.Conv2D.bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bias for the Convolution</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param">Param</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="field-list simple">
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If kernel_shape isn’t 2D tuple</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If kernel_shape isn’t 2D tuple</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -462,53 +378,17 @@ of its layers</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.layers.</span></span><span class="sig-name descname"><span class="pre">Conv3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_channels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.Conv3D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p>
 <p>Implements Conv3D</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Conv3D.padding">
-<span class="sig-name descname"><span class="pre">padding</span></span><a class="headerlink" href="#neograd.nn.layers.Conv3D.padding" title="Permalink to this definition">¶</a></dt>
-<dd><p>Padding value to be applied. Defaults to 0</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>padding</strong> (<em>int</em>) – Padding value to be applied. Defaults to 0</p></li>
+<li><p><strong>stride</strong> (<em>int</em>) – Stride to be taken. Defaults to 1</p></li>
+<li><p><strong>kernel</strong> (<a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param"><em>Param</em></a>) – Kernel for the Convolution</p></li>
+<li><p><strong>bias</strong> (<a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param"><em>Param</em></a>) – Bias for the Convolution</p></li>
+</ul>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Conv3D.stride">
-<span class="sig-name descname"><span class="pre">stride</span></span><a class="headerlink" href="#neograd.nn.layers.Conv3D.stride" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stride to be taken. Defaults to 1</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Conv3D.kernel">
-<span class="sig-name descname"><span class="pre">kernel</span></span><a class="headerlink" href="#neograd.nn.layers.Conv3D.kernel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Kernel for the Convolution</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param">Param</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Conv3D.bias">
-<span class="sig-name descname"><span class="pre">bias</span></span><a class="headerlink" href="#neograd.nn.layers.Conv3D.bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bias for the Convolution</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param">Param</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="field-list simple">
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If kernel_shape isn’t 2D tuple</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If kernel_shape isn’t 2D tuple</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -533,17 +413,11 @@ of its layers</p>
 <dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p>
 <p>Dropout Layer</p>
 <p><a class="reference external" href="https://youtu.be/D8PJAL-MZv8">https://youtu.be/D8PJAL-MZv8</a></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Dropout.prob">
-<span class="sig-name descname"><span class="pre">prob</span></span><a class="headerlink" href="#neograd.nn.layers.Dropout.prob" title="Permalink to this definition">¶</a></dt>
-<dd><p>Probability with which to turn off the inputs</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prob</strong> (<em>float</em>) – Probability with which to turn off the inputs</p>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.layers.Dropout.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.Dropout.forward" title="Permalink to this definition">¶</a></dt>
@@ -569,29 +443,15 @@ of its layers</p>
 <blockquote>
 <div><p>Fundamental building block of the model</p>
 </div></blockquote>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Layer.eval">
-<span class="sig-name descname"><span class="pre">eval</span></span><a class="headerlink" href="#neograd.nn.layers.Layer.eval" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether the Container is in eval mode</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eval</strong> (<em>bool</em>) – Whether the Container is in eval mode</p></li>
+<li><p><strong>frozen</strong> (<em>bool</em>) – Whether the layer is frozen or not. If frozen, then all of its parameters
+won’t be updated during optimization, but allows the gradients to flow through</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Layer.frozen">
-<span class="sig-name descname"><span class="pre">frozen</span></span><a class="headerlink" href="#neograd.nn.layers.Layer.frozen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether the layer is frozen or not. If frozen, then all of its parameters
-won’t be updated during optimization, but allows the gradients to flow through</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.layers.Layer.freeze">
 <span class="sig-name descname"><span class="pre">freeze</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.Layer.freeze" title="Permalink to this definition">¶</a></dt>
@@ -680,42 +540,16 @@ considered as a param for the model</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.layers.</span></span><span class="sig-name descname"><span class="pre">MaxPool2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.MaxPool2D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p>
 <p>Implements MaxPool2D</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.MaxPool2D.padding">
-<span class="sig-name descname"><span class="pre">padding</span></span><a class="headerlink" href="#neograd.nn.layers.MaxPool2D.padding" title="Permalink to this definition">¶</a></dt>
-<dd><p>Padding value to be applied. Defaults to 0</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>padding</strong> (<em>int</em>) – Padding value to be applied. Defaults to 0</p></li>
+<li><p><strong>stride</strong> (<em>int</em>) – Stride to be taken. Defaults to 1</p></li>
+<li><p><strong>kernel_shape</strong> (<em>tuple</em><em> of </em><em>int</em>) – Shape of the kernel</p></li>
+</ul>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.MaxPool2D.stride">
-<span class="sig-name descname"><span class="pre">stride</span></span><a class="headerlink" href="#neograd.nn.layers.MaxPool2D.stride" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stride to be taken. Defaults to 1</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.MaxPool2D.kernel_shape">
-<span class="sig-name descname"><span class="pre">kernel_shape</span></span><a class="headerlink" href="#neograd.nn.layers.MaxPool2D.kernel_shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shape of the kernel</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple of int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="field-list simple">
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If kernel_shape isn’t 2D tuple</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If kernel_shape isn’t 2D tuple</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -739,42 +573,16 @@ considered as a param for the model</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.layers.</span></span><span class="sig-name descname"><span class="pre">MaxPool3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stride</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.MaxPool3D" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#neograd.nn.layers.Layer" title="neograd.nn.layers.Layer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Layer</span></code></a></p>
 <p>Implements MaxPool2D</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.MaxPool3D.padding">
-<span class="sig-name descname"><span class="pre">padding</span></span><a class="headerlink" href="#neograd.nn.layers.MaxPool3D.padding" title="Permalink to this definition">¶</a></dt>
-<dd><p>Padding value to be applied. Defaults to 0</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>padding</strong> (<em>int</em>) – Padding value to be applied. Defaults to 0</p></li>
+<li><p><strong>stride</strong> (<em>int</em>) – Stride to be taken. Defaults to 1</p></li>
+<li><p><strong>kernel_shape</strong> (<em>tuple</em><em> of </em><em>int</em>) – Shape of the kernel</p></li>
+</ul>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.MaxPool3D.stride">
-<span class="sig-name descname"><span class="pre">stride</span></span><a class="headerlink" href="#neograd.nn.layers.MaxPool3D.stride" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stride to be taken. Defaults to 1</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.MaxPool3D.kernel_shape">
-<span class="sig-name descname"><span class="pre">kernel_shape</span></span><a class="headerlink" href="#neograd.nn.layers.MaxPool3D.kernel_shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shape of the kernel</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple of int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="field-list simple">
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> – If kernel_shape isn’t 2D tuple</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If kernel_shape isn’t 2D tuple</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -801,17 +609,11 @@ considered as a param for the model</p>
 <p>Just an alias for Tensor, so that when params are gathered for a Layer, only these
 are automatically considered for param, while ignoring some helper Tensors which aren’t
 necessarily param</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.layers.Param.frozen">
-<span class="sig-name descname"><span class="pre">frozen</span></span><a class="headerlink" href="#neograd.nn.layers.Param.frozen" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether the param is frozen or not</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>frozen</strong> (<em>bool</em>) – Whether the param is frozen or not</p>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.layers.Param.freeze">
 <span class="sig-name descname"><span class="pre">freeze</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.layers.Param.freeze" title="Permalink to this definition">¶</a></dt>
@@ -960,18 +762,12 @@ with vanilla softmax activation. Since Softmax is most commonly used with
 Cross Entropy loss, if both are combined in one single Operation, then the derivative
 is a very minimal subtraction between the softmax output and the targets.
 So many intermediate backward calculations can be prevented with this.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.loss.SoftmaxCE.axis">
-<span class="sig-name descname"><span class="pre">axis</span></span><a class="headerlink" href="#neograd.nn.loss.SoftmaxCE.axis" title="Permalink to this definition">¶</a></dt>
-<dd><p>Axis along which to calculate the Softmax
-Defaults to None</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int or tuple of int</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>int</em><em> or </em><em>tuple</em><em> of </em><em>int</em>) – Axis along which to calculate the Softmax
+Defaults to None</p>
 </dd>
 </dl>
-</dd></dl>
-
 <p>epsilon to prevent log0</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.loss.SoftmaxCE.backward">
@@ -1122,50 +918,16 @@ Params are considered if only return_frozen is True or layer is not frozen</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.optim.</span></span><span class="sig-name descname"><span class="pre">Adam</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.999</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.optim.Adam" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#neograd.nn.optim.Optimizer" title="neograd.nn.optim.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a></p>
 <p><a class="reference external" href="https://youtu.be/JXQT_vxqwIs">https://youtu.be/JXQT_vxqwIs</a></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.optim.Adam.iter">
-<span class="sig-name descname"><span class="pre">iter</span></span><a class="headerlink" href="#neograd.nn.optim.Adam.iter" title="Permalink to this definition">¶</a></dt>
-<dd><p>The number of iterations that has occurred, used for bias correction</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iter</strong> (<em>int</em>) – The number of iterations that has occurred, used for bias correction</p></li>
+<li><p><strong>beta1</strong> (<em>float</em>) – Value of beta1</p></li>
+<li><p><strong>beta2</strong> (<em>float</em>) – Value of beta2</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – Value of epsilon</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.optim.Adam.beta1">
-<span class="sig-name descname"><span class="pre">beta1</span></span><a class="headerlink" href="#neograd.nn.optim.Adam.beta1" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of beta1</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.optim.Adam.beta2">
-<span class="sig-name descname"><span class="pre">beta2</span></span><a class="headerlink" href="#neograd.nn.optim.Adam.beta2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of beta2</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.optim.Adam.epsilon">
-<span class="sig-name descname"><span class="pre">epsilon</span></span><a class="headerlink" href="#neograd.nn.optim.Adam.epsilon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of epsilon</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.optim.Adam.init_adam_grads">
 <span class="sig-name descname"><span class="pre">init_adam_grads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.optim.Adam.init_adam_grads" title="Permalink to this definition">¶</a></dt>
@@ -1213,17 +975,11 @@ Params are considered if only return_frozen is True or layer is not frozen</p>
 <dd><p>Bases: <a class="reference internal" href="#neograd.nn.optim.Optimizer" title="neograd.nn.optim.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a></p>
 <p>Gradient Descent with Momentum</p>
 <p><a class="reference external" href="https://youtu.be/k8fTYJPd3_I">https://youtu.be/k8fTYJPd3_I</a></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.optim.Momentum.beta">
-<span class="sig-name descname"><span class="pre">beta</span></span><a class="headerlink" href="#neograd.nn.optim.Momentum.beta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of Beta</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>beta</strong> (<em>float</em>) – Value of Beta</p>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.optim.Momentum.init_momentum_grads">
 <span class="sig-name descname"><span class="pre">init_momentum_grads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.optim.Momentum.init_momentum_grads" title="Permalink to this definition">¶</a></dt>
@@ -1251,34 +1007,28 @@ Params are considered if only return_frozen is True or layer is not frozen</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.optim.</span></span><span class="sig-name descname"><span class="pre">Optimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.optim.Optimizer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class for all optimizers</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.optim.Optimizer.params">
-<span class="sig-name descname"><span class="pre">params</span></span><a class="headerlink" href="#neograd.nn.optim.Optimizer.params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Params that need to be updated</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of <a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param">Param</a></p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>params</strong> (<em>list</em><em> of </em><a class="reference internal" href="#neograd.nn.layers.Param" title="neograd.nn.layers.Param"><em>Param</em></a>) – Params that need to be updated</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – Learning rate</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.optim.Optimizer.lr">
-<span class="sig-name descname"><span class="pre">lr</span></span><a class="headerlink" href="#neograd.nn.optim.Optimizer.lr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Learning rate</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.optim.Optimizer.zero_grad">
-<span class="sig-name descname"><span class="pre">zero_grad</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.optim.Optimizer.zero_grad" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the grads of the params</p>
-<p>Since after loss.backward, only Tensors in memory are the params, only their
+<span class="sig-name descname"><span class="pre">zero_grad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_members</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.optim.Optimizer.zero_grad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the grads of tensors</p>
+<p>By default, since after loss.backward, only Tensors in memory are the params, only their
 gradients are reset since everytime a new graph is dynamically created</p>
+<p>However if retain_graph=True in backward, then all the members in the graph, need to be
+zero_grad-ed to get the correct gradients, to prevent this all_members can be set to True</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>all_members</strong> (<em>bool</em>) – If all the members in the graph should be zero_grad-ed.
+Defaults to False</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1288,28 +1038,14 @@ gradients are reset since everytime a new graph is dynamically created</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.nn.optim.</span></span><span class="sig-name descname"><span class="pre">RMSProp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.optim.RMSProp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#neograd.nn.optim.Optimizer" title="neograd.nn.optim.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a></p>
 <p><a class="reference external" href="https://youtu.be/_e-LFe_igno">https://youtu.be/_e-LFe_igno</a></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.optim.RMSProp.beta">
-<span class="sig-name descname"><span class="pre">beta</span></span><a class="headerlink" href="#neograd.nn.optim.RMSProp.beta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of Beta</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>beta</strong> (<em>float</em>) – Value of Beta</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – Value of epsilon</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.nn.optim.RMSProp.epsilon">
-<span class="sig-name descname"><span class="pre">epsilon</span></span><a class="headerlink" href="#neograd.nn.optim.RMSProp.epsilon" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of epsilon</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.nn.optim.RMSProp.init_rms_grads">
 <span class="sig-name descname"><span class="pre">init_rms_grads</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.nn.optim.RMSProp.init_rms_grads" title="Permalink to this definition">¶</a></dt>

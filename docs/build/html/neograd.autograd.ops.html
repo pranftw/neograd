@@ -113,17 +113,11 @@ else 0</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.activations.</span></span><span class="sig-name descname"><span class="pre">Softmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Softmax" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
 <p>Performs Softmax</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.ops.activations.Softmax.axis">
-<span class="sig-name descname"><span class="pre">axis</span></span><a class="headerlink" href="#neograd.autograd.ops.activations.Softmax.axis" title="Permalink to this definition">¶</a></dt>
-<dd><p>Axis along which it should be calculated</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None or int or tuple of int</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>None</em><em> or </em><em>int</em><em> or </em><em>tuple</em><em> of </em><em>int</em>) – Axis along which it should be calculated</p>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.activations.Softmax.backward">
 <span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.activations.Softmax.backward" title="Permalink to this definition">¶</a></dt>
@@ -646,17 +640,11 @@ matrix which results in negative upper gradient</p>
 <dd><p>Bases: <a class="reference internal" href="#neograd.autograd.ops.operation.Operation" title="neograd.autograd.ops.operation.Operation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Operation</span></code></a></p>
 <p>Performs sum along a specified axis</p>
 <p>If axis is None, then the sum of the entire Tensor is calculated</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.ops.basics.Sum.axis">
-<span class="sig-name descname"><span class="pre">axis</span></span><a class="headerlink" href="#neograd.autograd.ops.basics.Sum.axis" title="Permalink to this definition">¶</a></dt>
-<dd><p>Axis along which it should be summed</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None or int or tuple of int</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>axis</strong> (<em>None</em><em> or </em><em>int</em><em> or </em><em>tuple</em><em> of </em><em>int</em>) – Axis along which it should be summed</p>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.basics.Sum.backward">
 <span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.basics.Sum.backward" title="Permalink to this definition">¶</a></dt>
@@ -918,28 +906,14 @@ Defaults to None</p></li>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">neograd.autograd.ops.conv.</span></span><span class="sig-name descname"><span class="pre">Conv</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class for Convolution and Pooling operations</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.padding">
-<span class="sig-name descname"><span class="pre">padding</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.padding" title="Permalink to this definition">¶</a></dt>
-<dd><p>Padding value to be applied</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>padding</strong> (<em>int</em>) – Padding value to be applied</p></li>
+<li><p><strong>stride</strong> (<em>int</em>) – Stride to be taken</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.stride">
-<span class="sig-name descname"><span class="pre">stride</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.stride" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stride to be taken</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.conv.Conv.fragment_iterator">
 <span class="sig-name descname"><span class="pre">fragment_iterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padded_inputs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_shape</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.Conv.fragment_iterator" title="Permalink to this definition">¶</a></dt>
@@ -1187,17 +1161,11 @@ then adds it with the bias</p>
 <p>In MaxPooling, it is differentiable only if kernel_shape along with the stride
 covers the entire input if not it is not differentiable and fails gradient
 checking</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool2D.kernel_shape">
-<span class="sig-name descname"><span class="pre">kernel_shape</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool2D.kernel_shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shape of the kernel</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kernel_shape</strong> (<em>tuple</em>) – Shape of the kernel</p>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool2D.backward">
 <span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool2D.backward" title="Permalink to this definition">¶</a></dt>
@@ -1254,17 +1222,11 @@ is returned for all examples</p>
 <p>In MaxPooling, it is differentiable only if kernel_shape along with the stride
 covers the entire input if not it is not differentiable and fails gradient
 checking</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool3D.kernel_shape">
-<span class="sig-name descname"><span class="pre">kernel_shape</span></span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool3D.kernel_shape" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shape of the kernel</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>kernel_shape</strong> (<em>tuple</em>) – Shape of the kernel</p>
 </dd>
 </dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.conv.MaxPool3D.backward">
 <span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.conv.MaxPool3D.backward" title="Permalink to this definition">¶</a></dt>

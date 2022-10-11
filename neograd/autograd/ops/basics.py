@@ -354,7 +354,7 @@ class Sum(Operation):
 
   If axis is None, then the sum of the entire Tensor is calculated
 
-  Attributes:
+  Parameters:
     axis (None or int or tuple of int): Axis along which it should be summed
   '''
   def __init__(self, axis=None):

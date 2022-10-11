@@ -98,6 +98,14 @@ class Graph:
     '''
     self.nodes_dict = {}
   
+  def zero_grad(self):
+    '''Performs zero_grad on all the tensors in the graph
+
+    Iterates through nodes_dict and performs zero_grad on the tensors
+    '''
+    for tensor in self.nodes_dict.keys():
+      tensor.zero_grad()
+  
   def __repr__(self):
     return 'Graph()'
   

@@ -123,7 +123,7 @@ def tanh(tens):
 class Softmax(Operation):
   '''Performs Softmax
 
-  Attributes:
+  Parameters:
     axis (None or int or tuple of int): Axis along which it should be calculated
   '''
   def __init__(self, axis):

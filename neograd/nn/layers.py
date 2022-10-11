@@ -7,7 +7,7 @@ from ..autograd.ops import conv2d, conv3d, maxpool2d, maxpool3d
 class Container:
   '''Contains many Layers
 
-  Attributes:
+  Parameters:
     eval (bool): Whether the Container is in eval mode
     layers (list of Layer/Container): Layer to be included in the container
     frozen (bool): Whether the layer is frozen or not. If frozen, then all of its parameters
@@ -99,7 +99,7 @@ class Layer:
   '''
     Fundamental building block of the model
   
-  Attributes:
+  Parameters:
     eval (bool): Whether the Container is in eval mode
     frozen (bool): Whether the layer is frozen or not. If frozen, then all of its parameters
       won't be updated during optimization, but allows the gradients to flow through
@@ -205,7 +205,7 @@ class Param(tensor):
   are automatically considered for param, while ignoring some helper Tensors which aren't
   necessarily param
 
-  Attributes:
+  Parameters:
     frozen (bool): Whether the param is frozen or not
   '''
 
@@ -302,7 +302,7 @@ class Dropout(Layer):
   
   https://youtu.be/D8PJAL-MZv8
   
-  Attributes:
+  Parameters:
     prob (float): Probability with which to turn off the inputs
   '''
   def __init__(self, prob):
@@ -336,7 +336,7 @@ class Dropout(Layer):
 class Conv2D(Layer):
   '''Implements Conv2D
 
-  Attributes:
+  Parameters:
     padding (int): Padding value to be applied. Defaults to 0
     stride (int): Stride to be taken. Defaults to 1
     kernel (Param): Kernel for the Convolution
@@ -379,7 +379,7 @@ class Conv2D(Layer):
 class Conv3D(Layer):
   '''Implements Conv3D
 
-  Attributes:
+  Parameters:
     padding (int): Padding value to be applied. Defaults to 0
     stride (int): Stride to be taken. Defaults to 1
     kernel (Param): Kernel for the Convolution
@@ -426,7 +426,7 @@ class Conv3D(Layer):
 class MaxPool2D(Layer):
   '''Implements MaxPool2D
 
-  Attributes:
+  Parameters:
     padding (int): Padding value to be applied. Defaults to 0
     stride (int): Stride to be taken. Defaults to 1
     kernel_shape (tuple of int): Shape of the kernel
@@ -463,7 +463,7 @@ class MaxPool2D(Layer):
 class MaxPool3D(Layer):
   '''Implements MaxPool2D
 
-  Attributes:
+  Parameters:
     padding (int): Padding value to be applied. Defaults to 0
     stride (int): Stride to be taken. Defaults to 1
     kernel_shape (tuple of int): Shape of the kernel
