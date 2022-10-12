@@ -36,7 +36,7 @@ def load_model(fpath):
   return model
 
 
-def get_batches(inputs, targets, batch_size=None):
+def get_batches(inputs, targets=None, batch_size=None):
   '''Returns batches of inputs and targets
 
   Split the inputs and their corresponding targets into batches for efficient
@@ -44,7 +44,7 @@ def get_batches(inputs, targets, batch_size=None):
 
   Args:
     inputs (Tensor): Inputs to be batched
-    targets (Tensor): Targets to be batched
+    targets (Tensor): Targets to be batched. Defaults to None
     batch_size (int): Size of the batches. Defaults to None meaning batch_size
       will be same as number of examples
   
@@ -57,7 +57,8 @@ def get_batches(inputs, targets, batch_size=None):
     ValueError: If batch_size is negative
     ValueError: If batch_size is 0
   '''
-  assert inputs.shape[0]==targets.shape[0], '0th dim should be number of examples and should match'
+  if targets is not None:
+    assert inputs.shape[0]==targets.shape[0], '0th dim should be number of examples and should match'
 
   num_examples = inputs.shape[0]
 
@@ -74,5 +75,8 @@ def get_batches(inputs, targets, batch_size=None):
   start = 0
   while start<num_examples:
     end = start+batch_size if start+batch_size<num_examples else num_examples
-    yield inputs[start:end], targets[start:end]
+    if targets is not None:
+      yield inputs[start:end], targets[start:end]
+    else:
+      yield inputs[start:end]
     start = end
