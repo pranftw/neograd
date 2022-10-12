@@ -1,5 +1,4 @@
 import numpy as np
-from .ops.operation import Operation
 from .graph import Graph
 from itertools import zip_longest
 
@@ -83,18 +82,18 @@ def get_dims_to_be_summed(orig_data_shape, broadcasted_shape):
   return dims_to_be_summed
 
 def get_graph():
-  '''Returns graph that is in use and present in Operation.graph
+  '''Returns graph that is in use and present in Graph.graph
 
-  If Operation.graph is None, then the global graph _NG_GRAPH is used
+  If Graph.graph is None, then the global graph _NG_GRAPH is used
 
   Returns:
     Graph object that is currently used
   '''
-  if Operation.graph is None:
+  if Graph.graph is None:
     from .. import _NG_GRAPH
     graph = _NG_GRAPH
   else:
-    graph = Operation.graph
+    graph = Graph.graph
   return graph
 
 
@@ -104,15 +103,15 @@ class new_graph:
   Context Manager to create a new graph if required anywhere and under the
   circumstances where it shouldn't interfere with the global _NG_GRAPH
 
-  After entering, Graph object created is set in Operation.graph. After exiting
-  the Operation.graph is set back to None which implies that global _NG_GRAPH will
+  After entering, Graph object created is set in Graph.graph. After exiting
+  the Graph.graph is set back to None which implies that global _NG_GRAPH will
   be used
   '''
   def __enter__(self):
-    Operation.graph = Graph()
+    Graph.graph = Graph()
   
   def __exit__(self, exc_type, exc_value, exc_traceback):
-    Operation.graph = None
+    Graph.graph = None
 
 
 class no_track:

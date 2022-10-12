@@ -8,6 +8,8 @@ class Graph:
   pass to calculate gradients through automatic differentiation
 
   Parameters:
+    graph (Graph or None): Graph object that's currently in use. If None, then the global
+      _NG_GRAPH is used, else a specific graph object is used. Defaults to None
     nodes_dict (dict): Stores key-value pairs of tensors and their corresponding
       nodes in the graph
     track (bool): Whether the graph must track the tensor operations or not, ie if True, when any
@@ -15,6 +17,8 @@ class Graph:
       are added as parents to the result tensor and the result tensor is added as child to the
       operands, if False, none of these happens. Defaults to True
   '''
+
+  graph = None
   
   def __init__(self):
     '''Initializes the nodes_dict to empty dict, track to True

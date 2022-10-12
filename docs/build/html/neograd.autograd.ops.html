@@ -1149,12 +1149,6 @@ is returned for all examples across all channels</p>
 <p>Used when some input is getting transformed into an output, for functions
 where gradient calculation is required with the forward pass and the backward
 pass defined</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>graph</strong> (<a class="reference internal" href="neograd.autograd.html#neograd.autograd.graph.Graph" title="neograd.autograd.graph.Graph"><em>Graph</em></a><em> or </em><em>None</em>) – Graph object that’s currently in use. If None, then the global
-_NG_GRAPH is used, else a specific graph object is used. Defaults to None</p>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.backward">
 <span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.backward" title="Permalink to this definition">¶</a></dt>
@@ -1218,11 +1212,6 @@ occurs</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.graph">
-<span class="sig-name descname"><span class="pre">graph</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#neograd.autograd.ops.operation.Operation.graph" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.ops.operation.Operation.process_operands">

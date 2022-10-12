@@ -163,7 +163,6 @@
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.get_broadcast_shape"><code class="docutils literal notranslate"><span class="pre">Operation.get_broadcast_shape()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.get_result_tensor"><code class="docutils literal notranslate"><span class="pre">Operation.get_result_tensor()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.get_tensors"><code class="docutils literal notranslate"><span class="pre">Operation.get_tensors()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.graph"><code class="docutils literal notranslate"><span class="pre">Operation.graph</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.process_operands"><code class="docutils literal notranslate"><span class="pre">Operation.process_operands()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="neograd.autograd.ops.html#neograd.autograd.ops.operation.Operation.result_requires_grad"><code class="docutils literal notranslate"><span class="pre">Operation.result_requires_grad()</span></code></a></li>
 </ul>
@@ -191,6 +190,8 @@ pass to calculate gradients through automatic differentiation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>graph</strong> (<a class="reference internal" href="#neograd.autograd.graph.Graph" title="neograd.autograd.graph.Graph"><em>Graph</em></a><em> or </em><em>None</em>) – Graph object that’s currently in use. If None, then the global
+_NG_GRAPH is used, else a specific graph object is used. Defaults to None</p></li>
 <li><p><strong>nodes_dict</strong> (<em>dict</em>) – Stores key-value pairs of tensors and their corresponding
 nodes in the graph</p></li>
 <li><p><strong>track</strong> (<em>bool</em>) – Whether the graph must track the tensor operations or not, ie if True, when any
@@ -256,6 +257,11 @@ in nodes_dict</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="neograd.autograd.graph.Graph.graph">
+<span class="sig-name descname"><span class="pre">graph</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#neograd.autograd.graph.Graph.graph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="neograd.autograd.graph.Graph.remove_tensor">
@@ -681,8 +687,8 @@ meaning there has been no broadcasting along that dimension.
 <dl class="py function">
 <dt class="sig sig-object py" id="neograd.autograd.utils.get_graph">
 <span class="sig-prename descclassname"><span class="pre">neograd.autograd.utils.</span></span><span class="sig-name descname"><span class="pre">get_graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#neograd.autograd.utils.get_graph" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns graph that is in use and present in Operation.graph</p>
-<p>If Operation.graph is None, then the global graph _NG_GRAPH is used</p>
+<dd><p>Returns graph that is in use and present in Graph.graph</p>
+<p>If Graph.graph is None, then the global graph _NG_GRAPH is used</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Graph object that is currently used</p>
@@ -722,8 +728,8 @@ than epsilon, then the gradients are proper, if not there is an issue</p>
 <p>Creates a Graph object</p>
 <p>Context Manager to create a new graph if required anywhere and under the
 circumstances where it shouldn’t interfere with the global _NG_GRAPH</p>
-<p>After entering, Graph object created is set in Operation.graph. After exiting
-the Operation.graph is set back to None which implies that global _NG_GRAPH will
+<p>After entering, Graph object created is set in Graph.graph. After exiting
+the Graph.graph is set back to None which implies that global _NG_GRAPH will
 be used</p>
 </dd></dl>
 

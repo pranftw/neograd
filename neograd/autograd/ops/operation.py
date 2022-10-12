@@ -8,13 +8,7 @@ class Operation:
   Used when some input is getting transformed into an output, for functions
   where gradient calculation is required with the forward pass and the backward
   pass defined
-
-  Parameters:
-    graph (Graph or None): Graph object that's currently in use. If None, then the global
-      _NG_GRAPH is used, else a specific graph object is used. Defaults to None
   '''
-
-  graph = None
   
   def process_operands(self, operands):
     '''All operands are converted to Tensors
