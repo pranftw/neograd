@@ -5,3 +5,4 @@ __pycache__
 .pytest_cache
 testpypi_setup.py
 tests/fn_tester.py
+docs/build
