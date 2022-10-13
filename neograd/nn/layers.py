@@ -169,7 +169,7 @@ class Layer:
   def __getstate__(self):
     '''Returns the state for the object that is to be pickled
 
-    The instances of Param are set to None, to prevent saving of all the params`
+    The instances of Param data are set to 0, to prevent saving of all the params
     in the Layer.
     If required, then the weights can be saved and loaded separately
 
@@ -178,7 +178,7 @@ class Layer:
     '''
     state = deepcopy(self.__dict__)
     for param_attr in self.get_params(as_dict=True, return_frozen=True).keys():
-      state[param_attr] = None
+      state[param_attr].data = 0 # Wanted to set it to None, but it isnt supported by Tensor, so set it to the next best 0
     return state
   
   def __setattr__(self, attr, val):

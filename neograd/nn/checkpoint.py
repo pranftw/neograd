@@ -17,10 +17,17 @@ class Checkpoint:
     session (str): Current session that is in use
     dirpath (str): Directory in which checkpoints must be saved
     model (Model): Model to be checkpointed
+    hash_length (int): Character length of session identifiers. Defaults to 16
   '''
-  def __init__(self, model, dirpath):
+  def __init__(self, model, dirpath, hash_length=16):
+    '''
+    Raises:
+      AssertionError: if hash_length<0 and hash_length>64
+    '''
     self.session = None
     self.dirpath = None
+    assert hash_length>0 and hash_length<=64, 'Hash length must be between 1 and 64'
+    self.hash_length = hash_length
     self._init_files(dirpath)
     self.model = model
   
@@ -124,10 +131,15 @@ class Checkpoint:
     
     Returns:
       Checkpoint desired
+    
+    Raises:
+      ValueError: If the current session is not present in checkpoints.py
     '''
     params_fname_hash = params_fname.rstrip('.hkl')
     with open(f'{self.dirpath}/checkpoints.json') as checkpoints_fp:
-      session = json.load(checkpoints_fp)[self.session]
+      session = json.load(checkpoints_fp).get(self.session)
+      if session is None:
+        raise ValueError(f"Invalid session {self.session}")
       if params_fname_hash not in session.keys():
         raise ValueError(f"File {params_fname} not in current session {self.session} directory! Please specify the session using Checkpoint.specify_session")
       checkpoint = session[params_fname_hash]
@@ -163,7 +175,10 @@ class Checkpoint:
       if contents.strip()!='':
         sessions = json.loads(contents) #json.JSONDecodeError is raised if JSON file is invalid
         if self.session is None:
-          self.session = list(sessions.keys())[-1]
+          if len(sessions)==0:
+            self.new_session()
+          else:
+            self.session = list(sessions.keys())[-1]
       else: # checkpoints.json is empty
         sessions = {}
         self.new_session()
@@ -176,4 +191,4 @@ class Checkpoint:
     Returns:
       sha256 hash
     '''
-    return sha256(secrets.token_hex(32).encode('utf-8')).hexdigest()
+    return sha256(secrets.token_hex(32).encode('utf-8')).hexdigest()[:self.hash_length]
