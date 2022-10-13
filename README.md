@@ -11,11 +11,17 @@
 [![Documentation Status](https://readthedocs.org/projects/neograd/badge/?version=latest)](https://neograd.readthedocs.io/en/latest/?badge=latest)
 [![Downloads](https://static.pepy.tech/personalized-badge/neograd?period=month&units=international_system&left_color=blue&right_color=orange&left_text=Downloads)](https://pepy.tech/project/neograd)
 
-## Motivation
-I firmly believe that in order to understand something completely, you have to build it on your own from scratch. I used to do gradient calculation analytically, and thought that autograd was some kind of magic. So this was initially built to understand autograd but later on its scope was extended. You might be wondering, there are already many frameworks like TensorFlow and PyTorch that are very popular, and why did I have to create another one? The answer is that these have very complex codebases that are difficult to grasp. So I intend that this repository be used as an educational tool in order to understand how things work under the hood in these giant frameworks, with code that is intuitive and easily readable.
+## Documentation
+https://neograd.readthedocs.io/
+
+## PyPI
+https://pypi.org/project/neograd/
 
 ## Installation
 `pip install neograd`
+
+## Motivation
+I firmly believe that in order to understand something completely, you have to build it on your own from scratch. I used to do gradient calculation analytically, and thought that autograd was some kind of magic. So this was initially built to understand autograd but later on its scope was extended. You might be wondering, there are already many frameworks like TensorFlow and PyTorch that are very popular, and why did I have to create another one? The answer is that these have very complex codebases that are difficult to grasp. So I intend that this repository be used as an educational tool in order to understand how things work under the hood in these giant frameworks, with code that is intuitive and easily readable.
 
 ## Features
 ### Automatic Differentiation
