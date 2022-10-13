@@ -18,7 +18,7 @@ def save_model(fpath, model):
     raise TypeError(f'Expected Model object, instead got {type(model)}')
   with open(fpath,'wb') as fp:
     dill.dump(model, fp)
-    print(f'MODEL SAVED to {fpath}')
+    print(f'MODEL SAVED at {fpath}')
 
 
 def load_model(fpath):
