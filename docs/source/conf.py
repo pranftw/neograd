@@ -31,3 +31,14 @@ exclude_patterns = []
 
 html_theme = 'alabaster'
 html_static_path = ['_static']
+html_style = 'alablaster.css'
+html_theme_options = {
+  'logo':'ng.png',
+  'logo_name':True,
+  'description':'A deep learning framework created from scratch with Python and NumPy',
+  'fixed_sidebar':True,
+  'github_user':'pranftw',
+  'github_repo':'neograd',
+  'github_button':True,
+  'sidebar_collapse':True
+}
