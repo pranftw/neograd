@@ -329,20 +329,6 @@ class Tensor:
     '''
     return transpose(self)
   
-  def __getitem__(self, index):
-    '''Performs the slice of the data in the Tensor
-
-    Args:
-      index (int or slice): The indices to be sliced along or indexed
-    
-    Returns:
-      Tensor with sliced data
-    '''
-    supported_types = (int, slice)
-    if type(index) not in supported_types:
-      raise TypeError(f"Expected index of {supported_types} instead got {type(index)}")
-    return Tensor(self.data[index], requires_grad=self.requires_grad)
-  
   def __repr__(self):
     return f'Tensor({self.data}, requires_grad={self.requires_grad})'
   
