@@ -18,7 +18,7 @@ author = 'Pranav Sastry'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx.ext.napoleon']
+extensions = ['sphinx.ext.napoleon', 'sphinx.ext.viewcode']
 autodoc_default_options = {"private-members": True}
 
 templates_path = ['_templates']
