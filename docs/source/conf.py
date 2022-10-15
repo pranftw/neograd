@@ -1,5 +1,7 @@
 import os
 import sys
+
+
 basedir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.insert(0, basedir)
 
@@ -14,6 +16,8 @@ sys.path.insert(0, basedir)
 project = 'neograd'
 copyright = '2022, Pranav Sastry'
 author = 'Pranav Sastry'
+version = '0.0.2'
+release = '0.0.2'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
