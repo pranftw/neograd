@@ -68,7 +68,7 @@ class Tensor:
     upper_grad = process_data(upper_grad)
     if self.shape!=upper_grad.shape:
       raise ValueError("Shapes of grad and Tensor data must match!")
-    self.grad+=upper_grad # Setting the grad of the current Tensor by adding the upper_grad
+    self.accumulate_grad(upper_grad) # Setting the grad of the current Tensor by adding the upper_grad
     node = graph.get_node(self)
     if len(node.children)!=0:
       raise ValueError("Only leaf tensors, ie Tensors who don't have any children, can call backward")
@@ -99,7 +99,7 @@ class Tensor:
         grad = self.grad_fn(upper_grad)
         grad = unbroadcast_data(grad, self.shape, child.parent_broadcast_shape)
         grad = grad.reshape(self.shape)
-        self.grad+=grad
+        self.accumulate_grad(grad)
       if not(retain_graph) and child.are_parents_visited():
         graph.remove_tensor(child.tens)
     if not(retain_graph) and node.are_parents_visited():
@@ -289,6 +289,18 @@ class Tensor:
       Reshaped Tensor
     '''
     return reshape(self, new_shape)
+  
+  def accumulate_grad(self, grad):
+    '''Accumulates gradients for the Tensor
+
+    Adds the gradient calculated with the overall gradient of the Tensor because
+    if gradients are flowing into a Tensor from two different paths, they need to be
+    summed up
+
+    Args:
+      grad (np.ndarray): The gradient to be added/accumulated
+    '''
+    self.grad+=grad
   
   @property
   def data(self):
