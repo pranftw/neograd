@@ -53,7 +53,15 @@ class Node:
   def backward(self, retain_graph):
     '''Initiates backward pass starting from current Node
 
-    This first topologically sorts all Tensors starting from current Node, then the Node
+    This first visits all the children to make sure that they aren't included in
+    sorted_tensors as they aren't required as backward pass is being initiated from the current
+    node.
+
+    Then it pops its corresponding Tensor from sorted_tensors (it is the first tensor) so that
+    _backward can be called on it with calculate_grads=False, so that grads arent calculated for
+    it, but allows flushing of all Tensors
+
+    Next it topologically sorts all Tensors starting from current Node then the Node
     corresponding to the Tensor is retreived, which is marked as visited and the Tensor's
     backward pass is initiated.
 
@@ -64,8 +72,14 @@ class Node:
     from .utils import get_graph
     graph = get_graph()
     graph.reset_visited()
+    self.visit_all_children() # this allows for gradient calculation from any intermediate node in the graph
     sorted_tensors = self.top_sort()
     graph.reset_visited()
+
+    current_node_tens = sorted_tensors.pop(0)
+    self.visited = True
+    current_node_tens._backward(self, retain_graph, calculate_grads=False)
+
     for tens in sorted_tensors:
       node = graph.get_node(tens)
       node.visited = True

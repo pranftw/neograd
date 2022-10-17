@@ -58,8 +58,6 @@ class Tensor:
     Raises:
       ValueError: If called on a Tensor that doesn't have requires_grad
       ValueError: If shapes of upper_grad and Tensor doesn't match
-      ValueError: If backward is called on a Tensor, whose children aren't 0, ie
-        they are further involved in some other operations and aren't the leaves
     '''
     if not(self.requires_grad):
       raise ValueError("Only tensors who requires_grad can call backward")
@@ -70,13 +68,11 @@ class Tensor:
       raise ValueError("Shapes of grad and Tensor data must match!")
     self.accumulate_grad(upper_grad) # Setting the grad of the current Tensor by adding the upper_grad
     node = graph.get_node(self)
-    if len(node.children)!=0:
-      raise ValueError("Only leaf tensors, ie Tensors who don't have any children, can call backward")
     node.backward(retain_graph)
     if not(retain_graph):
       graph.reset_graph() # tensors are auto-removed, this is just for redundancy / safety
   
-  def _backward(self, node, retain_graph):
+  def _backward(self, node, retain_graph, calculate_grads=True):
     '''The essence of autograd, final gradient calculations for the Tensor is performed here
 
     The gradient of each child is taken as upper gradient, the backward_fn of the 
@@ -89,11 +85,13 @@ class Tensor:
     Args:
       node (Node): The Node corresponding to the Tensor
       retain_graph (bool): Whether the graph needs to be retained or reset
+      calculate_grads (bool): Whether gradients should be calculated or not,
+        Defaults to True
     '''
     from .utils import get_graph
     graph = get_graph()
     for child in node.children:
-      if self.requires_grad:
+      if self.requires_grad and calculate_grads:
         child.backward_fn(*[node.tens for node in child.parents])
         upper_grad = child.tens.grad
         grad = self.grad_fn(upper_grad)
