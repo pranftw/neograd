@@ -13,7 +13,7 @@ def test_linear():
   '''
   input_data = np.random.randn(10,5)
   fn = ng.nn.Linear(5, 3)
-  execute(fn, [input_data], fn.get_params(as_dict=False,return_frozen=False), tolerance=3e-7)
+  execute(fn, [input_data], fn.get_params(), tolerance=3e-7)
 
 
 # <------------CONV2D------------>
@@ -23,10 +23,10 @@ def test_conv2d():
   fn2 = ng.nn.Conv2D((2,2), padding=2)
   fn3 = ng.nn.Conv2D((4,4), stride=2)
   fn4 = ng.nn.Conv2D((3,3), padding=1, stride=1)
-  execute(fn1, [input_data], fn1.get_params(as_dict=False,return_frozen=False))
-  execute(fn2, [input_data], fn2.get_params(as_dict=False,return_frozen=False))
-  execute(fn3, [input_data], fn3.get_params(as_dict=False,return_frozen=False))
-  execute(fn4, [input_data], fn4.get_params(as_dict=False,return_frozen=False))
+  execute(fn1, [input_data], fn1.get_params())
+  execute(fn2, [input_data], fn2.get_params())
+  execute(fn3, [input_data], fn3.get_params())
+  execute(fn4, [input_data], fn4.get_params())
 
 
 # <------------CONV3D------------>
@@ -36,21 +36,21 @@ def test_conv3d():
   fn2 = ng.nn.Conv3D(2,5,(2,2), padding=2)
   fn3 = ng.nn.Conv3D(2,5,(4,4), stride=2)
   fn4 = ng.nn.Conv3D(2,5,(3,3), padding=1, stride=1)
-  execute(fn1, [input_data], fn1.get_params(as_dict=False,return_frozen=False))
-  execute(fn2, [input_data], fn2.get_params(as_dict=False,return_frozen=False))
-  execute(fn3, [input_data], fn3.get_params(as_dict=False,return_frozen=False))
-  execute(fn4, [input_data], fn4.get_params(as_dict=False,return_frozen=False))
+  execute(fn1, [input_data], fn1.get_params())
+  execute(fn2, [input_data], fn2.get_params())
+  execute(fn3, [input_data], fn3.get_params())
+  execute(fn4, [input_data], fn4.get_params())
 
 
 # <------------MAXPOOL2D------------>
 def test_maxpool2d():
   input_data = np.random.randn(2,12,15)
   fn1 = ng.nn.MaxPool2D((3,3), stride=3)
-  execute(fn1, [input_data], fn1.get_params(as_dict=False,return_frozen=False))
+  execute(fn1, [input_data], fn1.get_params())
 
 
 # <------------MAXPOOL3D------------>
 def test_maxpool3d():
   input_data = np.random.randn(2,3,12,15)
   fn1 = ng.nn.MaxPool3D((3,3), stride=3)
-  execute(fn1, [input_data], fn1.get_params(as_dict=False,return_frozen=False))
+  execute(fn1, [input_data], fn1.get_params())

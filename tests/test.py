@@ -33,6 +33,7 @@ class NN(ng.nn.Model):
 model = NN()
 loss_fn = BCE()
 optim = Adam(model.get_params(), 0.05)
+print(len(model.get_params()))
 
 for iter in range(num_iter):
   optim.zero_grad()
@@ -49,8 +50,16 @@ with model.eval():
 print(classification_report(y_test.data.astype(int).flatten(), preds.flatten()))
 print(accuracy_score(y_test.data.astype(int).flatten(), preds.flatten()))
 
-grad_check(model, X_train, y_train, loss_fn)
+# grad_check(model, X_train, y_train, loss_fn)
 
-# ng.save('model_test.pkl', model)
-# model = ng.load('model_test.pkl')
-# print(model)
+# # save the model
+# ng.save('model.pkl', model)
+
+# # save the parameters of the model
+# model.save('model_params.pkl')
+
+# # load the model
+# model = ng.load('model.pkl')
+
+# # load the parameters of the model
+# model.load('model_params.pkl')

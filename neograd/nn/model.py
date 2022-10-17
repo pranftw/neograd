@@ -42,20 +42,17 @@ class Model:
         layers[attr] = val
     return layers
   
-  def get_params(self, as_dict=False, return_frozen=False):
+  def get_params(self, as_dict=False):
     '''Gathers the params of the whole Model
 
     Accomplishes this by iterating through all layers and getting their params
-    Params are considered if only return_frozen is True or layer is not frozen
     
     Args:
       as_dict (bool): Whether to return the params as a dict. Defaults to False
-      return_frozen: Whether to include frozen params or not. Defaults to False
     '''
     params = {}
     for attr, layer in self.get_layers().items():
-      if return_frozen or not(layer.frozen):
-        params[attr] = layer.get_params(as_dict, return_frozen)
+      params[attr] = layer.get_params(as_dict)
     return params if as_dict else list(list_flattener(*params.values()))
   
   def set_eval(self, eval):

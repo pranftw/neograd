@@ -76,9 +76,9 @@ class Node:
     sorted_tensors = self.top_sort()
     graph.reset_visited()
 
-    current_node_tens = sorted_tensors.pop(0)
+    sorted_tensors.pop(0)
     self.visited = True
-    current_node_tens._backward(self, retain_graph, calculate_grads=False)
+    self.tens._backward(self, retain_graph, calculate_grads=False)
 
     for tens in sorted_tensors:
       node = graph.get_node(tens)

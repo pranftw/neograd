@@ -7,9 +7,6 @@ import numpy as np
 class ReLU(Layer, Operation):
   '''ReLU Layer
   '''
-  def __init__(self):
-    Layer.__init__(self)
-
   def forward(self, inputs):
     '''Calculates ReLU of inputs
 
@@ -44,9 +41,6 @@ class ReLU(Layer, Operation):
 class Sigmoid(Layer, Operation):
   '''Sigmoid Layer
   '''
-  def __init__(self):
-    Layer.__init__(self)
-
   def forward(self, inputs):
     '''Calculates Sigmoid of inputs
 
@@ -79,9 +73,6 @@ class Sigmoid(Layer, Operation):
 class Tanh(Layer, Operation):
   '''Tanh Layer
   '''
-  def __init__(self):
-    Layer.__init__(self)
-
   def forward(self, inputs):
     '''Calculates Tanh of inputs
 
@@ -122,7 +113,6 @@ class Softmax(Layer, Operation):
     Args:
       axis (None or int or tuple of int): Axis along which it should be calculated
     '''
-    Layer.__init__(self)
     self.axis = axis
 
   def forward(self, inputs):
@@ -199,7 +189,6 @@ class LeakyReLU(Layer, Operation):
     Args:
       leak (float): leak value
     '''
-    Layer.__init__(self)
     self.leak = leak
 
   def forward(self, inputs):

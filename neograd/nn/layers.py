@@ -10,13 +10,10 @@ class Container:
   Parameters:
     eval (bool): Whether the Container is in eval mode
     layers (list of Layer/Container): Layer to be included in the container
-    frozen (bool): Whether the layer is frozen or not. If frozen, then all of its parameters
-      won't be updated during optimization, but allows the gradients to flow through
   '''
   def __init__(self):
     self.eval = False
     self.layers = None
-    self.frozen = False
 
   def __call__(self, inputs):
     '''Calls the forward method
@@ -29,26 +26,22 @@ class Container:
     '''
     return self.forward(inputs)
 
-  def get_params(self, as_dict, return_frozen):
+  def get_params(self, as_dict=False):
     '''Recursively goes through all the layers in the Container and gets the params of each Layer
 
-    If return_frozen is True or layer is not frozen, then the params are taken from
-    that layer
-
     Args:
-      as_dict (bool): Whether params need to be returned as a dict
-      return_frozen (bool): Whether frozen layers' params need to be returned
+      as_dict (bool): Whether params need to be returned as a dict,
+        Defaults to False
     
     Returns:
       list of Params
     '''
     params = []
     for layer in self.layers:
-      if return_frozen or not(layer.frozen):
-        if as_dict:
-          params.append(layer.get_params(as_dict, return_frozen))
-        else:
-          params+=layer.get_params(as_dict, return_frozen)
+      if as_dict:
+        params.append(layer.get_params(as_dict))
+      else:
+        params+=layer.get_params(as_dict)
     return params
   
   def set_eval(self, eval):
@@ -71,14 +64,16 @@ class Container:
       layer.set_params(layer_param)
   
   def freeze(self):
-    '''Sets frozen to True
+    '''Freezes all the layers present in the Container
     '''
-    self.frozen = True
+    for layer in self.layers:
+      layer.freeze()
   
   def unfreeze(self):
-    '''Sets frozen to False
+    '''Unfreezes all the layers present in the Container
     '''
-    self.frozen = False
+    for layer in self.layers:
+      layer.unfreeze()
   
   def __repr__(self):
     layers = []
@@ -101,12 +96,9 @@ class Layer:
   
   Parameters:
     eval (bool): Whether the Container is in eval mode
-    frozen (bool): Whether the layer is frozen or not. If frozen, then all of its parameters
-      won't be updated during optimization, but allows the gradients to flow through
   '''
   def __init__(self):
     self.eval = False
-    self.frozen = False
 
   def __call__(self, inputs):
     '''Calls the forward method
@@ -119,15 +111,15 @@ class Layer:
     '''
     return self.forward(inputs)
 
-  def get_params(self, as_dict, return_frozen):
+  def get_params(self, as_dict=False):
     '''Returns the parameters in the Layer
 
     If any of the attributes in a Layer is instance of Param, then it is automatically
     considered as a param for the model
 
     Args:
-      as_dict (bool): Whether params need to be returned as a dict
-      return_frozen (bool): Whether frozen layers' params need to be returned
+      as_dict (bool): Whether params need to be returned as a dict,
+        Defaults to False
     
     Returns:
       list of Params or dict
@@ -135,8 +127,7 @@ class Layer:
     params = {}
     for attr, val in self.__dict__.items():
       if isinstance(val, Param):
-        if return_frozen or not(val.frozen):
-          params[attr] = val.data if as_dict else val
+        params[attr] = val.data if as_dict else val
     return params if as_dict else list(params.values())
   
   def set_eval(self, eval):
@@ -157,14 +148,16 @@ class Layer:
       param.data = param_data
   
   def freeze(self):
-    '''Sets frozen to True
+    '''Freezes all the Params in the Layer
     '''
-    self.frozen = True
+    for param in self.get_params(as_dict=False):
+      param.freeze()
   
   def unfreeze(self):
-    '''Sets frozen to False
+    '''Unfreezes all the Params in the Layer
     '''
-    self.frozen = False
+    for param in self.get_params(as_dict=False):
+      param.unfreeze()
   
   def __getstate__(self):
     '''Returns the state for the object that is to be pickled
@@ -177,7 +170,7 @@ class Layer:
       state of the current Layer
     '''
     state = deepcopy(self.__dict__)
-    for param_attr in self.get_params(as_dict=True, return_frozen=True).keys():
+    for param_attr in self.get_params(as_dict=True).keys():
       state[param_attr].data = 0 # Wanted to set it to None, but it isnt supported by Tensor, so set it to the next best 0
     return state
   
@@ -206,22 +199,30 @@ class Param(tensor):
   necessarily param
 
   Parameters:
-    frozen (bool): Whether the param is frozen or not
+    __frozen (bool): Whether current Param is frozen or not. This is required because we
+      need to know if it has been frozen before unfreeze is called
   '''
 
   def __init__(self, data, requires_grad=False, requires_broadcasting=True):
     super().__init__(data, requires_grad, requires_broadcasting)
-    self.frozen = False
+    self.__frozen = False
   
   def freeze(self):
-    '''Sets frozen to True
+    '''Sets requires_grad=False
     '''
-    self.frozen = True
+    self.requires_grad = False
+    self.__frozen = True
   
   def unfreeze(self):
-    '''Sets frozen to False
+    '''Sets requires_grad=True only if its frozen
+
+    frozen condition is checked because only if it was previously frozen, we can set requires_grad
+    = True, if we don't check for it and requires_grad is False originally, then we might set it to
+    True, which would be incorrect
     '''
-    self.frozen = False
+    if self.__frozen:
+      self.requires_grad = True
+    self.__frozen = False
   
   def __str__(self):
     return f'Param({super().__str__()})'
@@ -237,7 +238,6 @@ class Sequential(Container):
   '''
   
   def __init__(self, *args):
-    super().__init__()
     self.layers = args
   
   def forward(self, inputs):
@@ -271,7 +271,6 @@ class Linear(Layer):
     bias (Param): Bias of the Layer
   '''
   def __init__(self, num_in, num_out):
-    super().__init__()
     self.num_in = num_in
     self.num_out = num_out
     self.weights = Param(np.random.randn(num_in, num_out), requires_grad=True)
@@ -306,7 +305,6 @@ class Dropout(Layer):
     prob (float): Probability with which to turn off the inputs
   '''
   def __init__(self, prob):
-    super().__init__()
     self.prob = prob
   
   def forward(self, inputs):
@@ -350,7 +348,6 @@ class Conv2D(Layer):
     Args:
       kernel_shape (tuple of int): Shape of the kernel
     '''
-    super().__init__()
     self.padding = padding
     self.stride = stride
     if len(kernel_shape)!=2:
@@ -395,7 +392,6 @@ class Conv3D(Layer):
       out_channels (int): Number of channels in the outputs
       kernel_shape (tuple of int): Shape of the kernel
     '''
-    super().__init__()
     self.padding = padding
     self.stride = stride
     if len(kernel_shape)!=2:
@@ -435,7 +431,6 @@ class MaxPool2D(Layer):
     ValueError: If kernel_shape isn't 2D tuple
   '''
   def __init__(self, kernel_shape, padding=0, stride=1):
-    super().__init__()
     self.padding = padding
     self.stride = stride
     if len(kernel_shape)!=2:
@@ -472,7 +467,6 @@ class MaxPool3D(Layer):
     ValueError: If kernel_shape isn't 2D tuple
   '''
   def __init__(self, kernel_shape, padding=0, stride=1):
-    super().__init__()
     self.padding = padding
     self.stride = stride
     if len(kernel_shape)!=2:
