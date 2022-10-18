@@ -26,7 +26,7 @@ class Container:
     '''
     return self.forward(inputs)
 
-  def get_params(self, as_dict=False):
+  def parameters(self, as_dict=False):
     '''Recursively goes through all the layers in the Container and gets the params of each Layer
 
     Args:
@@ -39,9 +39,9 @@ class Container:
     params = []
     for layer in self.layers:
       if as_dict:
-        params.append(layer.get_params(as_dict))
+        params.append(layer.parameters(as_dict))
       else:
-        params+=layer.get_params(as_dict)
+        params+=layer.parameters(as_dict)
     return params
   
   def set_eval(self, eval):
@@ -111,7 +111,7 @@ class Layer:
     '''
     return self.forward(inputs)
 
-  def get_params(self, as_dict=False):
+  def parameters(self, as_dict=False):
     '''Returns the parameters in the Layer
 
     If any of the attributes in a Layer is instance of Param, then it is automatically
@@ -150,13 +150,13 @@ class Layer:
   def freeze(self):
     '''Freezes all the Params in the Layer
     '''
-    for param in self.get_params(as_dict=False):
+    for param in self.parameters(as_dict=False):
       param.freeze()
   
   def unfreeze(self):
     '''Unfreezes all the Params in the Layer
     '''
-    for param in self.get_params(as_dict=False):
+    for param in self.parameters(as_dict=False):
       param.unfreeze()
   
   def __getstate__(self):
@@ -170,7 +170,7 @@ class Layer:
       state of the current Layer
     '''
     state = deepcopy(self.__dict__)
-    for param_attr in self.get_params(as_dict=True).keys():
+    for param_attr in self.parameters(as_dict=True).keys():
       state[param_attr].data = 0 # Wanted to set it to None, but it isnt supported by Tensor, so set it to the next best 0
     return state
   

@@ -216,7 +216,7 @@ def grad_check(model, inputs, targets, loss_fn, epsilon=1e-7, print_vals=True):
   Returns:
     Distance between analytical and calculated gradients
   '''
-  params = model.get_params()
+  params = model.parameters()
   analytical_grads = []
   calculated_grads = []
 

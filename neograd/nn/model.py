@@ -42,7 +42,7 @@ class Model:
         layers[attr] = val
     return layers
   
-  def get_params(self, as_dict=False):
+  def parameters(self, as_dict=False):
     '''Gathers the params of the whole Model
 
     Accomplishes this by iterating through all layers and getting their params
@@ -52,7 +52,7 @@ class Model:
     '''
     params = {}
     for attr, layer in self.get_layers().items():
-      params[attr] = layer.get_params(as_dict)
+      params[attr] = layer.parameters(as_dict)
     return params if as_dict else list(list_flattener(*params.values()))
   
   def set_eval(self, eval):
@@ -72,7 +72,7 @@ class Model:
     Args:
       fpath (str): File path
     '''
-    params = self.get_params(as_dict=True)
+    params = self.parameters(as_dict=True)
     hkl.dump(params, fpath, mode='w')
     print(f"\nPARAMS SAVED at {fpath}\n")
 

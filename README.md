@@ -93,7 +93,7 @@ class NN(ng.nn.Model):
 
 model = NN()
 loss_fn = BCE()
-optim = Adam(model.get_params(), 0.05)
+optim = Adam(model.parameters(), 0.05)
 
 for iter in range(num_iter):
   optim.zero_grad()
