@@ -337,7 +337,7 @@ class Conv2D(Layer):
   Parameters:
     padding (int): Padding value to be applied. Defaults to 0
     stride (int): Stride to be taken. Defaults to 1
-    kernel (Param): Kernel for the Convolution
+    weights (Param): Kernel for the Convolution
     bias (Param): Bias for the Convolution
   
   Raises:
@@ -352,7 +352,7 @@ class Conv2D(Layer):
     self.stride = stride
     if len(kernel_shape)!=2:
       raise ValueError("Kernel shape can only have 2 dims")
-    self.kernel = Param(np.random.randn(*kernel_shape), requires_grad=True, requires_broadcasting=False)
+    self.weights = Param(np.random.randn(*kernel_shape), requires_grad=True, requires_broadcasting=False)
     self.bias = Param(0, requires_grad=True, requires_broadcasting=False)
   
   def forward(self, inputs):
@@ -364,13 +364,13 @@ class Conv2D(Layer):
     Returns:
       Tensor of the result
     '''
-    return conv2d(inputs, self.kernel, self.bias, self.padding, self.stride)
+    return conv2d(inputs, self.weights, self.bias, self.padding, self.stride)
   
   def __repr__(self):
-    return f'Conv2D(kernel_shape={self.kernel.shape}, padding={self.padding}, stride={self.stride})'
+    return f'Conv2D(kernel_shape={self.weights.shape}, padding={self.padding}, stride={self.stride})'
   
   def __str__(self):
-    return f'Conv2D(kernel_shape={self.kernel.shape}, padding={self.padding}, stride={self.stride})'
+    return f'Conv2D(kernel_shape={self.weights.shape}, padding={self.padding}, stride={self.stride})'
 
 
 class Conv3D(Layer):
@@ -379,7 +379,7 @@ class Conv3D(Layer):
   Parameters:
     padding (int): Padding value to be applied. Defaults to 0
     stride (int): Stride to be taken. Defaults to 1
-    kernel (Param): Kernel for the Convolution
+    weights (Param): Kernel for the Convolution
     bias (Param): Bias for the Convolution
   
   Raises:
@@ -396,7 +396,7 @@ class Conv3D(Layer):
     self.stride = stride
     if len(kernel_shape)!=2:
       raise ValueError("Kernel shape can only have 2 dims")
-    self.kernel = Param(np.random.randn(out_channels, in_channels, *kernel_shape), requires_grad=True, requires_broadcasting=False)
+    self.weights = Param(np.random.randn(out_channels, in_channels, *kernel_shape), requires_grad=True, requires_broadcasting=False)
     self.bias = Param(np.zeros(out_channels), requires_grad=True, requires_broadcasting=False)
   
   def forward(self, inputs):
@@ -408,14 +408,14 @@ class Conv3D(Layer):
     Returns:
       Tensor of the result
     '''
-    return conv3d(inputs, self.kernel, self.bias, self.padding, self.stride)
+    return conv3d(inputs, self.weights, self.bias, self.padding, self.stride)
   
   def __repr__(self):
-    kernel_shape = self.kernel.shape
+    kernel_shape = self.weights.shape
     return f'Conv3D(out_channels={kernel_shape[0]}, in_channels={kernel_shape[1]}, kernel_shape={kernel_shape[2:]}, padding={self.padding}, stride={self.stride})'
   
   def __str__(self):
-    kernel_shape = self.kernel.shape
+    kernel_shape = self.weights.shape
     return f'Conv3D(out_channels={kernel_shape[0]}, in_channels={kernel_shape[1]}, kernel_shape={kernel_shape[2:]}, padding={self.padding}, stride={self.stride})'
 
 
