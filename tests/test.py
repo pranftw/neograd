@@ -1,6 +1,7 @@
 import _setup
 import neograd as ng
 import numpy as np
+from neograd import nn
 from neograd.nn.loss import BCE
 from neograd.nn.optim import Adam
 from neograd.autograd.utils import grad_check
@@ -18,13 +19,13 @@ num_iter = 50
 X_train, X_test = ng.tensor(X_train[:num_train,:]), ng.tensor(X_test[:num_test,:])
 y_train, y_test = ng.tensor(y_train[:num_train].reshape(num_train,1)), ng.tensor(y_test[:num_test].reshape(num_test,1))
 
-class NN(ng.nn.Model):
+class NN(nn.Model):
   def __init__(self):
-    self.stack = ng.nn.Sequential(
-      ng.nn.Linear(2,100),
-      ng.nn.ReLU(),
-      ng.nn.Linear(100,1),
-      ng.nn.Sigmoid()
+    self.stack = nn.Sequential(
+      nn.Linear(2,100),
+      nn.ReLU(),
+      nn.Linear(100,1),
+      nn.Sigmoid()
     )
   
   def forward(self, inputs):
@@ -33,7 +34,6 @@ class NN(ng.nn.Model):
 model = NN()
 loss_fn = BCE()
 optim = Adam(model.parameters(), 0.05)
-print(len(model.parameters()))
 
 for iter in range(num_iter):
   optim.zero_grad()

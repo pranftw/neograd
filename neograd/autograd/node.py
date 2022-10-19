@@ -76,7 +76,7 @@ class Node:
     sorted_tensors = self.top_sort()
     graph.reset_visited()
 
-    sorted_tensors.pop(0)
+    sorted_tensors.pop(0) # Remove the Tensor corresponding to the current node
     self.visited = True
     self.tens._backward(self, retain_graph, calculate_grads=False)
 
