@@ -2,6 +2,7 @@ import numpy as np
 from copy import deepcopy
 from ..autograd import tensor, dot
 from ..autograd.ops import conv2d, conv3d, maxpool2d, maxpool3d
+from ..autograd.ops.operation import Operation
 
 
 class Container:
@@ -296,22 +297,25 @@ class Linear(Layer):
     return f'Linear in:{self.num_in} out:{self.num_out}'
 
 
-class Dropout(Layer):
+class Dropout(Layer, Operation):
   '''Dropout Layer
   
   https://youtu.be/D8PJAL-MZv8
   
   Parameters:
-    prob (float): Probability with which to turn off the inputs
+    prob (float): Probability with which to keep the inputs
+      With probability=prob, the units are kept and with probability=1-prob,
+      they are shut off
   '''
   def __init__(self, prob):
+    Layer.__init__(self)
+    assert prob>0 and prob<=1, 'Probability should be between 0 and 1'
     self.prob = prob
   
   def forward(self, inputs):
     '''Forward pass of Dropout
 
-    The inputs are turned off with the given prob
-
+    The inputs are turned on with the given prob
     If in eval mode, then all inputs are always on
 
     Args:
@@ -320,9 +324,30 @@ class Dropout(Layer):
     Returns:
       Tensor of the result
     '''
+    if self.eval:
+      filter = np.ones(inputs.shape) # dont discard anything, just dummy because if eval or not, backward needs to have filter arg
+    else:
+      filter = np.where(np.random.random(inputs.shape)<self.prob, 1, 0)
+    inputs, filter = self.get_tensors(inputs, filter)
+    if not(self.eval): # Deliberately repeated condition check for eval, because if in eval, it shouldnt be scaled by prob
+      result = (inputs.data*filter.data)/self.prob
+    else:
+      result = inputs.data
+    return self.get_result_tensor(inputs.data, inputs, filter)
+  
+  def backward(self, inputs, filter):
+    '''Sets the grad_fn of inputs only because filter doesnt have requires_grad=True
+
+    Just multiplies the upper gradient with the filter set during forward pass and scales
+    it by the probability
+
+    Args:
+      inputs (Tensor): Inputs to the Layer
+      filter (Tensor): The dropout filter that was applied during forward pass
+    '''
     if not(self.eval):
-      inputs.data = (inputs.data * np.where(np.random.randn(*(inputs.shape))<self.prob, 1, 0)) / self.prob
-    return inputs
+      inputs.set_grad_fn(lambda ug:(ug*filter.data)/self.prob)
+    inputs.set_grad_fn(lambda ug:ug)
   
   def __repr__(self):
     return f'Dropout(prob={self.prob})'

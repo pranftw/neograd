@@ -31,12 +31,13 @@ class Loss:
     Returns:
       Number of examples
     '''
-    if len(outputs_shape)==0 or len(outputs_shape)==1:
+    if len(outputs_shape) in (0, 1):
       return 1
     else:
       return outputs_shape[0] 
 
 
+# <------------MEANSQUAREDERROR------------>
 class MSE(Loss):
   '''Mean Squared Error
   '''
@@ -61,6 +62,7 @@ class MSE(Loss):
     return 'MeanSquaredError'
 
 
+# <------------BINARYCROSSENTROPY------------>
 class BCE(Loss):
   '''Binary Cross Entropy
   '''
@@ -89,6 +91,7 @@ class BCE(Loss):
     return 'BinaryCrossEntropy'
 
 
+# <------------CROSSENTROPY------------>
 class CE(Loss):
   '''Cross Entropy
   '''
@@ -118,7 +121,6 @@ class CE(Loss):
 
 
 # <------------SOFTMAXCROSSENTROPY------------>
-
 class SoftmaxCE(Operation, Loss):
   '''Implements Softmax activation with CrossEntropyLoss
 
