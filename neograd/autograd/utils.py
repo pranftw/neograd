@@ -34,8 +34,8 @@ def process_data(data):
 def unbroadcast_data(data, orig_data_shape, broadcasted_shape):
   ''' Unbroadcasts the data to its original shape
 
-  If data(a np object) is broadcasted during an operation, then it is unbroadcasted here
-  where all dimensions where it was broadcasted are summed along that dimension to
+  If data(a np object) is broadcasted during an operation, then it is unbroadcasted here,
+  where all axes where it was broadcasted are summed along those axes to
   give the original shape of the data. If broadcasted_shape is None, then the data is
   returned as is.
 
@@ -47,39 +47,35 @@ def unbroadcast_data(data, orig_data_shape, broadcasted_shape):
   Returns:
     Data that is unbroadcasted
   '''
+
+  def get_axes_to_be_summed(orig_data_shape, broadcasted_shape):
+    '''Returns the axes along which data has been broadcasted
+
+    Given the original data shape and its broadcasted shape, it returns True along
+    an axis if their dimensions don't match, else returns False if they match,
+    meaning there has been no broadcasting along that axis.
+    https://numpy.org/doc/stable/user/basics.broadcasting.html
+
+    Args:
+      orig_data_shape (tuple): Original shape of data before broadcasting
+      broadcasted_shape (tuple): Shape to which data has been broadcasted to
+    
+    Returns:
+      tuple of axes on which there's been broadcasting
+    '''
+    axes_to_be_summed = []
+    zipped = list(zip_longest(tuple(reversed(broadcasted_shape)), tuple(reversed(orig_data_shape)), fillvalue=None))
+    for dim, (dim_broadcasted, dim_orig) in enumerate(reversed(zipped)):
+      if dim_broadcasted!=dim_orig:
+        axes_to_be_summed.append(dim)
+    return tuple(axes_to_be_summed)
+
   if broadcasted_shape is not None:
-    dims_to_be_summed = get_dims_to_be_summed(orig_data_shape, broadcasted_shape)
-    unbroadcasted_data = data.reshape(broadcasted_shape)
-    for i,dim in reversed(list(enumerate(dims_to_be_summed))):
-      if dim:
-        unbroadcasted_data = np.sum(unbroadcasted_data, axis=i)
+    axes_to_be_summed = get_axes_to_be_summed(orig_data_shape, broadcasted_shape)
+    unbroadcasted_data = np.sum(data, axis=axes_to_be_summed)
   else:
     unbroadcasted_data = data
   return unbroadcasted_data
-
-def get_dims_to_be_summed(orig_data_shape, broadcasted_shape):
-  '''Returns the dimensions along which data has been broadcasted
-
-  Given the original data shape and its broadcasted shape, it returns True along
-  a dimension if their dimensions don't match, else returns False if they match,
-  meaning there has been no broadcasting along that dimension.
-  https://numpy.org/doc/stable/user/basics.broadcasting.html
-
-  Args:
-    orig_data_shape (tuple): Original shape of data before broadcasting
-    broadcasted_shape (tuple): Shape to which data has been broadcasted to
-  
-  Returns:
-    list of bool values, True if there's broadcasting, False if there isn't
-  '''
-  dims_to_be_summed = []
-  zipped = zip_longest(tuple(reversed(broadcasted_shape)), tuple(reversed(orig_data_shape)), fillvalue=None)
-  for dim_broadcasted, dim_orig in reversed(list(zipped)):
-    if dim_broadcasted!=dim_orig:
-      dims_to_be_summed.append(True)
-    else:
-      dims_to_be_summed.append(False)
-  return dims_to_be_summed
 
 def get_graph():
   '''Returns graph that is in use and present in Graph.graph
