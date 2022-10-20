@@ -7,7 +7,7 @@ from neograd import nn
 
 # <------------DROPOUT------------>
 def test_dropout():
-  input_data = np.random.randn(10,5)
+  input_data = np.random.randn(7,5)
   fn1 = nn.Dropout(0.5)
   fn2 = nn.Dropout(0.3)
   fn3 = nn.Dropout(0.7)
@@ -32,7 +32,7 @@ def test_linear():
 
 # <------------CONV2D------------>
 def test_conv2d():
-  input_data = np.random.randn(2,12,12)
+  input_data = np.random.randn(2,12,15)
   fn1 = nn.Conv2D((3,3))
   fn2 = nn.Conv2D((2,2), padding=2)
   fn3 = nn.Conv2D((4,4), stride=2)
@@ -45,7 +45,7 @@ def test_conv2d():
 
 # <------------CONV3D------------>
 def test_conv3d():
-  input_data = np.random.randn(2,2,12,12)
+  input_data = np.random.randn(2,2,12,13)
   fn1 = nn.Conv3D(2,5,(3,3))
   fn2 = nn.Conv3D(2,5,(2,2), padding=2)
   fn3 = nn.Conv3D(2,5,(4,4), stride=2)
@@ -58,13 +58,13 @@ def test_conv3d():
 
 # <------------MAXPOOL2D------------>
 def test_maxpool2d():
-  input_data = np.random.randn(2,12,12)
+  input_data = np.random.randn(2,12,15)
   fn1 = nn.MaxPool2D((3,3), stride=3)
   execute(fn1, [input_data], fn1.parameters())
 
 
 # <------------MAXPOOL3D------------>
 def test_maxpool3d():
-  input_data = np.random.randn(2,3,12,12)
+  input_data = np.random.randn(2,3,12,15)
   fn1 = nn.MaxPool3D((3,3), stride=3)
   execute(fn1, [input_data], fn1.parameters())
