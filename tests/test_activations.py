@@ -45,4 +45,4 @@ def test_softmax():
 # <------------LEAKYRELU------------>
 def test_leaky_relu():
   leaky_relu = LeakyReLU()
-  execute(leaky_relu, [c])
+  execute(leaky_relu, [f])
