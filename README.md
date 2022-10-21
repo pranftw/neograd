@@ -11,16 +11,17 @@
 [![Documentation Status](https://readthedocs.org/projects/neograd/badge/?version=latest)](https://neograd.readthedocs.io/en/latest/?badge=latest)
 [![Downloads](https://static.pepy.tech/personalized-badge/neograd?period=total&units=international_system&left_color=blue&right_color=orange&left_text=Downloads)](https://pepy.tech/project/neograd)
 
-## Documentation
-https://neograd.readthedocs.io/
-
-## PyPI
-https://pypi.org/project/neograd/
-
-## Installation
+## Get started
+### Installation
 `pip install neograd`
 
-## Explore on Colab
+### PyPI
+https://pypi.org/project/neograd/
+
+### Documentation
+https://neograd.readthedocs.io/
+
+### Explore on Colab
 https://colab.research.google.com/drive/1D4JgBwKgnNQ8Q5DpninB6rdFUidRbjwM?usp=sharing
 https://colab.research.google.com/drive/184916aB5alIyM_xCa0qWnZAL35fDa43L?usp=sharing
 
