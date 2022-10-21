@@ -1,6 +1,7 @@
 venv
 .DS_Store
 __pycache__
+.aliases
 .ipynb_checkpoints
 .pytest_cache
 testpypi_setup.py

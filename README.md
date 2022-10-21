@@ -25,16 +25,16 @@ https://neograd.readthedocs.io/
 https://colab.research.google.com/drive/1D4JgBwKgnNQ8Q5DpninB6rdFUidRbjwM?usp=sharing
 https://colab.research.google.com/drive/184916aB5alIyM_xCa0qWnZAL35fDa43L?usp=sharing
 
+## Motivation
+I firmly believe that in order to understand something completely, you have to build it on your own from scratch. I used to do gradient calculation analytically, and thought that autograd was some kind of magic. So this was initially built to understand autograd but later on its scope was extended. You might be wondering, there are already many frameworks like TensorFlow and PyTorch that are very popular, and why did I have to create another one? The answer is that these have very complex codebases that are difficult to grasp. So I intend that this repository be used as an educational tool in order to understand how things work under the hood in these giant frameworks, with code that is intuitive and easily readable.
+
 ## How is this any different from
 - **Andrej Karpathy's [micrograd](https://github.com/karpathy/micrograd)**<br>
   Natively only supports scalar values for computation, whereas we support scalars, vectors, matrices all compatible with NumPy broadcasting
 - **George Hotz's [tinygrad](https://github.com/geohot/tinygrad)**<br>
   Has an obligation to be under 1000 lines of code leading to cramped up code, therefore our implementation is so much more readable and easily understandable. Also, no dealing with C/C++ code used in tinygrad for GPU acceleration
 - **[pytorch](https://github.com/pytorch/pytorch), [tensorflow](https://github.com/tensorflow/tensorflow), etc**<br>
-  Large messy codebases written mostly in C/C++ for efficiency making it impossible to find you're way around and understand stuff. Since we've a pure Python implementation making it easy to get started and understand what's going on
-
-## Motivation
-I firmly believe that in order to understand something completely, you have to build it on your own from scratch. I used to do gradient calculation analytically, and thought that autograd was some kind of magic. So this was initially built to understand autograd but later on its scope was extended. You might be wondering, there are already many frameworks like TensorFlow and PyTorch that are very popular, and why did I have to create another one? The answer is that these have very complex codebases that are difficult to grasp. So I intend that this repository be used as an educational tool in order to understand how things work under the hood in these giant frameworks, with code that is intuitive and easily readable.
+  Large messy codebases written mostly in C/C++ for efficiency making it impossible to find you're way around and understand stuff. We've a pure Python implementation making it easy to get started and understand what's going on under the hood
 
 ## Features
 ### Automatic Differentiation
