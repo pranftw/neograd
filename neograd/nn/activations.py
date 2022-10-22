@@ -202,7 +202,7 @@ class LeakyReLU(Layer, Operation):
     '''
     inputs = self.get_tensors(inputs)
     arr = inputs.data
-    return self.get_result_tensor(np.where(arr>0, arr, self.leak*arr), inputs)
+    return self.get_result_tensor(np.where(arr>=0, arr, self.leak*arr), inputs)
   
   def backward(self, inputs):
     '''Sets the grad_fn of the Tensor
