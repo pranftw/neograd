@@ -16,8 +16,6 @@ sys.path.insert(0, basedir)
 project = 'neograd'
 copyright = '2022, Pranav Sastry'
 author = 'Pranav Sastry'
-version = '0.0.3'
-release = '0.0.3'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
