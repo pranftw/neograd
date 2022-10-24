@@ -1,4 +1,4 @@
-import hickle as hkl
+import dill
 from itertools import chain as list_flattener
 from .layers import Container, Layer
 from ..autograd.utils import get_graph
@@ -73,7 +73,8 @@ class Model:
       fpath (str): File path
     '''
     params = self.parameters(as_dict=True)
-    hkl.dump(params, fpath, mode='w')
+    with open(fpath, 'wb') as fp:
+      dill.dump(params, fp)
     print(f"\nPARAMS SAVED at {fpath}\n")
 
   def load(self, fpath):
@@ -82,7 +83,8 @@ class Model:
     Args:
       fpath (str): File path
     '''
-    params = hkl.load(fpath)
+    with open(fpath, 'rb') as fp:
+      params = dill.load(fp)
     for attr, param in params.items():
       layer = self.__getattribute__(attr)
       layer.set_params(param)
