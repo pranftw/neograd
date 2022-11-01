@@ -7,7 +7,7 @@ def read_file(fpath):
 
 setup(
   name = 'neograd',
-  version = '0.0.3',
+  version = '0.0.4',
   author = 'Pranav Sastry',
   author_email = 'pranava.sri@gmail.com',
   maintainer = 'Pranav Sastry',
