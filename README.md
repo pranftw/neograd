@@ -10,6 +10,7 @@
 [![Neograd Tests](https://github.com/pranftw/neograd/actions/workflows/python-app.yml/badge.svg)](https://github.com/pranftw/neograd/actions/workflows/python-app.yml)
 [![Documentation Status](https://readthedocs.org/projects/neograd/badge/?version=latest)](https://neograd.readthedocs.io/en/latest/?badge=latest)
 [![Downloads](https://static.pepy.tech/personalized-badge/neograd?period=total&units=international_system&left_color=blue&right_color=orange&left_text=Downloads)](https://pepy.tech/project/neograd)
+[![DOI](https://zenodo.org/badge/527663026.svg)](https://zenodo.org/badge/latestdoi/527663026)
 
 ## Get started
 ### Installation
