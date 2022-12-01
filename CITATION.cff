@@ -4,6 +4,5 @@ authors:
   - family-names: Sastry
     given-names: Pranav
     orcid: https://orcid.org/0000-0003-2091-3790
-title: pranftw/neograd
-version: v0.0.4.1
-date-released: 2022-12-01
+title: neograd - A Deep Learning framework created from scratch using Python and NumPy
+date-released: 2022-09-16
